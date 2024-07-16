@@ -1,0 +1,79 @@
+/* +++++++++++++++++ MOBILE STYLE +++++++++++++++++ */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+  /* NAVIGASI */
+  .navbar-topmenu-mobile li a .count-inbox-layer .count-inbox {
+    right: -25px;
+  }
+  /* APPROVAL */
+  .popup-form.popleft {
+    left: 50% !important;
+    min-width: 100%;
+    width: auto;
+  }
+  /* VIEW */
+  .off-pad-on-mobile {
+    padding: 0;
+  }
+  .invoice-container .invoice-body .beauty-line {
+    width: 100%;
+  }
+  .profile-sidebar {
+    margin-bottom: 10px;
+  }
+  .profile-content .btn.pull-right {
+    float: none !important;
+    margin-bottom: 5px;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100%;
+  }
+  .profile-content legend {
+    font-size: 18px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .profile-content table.table tbody tr td {
+    padding: 0;
+  }
+  .profile-content table.table tbody tr td.text-right {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+  }
+  .profile-content table.table tbody tr td:not(.text-right) {
+    border-top: none;
+    display: block;
+    font-size: 12px;
+    font-style: italic;
+    margin-left: 5px;
+    text-align: left;
+  }
+  .profile-content table.table tbody tr td.text-center {
+    display: none;
+  }
+  .table-form-cndn,
+  .table-form-cek-giro {
+    display: inline-block;
+    margin-top: 20px;
+  }
+  .table-form-cndn tbody tr td,
+  .table-form-cek-giro tbody tr td {
+    display: block;
+    padding: 0;
+    text-align: left;
+  }
+  .table-form-cndn tbody tr td.td-label,
+  .table-form-cek-giro tbody tr td.td-label {
+    text-decoration: underline;
+  }
+  .table-form-cndn tbody tr td.text-center,
+  .table-form-cek-giro tbody tr td.text-center {
+    display: none;
+  }
+  /* MENU-MENU */
+  .pricelist-form {
+    width: 100% !important;
+  }
+}
+/* +++++++++++++++++ END MOBILE STYLE +++++++++++++++++ */

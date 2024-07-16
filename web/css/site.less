@@ -1,0 +1,447 @@
+@import url('less/content.less');
+@import url('less/formbox.less');
+@import url('less/menu.less');
+@import url('less/navigasi.less');
+@import url('less/popup.less');
+@import url('less/table.less');
+@import url('less/responsive.less');
+@import url('core/prefix.less');
+
+@color_default: #fff;
+@color_gridmenu: #656565;
+@color_main: #3a779a;
+@color_text: #337ab7;
+@color_navbarheader: #445e73;
+@color_border: #eee;
+
+/* reset default properties style */
+ul {
+	list-style-type: none;
+	margin-bottom: 0;
+	padding-left: 0;
+}
+a {
+	text-decoration: none;
+	&:hover, &:focus {
+		text-decoration: none;
+	}
+	&:focus {
+		outline: 0;
+	}
+}
+/* end reset default properties style */
+
+/* general class */
+.content-cannot-access {
+	display: none;
+}
+/* end general class */
+
+/* breadcrumbs class */
+.breadcrumb {
+	background-color: transparent;
+	border-bottom: 1px solid @color_border;
+	font-size: 12px;
+	margin-bottom: 0;
+	margin-top: 10px;
+	text-align: right;
+	.borderRadius(0);
+}
+/* end breadcrumbs class */
+
+/* ondrag class */
+.ondrag {
+	background-color: @color_border;
+	height: 100%;
+	left: 0;
+	opacity: 0.8;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 2;
+}
+/* end ondrag class */
+
+/* container class */
+.container {
+	background-color: @color_border;
+	min-height: 100%;
+	margin-left: 0;
+	padding-left: 270px;
+	position: absolute;
+	width: 100%;
+}
+.container-collapse {
+	padding-left: 20px;
+}
+/* end container class */
+
+/* box container class */
+.box-header, .box-body {
+	display: inline-block;
+	width: 100%;
+}
+/* end box container class */
+
+/* enter complete class */
+.enter-complete {
+	border: 1px solid rgba(0, 0, 0, .15);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	background-color: #fff;
+	display: none;
+	min-height: 28px;
+	max-height: 290px;
+	height: auto;
+	overflow: hidden;
+	overflow-y: scroll;
+	position: absolute;
+	z-index: 10;
+	li {
+		border-bottom: 1px solid #eee;
+		cursor: pointer;
+		font-size: 12px;
+		list-style-type: none;
+		height: 28px;
+		line-height: 28px;
+		padding: 0 20px;
+	}
+	&::-webkit-scrollbar {
+		width: 10px;
+	}
+	&::-webkit-scrollbar-track {
+		/*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: darkgrey;
+		outline: 1px solid slategrey;
+	}
+}
+.custom-search {
+	height: 27px;
+	position: absolute;
+	right: 0;
+	top: -27px;
+	.borderRadius(0);
+}
+.field-productmappingum-product_qad {
+	~ .col-sm-12 {
+		.custom-search {
+			top: -37px;
+		}
+	}
+}
+/* end enter complete class */
+
+/* custom autocomplete */
+.ui-autocomplete {
+	z-index: 9999;
+}
+/* end custom autocomplete */
+
+/* loading autocomplete */
+.loading-autocomplete {
+	background-image: url('../img/load_blue.gif');
+	background-size: cover;
+	display: inline-block;
+	height: 45px;
+	left: 50%;
+	position: absolute;
+	top: 20px;
+	width: 45px;
+	.transform(translateX(-50%));
+}
+/* end loading autocomplete */
+
+/** BY MANCHEZ */
+
+/* Profile container 
+	https://bootsnipp.com/snippets/featured/user-profile-sidebar
+*/
+.profile {
+  margin: 20px 0;
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+  padding: 20px 5px 10px 5px;
+  background: #fff;
+}
+
+.profile-userpic img {
+  float: none;
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  border-radius: 50% !important;
+}
+
+.profile-usertitle {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-usertitle-name {
+  color: #5a7391;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.profile-usertitle-job {
+  text-transform: uppercase;
+  color: #5b9bd1;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.profile-userbuttons {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.profile-userbuttons .btn {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 15px;
+  margin-right: 5px;
+}
+
+.profile-userbuttons .btn:last-child {
+  margin-right: 0px;
+}
+    
+.profile-usermenu {
+  margin-top: 30px;
+}
+
+.profile-usermenu ul li {
+  border-bottom: 1px solid #f0f4f7;
+}
+
+.profile-usermenu ul li:last-child {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li a {
+  color: #93a3b5;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.profile-usermenu ul li a i {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.profile-usermenu ul li a:hover {
+  background-color: #fafcfd;
+  color: #5b9bd1;
+}
+
+.profile-usermenu ul li.active {
+  border-bottom: none;
+}
+
+.profile-usermenu ul li.active a {
+  color: #5b9bd1;
+  background-color: #f6f9fb;
+  border-left: 2px solid #5b9bd1;
+  margin-left: -2px;
+}
+
+/* Profile Content */
+.profile-content {
+  padding: 10px 20px 20px 20px;
+  background: #fff;
+  min-height: 460px;
+}
+
+.menu-role {
+	display: inline-block;
+	height: 25px;
+	position: relative;
+	width: 100%;
+	a {
+		line-height: 25px;
+		padding: 0 20px 0 45px;
+	}
+}
+.menu-role-tree {
+	position: relative;
+	.menu-role {
+		&:before {
+			border-top: .8px dashed @color_gridmenu;
+			content: "";
+			display: block;
+			height: 0;
+			position: absolute;
+			top: 15px;
+			width: 11px;
+		}
+	}
+	&:before {
+		border: .5px dashed @color_gridmenu;
+		bottom: 15px;
+		content: "";
+		display: block;
+		position: absolute;
+		top: 0;
+		width: 0;
+	}
+}
+.menu-tree1 {
+	.navbar-menu {
+		a {
+			padding: 0 20px 0 55px;
+			.fontello {
+				left: 30px;
+				&.icon-folder-open-2, &.icon-folder-3 {
+					left: 60px;
+				}
+			}
+		}
+		&.have-child {
+			a {
+				.fontello {
+					left: 10px;
+					&.icon-folder-open-2, &.icon-folder-3 {
+						left: 30px;
+					}
+				}
+			}
+			/* menu child terakhir */
+			.menu-tree2 {
+				a {
+					padding: 0 20px 0 75px;
+					.fontello {
+						left: 50px;
+					}
+				}
+				.navbar-menu {
+					&:before {
+						left: 39px;
+					}
+				}
+				&:before {
+					left: 39px;
+				}
+			}
+			/* end menu child terakhir */
+		}
+		&:before {
+			left: 20px;
+		}
+	}
+	&:before {
+		left: 19px;
+	}
+}
+
+/* +++++++++++++++++ TABLET STYLE +++++++++++++++++ */
+@media only screen and (min-width: 769px) and (max-width: 840px) {
+	.navbar-toppos {
+		.app-name {
+			font-size: 14px;
+		}
+		.navbar-topmenu {
+			.label-date {
+				display: none;
+			}
+		}
+	}
+}
+/* +++++++++++++++ END TABLET STYLE +++++++++++++++ */
+
+
+/* +++++++++++++++++ MOBILE STYLE +++++++++++++++++ */
+/* Mobile Query */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+	/* navbar class */
+	.navbar-topmenu {
+		display: none;
+	}
+	.navbar-togglemobile {
+		display: block;
+	}
+	.navbar-topmenu-mobile {
+		display: block;
+	}
+	.navbar-left  {
+		display: none;
+	}
+	.navbar-toppos {
+		.app-name {
+			font-size: 13px;
+		}
+		.status-env {
+			font-size: 11px;
+		}
+	}
+	.navbar-topmenu-mobile {
+		.dont-have-notification {
+			.desc-dont-have {
+				width: 100%;
+			}
+			.desc-view-all {
+				a {
+					line-height: 40px;
+				}
+			}
+		}
+	}
+	/* end navbar class */
+	
+	/* container class */
+	.container {
+		padding: 0 15px;
+	}
+	.popup {
+		.popup-form {
+			min-width: 95% !important;
+			width: 95% !important;
+		}
+	}
+	/* end container class */
+}
+
+/* Potrait */
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+	/* navbar class */
+	.navbar-toppos {
+		padding: 0;
+	}
+	/* end navbar class */
+	
+	[data-pjax-container] {
+		.form-pagesize {
+			&:before {
+				background-color: transparent;
+			}
+		}
+	}
+	.grid-view {
+		&:before {
+			background-color: transparent;
+		}
+	}
+}
+/* +++++++++++++++++ END MOBILE STYLE +++++++++++++++++ */
+
+/* Media Query can't access */
+@media only screen and (min-width: 0px) and (max-width: 319px) {
+	.navbar, .breadcrumb, #render_content {
+		display: none;
+	}
+	.container {
+		padding: 0 15px;
+	}
+	.content-cannot-access {
+		display: block;
+		margin-top: 30px;
+		text-align:center;
+	}
+}

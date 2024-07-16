@@ -1,0 +1,44 @@
+.table-header {
+	display:inline-block;
+	margin-bottom:20px;
+	width:100%;
+}
+.table-section {
+	float: left;
+	width: 50%;
+}
+.noborder {
+	float:left;
+	margin-bottom: 20px;
+	width: 100%;
+}
+.noborder tbody tr td {
+	border:none;
+}
+table{
+	border-collapse:collapse;
+	margin-top:10px;
+	width:100%;
+}
+table thead tr th {
+	border:1px solid #656565;
+}
+table tbody tr td {
+	border:1px solid #656565;
+}
+table tfoot {
+	border: 1px solid #000;
+}
+table tfoot tr td {
+	font-size: 12px;
+	padding: 8px 5px;
+}
+.garis {
+	border-top: 1px dashed #000;
+}
+.text-center {
+	text-align: center;
+}
+.font11 {
+	font-size: 11px;
+}

@@ -1,0 +1,207 @@
+/*
+	* Prefix function for cross browser
+	* 1). Animation [name, duration, iteration-count, direction, delay]
+	* 2). Background Clip
+	* 3). Border Radius
+	* 4). Box Sizing
+	* 5). Box Shadow
+	* 6). Placeholder
+	* 7). Transition
+	* 8). Transform (rotate, scale, translate)
+*/
+/* Dashboard View Approval */
+.dashboard-wrapper {
+  display: inline-block;
+  width: 100%;
+}
+.dashborad-tab-layout {
+  display: inline-block;
+  width: 100%;
+}
+.dashborad-tab-panel {
+  background-color: #fff;
+  display: inline-block;
+  height: 40px;
+  width: 100%;
+}
+.dashboard-tab-menu {
+  /*background-color: #15567b;*/
+  background-color: #fff;
+  display: inline-block;
+  margin-right: -4px;
+  padding: 10px 20px;
+  position: relative;
+  width: 25%;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.175);
+}
+.dashboard-tab-menu span {
+  /*color: @color_default;*/
+  color: #296966;
+  margin-left: 30px;
+}
+.dashboard-tab-menu:hover {
+  background-color: #43775d;
+}
+.dashboard-tab-menu:hover span {
+  color: #fff;
+}
+.dashboard-tab-menu:hover .circlecons {
+  border: 1px solid #fff;
+}
+.dashboard-tab-menu:hover .circlecons .fontello {
+  color: #fff;
+}
+.dashboard-tab-menu.active {
+  background-color: #296966;
+}
+.dashboard-tab-menu.active span {
+  color: #fff;
+}
+.dashboard-tab-menu.active .circlecons {
+  border: 1px solid #fff;
+}
+.dashboard-tab-menu.active .circlecons .fontello {
+  color: #fff;
+}
+.dashboard-tab-menu .circlecons {
+  border: 1px solid #296966;
+  display: inline-block;
+  height: 30px;
+  left: 30px;
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.dashboard-tab-menu .circlecons .fontello {
+  color: #296966;
+  font-size: 20px;
+  left: 50%;
+}
+.dashborad-tab-body {
+  background-color: #fff;
+  display: inline-block;
+  min-height: 60px;
+  width: 100%;
+}
+.dashboard-tab-content {
+  display: inline-block;
+  padding: 20px;
+  width: 100%;
+}
+.panel-container {
+  height: 100%;
+  width: 100%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.panel-container .panel-header {
+  background-color: #3a779a;
+  display: inline-block;
+  height: 30px;
+  width: 100%;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+}
+.panel-container .panel-header .title {
+  color: #fff;
+  display: inline-block;
+  line-height: 30px;
+  padding: 0 20px;
+}
+.panel-container .panel-header .title.title-notif {
+  background-color: #26688e;
+  font-size: 11px;
+  float: right;
+  -webkit-border-radius: 50px 0 50px 0;
+  -moz-border-radius: 50px 0 50px 0;
+  border-radius: 50px 0 50px 0;
+}
+.panel-container .panel-body {
+  border: 1px solid #3a779a;
+  display: inline-block;
+  width: 100%;
+}
+.panel-container .panel-body table {
+  width: 100%;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+.panel-container .panel-body table thead {
+  -webkit-box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.175);
+}
+.panel-container .panel-body table thead tr th {
+  color: #767479;
+  font-size: 12px;
+  padding: 10px;
+}
+.panel-container .panel-body table tbody tr td {
+  border-bottom: 1px dotted #808080;
+  font-size: 10px;
+  padding: 10px 5px;
+  vertical-align: top;
+}
+.panel-container .panel-body table tbody tr td a {
+  text-decoration: underline;
+}
+.panel-container .panel-body table tbody tr td:nth-child(1),
+.panel-container .panel-body table tbody tr td:nth-last-child(1) {
+  border-bottom: none;
+  vertical-align: middle;
+}
+.panel-container .panel-body table tbody tr:nth-child(n+10) td,
+.panel-container .panel-body table tbody tr:nth-last-child(1) td {
+  border-bottom: none;
+}
+.panel-container .panel-body [data-desc]:before {
+  content: "Press 'Show Data' to view data";
+}
+.panel-container .btn-panel {
+  display: block;
+  text-align: right;
+}
+.panel-container .pagination {
+  margin: 10px 0 0 0;
+}
+.panel-container .pagination li span[data-page] {
+  font-size: 10px;
+  line-height: 17px;
+  padding: 5px 12px;
+}
+.panel-container.panel-no-data .btn-panel {
+  visibility: hidden;
+}
+.panel-container.panel-no-data .panel-header {
+  background-color: #c54242;
+}
+.panel-container.panel-no-data .panel-header .title-notif {
+  background-color: #b13535;
+}
+.panel-container.panel-no-data .panel-body {
+  border-color: #c54242;
+}
+.panel-container.panel-no-data .panel-body span.text-primary[data-desc] {
+  color: #c54242;
+}
+.panel-container.panel-no-data .panel-body [data-desc]:before {
+  content: "No data approval ...";
+}
+.panel-body::-webkit-scrollbar {
+  width: 10px;
+}
+.panel-body::-webkit-scrollbar-thumb {
+  background-color: #a9a9a9;
+  outline: 1px solid #708090;
+}
+/* End Dashboard View Approval */

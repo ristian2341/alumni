@@ -1,0 +1,148 @@
+@font-face {
+  font-family: "Lucida Console";
+  src: url("../font/lucida-console.ttf") format("truetype");
+}
+
+/** page layout */
+.page-wrapper {
+  display: inline-block;
+}
+.page-layout {
+  height: 21.5cm;
+  width: 33cm;
+}
+.page-siluman table tbody tr td {
+	color: #fff;
+	font-size: 12px;
+	padding-bottom:0;
+	padding-top:0;
+}
+/** end page layout */
+/** table style */
+.table-header {
+	font-family: "Lucida Console";
+	width: 100%;
+}
+.table-header tbody tr td {
+  padding-bottom: 0;
+  padding-top: 0;
+  vertical-align: text-bottom;
+}
+.table-header tbody tr td p {
+  margin: 0;
+}
+.table-header tbody tr td table {
+  width: 100%;
+}
+.table-header tbody tr td table tbody tr td.grid-1 {
+  width: 20%;
+}
+.table-header tbody tr td table tbody tr td.grid-2 {
+  width: 80%;
+}
+
+.table-content {
+  font-family: "Lucida Console";
+  width: 100%;
+  border: 1px solid #ddd;
+ font-size:13px;
+ border-collapse: collapse;
+ line-height:20px;
+}
+.table-content thead tr th {
+  border-bottom: 1px dashed #000;
+  font-size: 12px;
+  font-weight: 300;
+  text-align: center;
+  border: 1px solid #ddd;
+
+}
+.table-content tbody tr td {
+  font-size: 7.7pt;
+  padding-bottom: 0;
+  padding-top: 0;
+  border: 1px solid #ddd;
+
+}
+
+.table-content thead tr th {
+  border-bottom: 1px dashed #000;
+  font-size: 12px;
+  font-weight: 300;
+  text-align: center;
+  border: 1px solid #ddd;
+
+}
+.table-content tr td {
+  font-size: 7.7pt;
+  padding-bottom: 0;
+  padding-top: 0;
+  border: 1px solid #ddd;
+
+}
+
+
+.table-footer {
+	font-family: "Lucida Console";
+	width: 100%;
+}
+.table-footer tbody tr td {
+  padding-bottom: 0;
+  padding-top: 0;
+  position: relative;
+}
+.table-footer tbody tr.vtop {
+	vertical-align: top;
+}
+.table-footer tbody tr td.vtop {
+	vertical-align: top;
+}
+.table-footer tbody tr td p {
+  margin: 0;
+}
+.table-footer tbody tr td.grid-1 {
+  vertical-align: text-bottom;
+  width: 70%;
+}
+.table-footer tbody tr td.grid-2 {
+  width: 30%;
+}
+.table-footer tbody tr td.money {
+  padding-left: 40px;
+}
+.table-footer tbody tr td table {
+  width: 100%;
+}
+/** end table style */
+/** custom child */
+.font9 {
+  font-size: 9px;
+}
+.font10 {
+  font-size: 10px;
+}
+.font11 {
+  font-size: 11px;
+}
+.font12 {
+  font-size: 12px;
+}
+.font14 {
+  font-size: 14px;
+}
+.text-right {
+  text-align: right;
+}
+.text-justify {
+  text-align: justify;
+}
+.color-white {
+	color: #fff;
+}
+.pl60 {
+	padding-left: 60px;
+}
+.pl90 {
+	padding-left: 90px;
+}
+/** end custom child */

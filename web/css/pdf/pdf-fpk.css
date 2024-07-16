@@ -1,0 +1,96 @@
+@page{
+		size:landscape;
+	}
+	table.table-print-header, .table-print-header th, .table-print-header td {
+		font-size:11px;
+	}
+	table.table-print-footer, .table-print-footer th, .table-print-footer td {
+		font-size:12px;
+	}
+	table .table-print-item, .table-print-item th, .table-print-item td {
+		font-size:9px;
+		border:0px solid #333;
+	}
+	.table-print-item th{
+		padding:2px 3px;
+	}
+	.table-print-item td{
+		padding:1px 3px;
+	}
+	.text-center{
+		text-align:center;
+	}
+	.text-right{
+		text-align:right;
+	}
+	.text-left{
+		text-align:left;
+	}
+	
+	.div-checkbox .checkbox {
+		width:10px;
+		height:10px;
+		border: 1px solid #333;
+		display: inline-block;
+		margin-right:3px;
+		position: relative;
+	}
+	.div-checkbox .checkbox span{
+		margin-left: 20px;
+		position: relative;
+		top: -5px;
+		white-space: nowrap;
+	}
+	.div-checkbox .checkbox.checked:after {
+		content: '';
+		display: block;
+		width: 2px;
+		height: 3px;
+
+		position:absolute;
+		top:2px;
+		left:3px;
+
+		border: solid #333;
+		border-width: 0 2px 2px 0;
+		transform: rotate(45deg);
+	}
+	.table-form-fpk td, .table-form-fpk th{
+		padding:3px 5px 0 5px;
+		vertical-align: top;
+	}
+	.table-form-fpk th{
+		text-align:right;
+		font-weight:bold;
+		font-size:11px;
+		padding-top:5px;
+	}
+	.table-form-fpk .checkbox{
+		margin-top:0px !important;
+	}
+	.table-form-fpk .checkbox-wrapper{
+		height:25px !important;
+	}
+	.table-form-fpk .checklist-container+label{
+		line-height: 27px !important;
+	}
+	
+	table .table-print-item, .table-print-item th, .table-print-item td {
+		font-size:9px;
+		border:1px solid #333;
+	}
+	.table-print-item th{
+		padding:2px 3px;
+	}
+	.table-print-item td{
+		padding:1px 3px;
+	}
+	
+	.checkbox tbody tr td.checklist {
+		border:1px solid #000;
+		width: 18px;
+		display:table-cell;
+		font-size: 10px;
+		text-align: center;
+	}
+	

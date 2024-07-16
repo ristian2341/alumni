@@ -1,0 +1,86 @@
+@font-face {
+  font-family: "Lucida Console";
+  src: url("../font/lucida-console.ttf") format("truetype");
+}
+/** page layout */
+.page-wrapper {
+  display: inline-block;
+}
+.page-layout {
+  height: 14cm;
+  width: 22.5cm;
+}
+.page-siluman table tbody tr td {
+	color: #fff;
+	font-size: 7.7pt;
+}
+/** end page layout */
+/** table style */
+.table-header {
+	font-family: "Lucida Console";
+	width: 100%;
+}
+.table-header tbody tr td {
+  padding-bottom: 0;
+  padding-top: 0;
+  vertical-align: text-bottom;
+}
+.table-header tbody tr td table {
+  width: 100%;
+}
+.table-content {
+  font-family: "Lucida Console";
+  width: 100%;
+}
+.table-content thead tr th {
+  border-bottom: 1px dashed #000;
+  font-size: 12px;
+  font-weight: 300;
+  text-align: center;
+}
+.table-content tbody tr td {
+  font-size: 7.7pt;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.table-footer {
+	font-family: "Lucida Console";
+	width: 100%;
+}
+.table-footer tbody tr td {
+  padding-bottom: 0;
+  padding-top: 0;
+  position: relative;
+}
+.table-footer tbody tr td table {
+  width: 100%;
+}
+.page-next {
+	width: 100%;
+}
+.page-next {
+	font-size: 10px;
+	font-style: italic;
+	text-align: right;
+}
+/** end table style */
+/** custom child */
+.font12 {
+  font-size: 12px;
+}
+.text-center {
+	text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.color-white {
+	color: #fff;
+}
+.mt5 {
+	margin-top: 5px;
+}
+.vtop {
+	vertical-align: top;
+}
+/** end custom child */

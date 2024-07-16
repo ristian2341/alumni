@@ -1,0 +1,66 @@
+@page{
+		size:portrait;
+	}
+	table.table-print-header, .table-print-header th, .table-print-header td {
+		font-size:11px;
+	}
+	table.table-print-footer, .table-print-footer th, .table-print-footer td {
+		font-size:12px;
+	}
+	table .table-print-item, .table-print-item th, .table-print-item td {
+		font-size:9px;
+		border:0px solid #333;
+	}
+	.table-print-item th{
+		padding:2px 3px;
+	}
+	.table-print-item td{
+		padding:1px 3px;
+	}
+	.text-center{
+		text-align:center;
+	}
+	.text-right{
+		text-align:right;
+	}
+	.text-left{
+		text-align:left;
+	}
+	table thead tr th {
+		border-top:1px dashed; border-bottom:1px dashed;
+	}
+	
+	.div-checkbox .checkbox {
+		width:10px;
+		height:10px;
+		border: 1px solid #333;
+		display: inline-block;
+		margin-right:3px;
+	}
+	.div-checkbox .checkbox.checked:after {
+		content: '';
+		display: block;
+		width: 2px;
+		height: 3px;
+
+		position:relative;
+		top:2px;
+		left:3px;
+
+		border: solid #333;
+		border-width: 0 2px 2px 0;
+		transform: rotate(45deg);
+	}
+	.backgorund-grey
+	{
+		background-color:#f5f5f5;
+	}
+	
+	.checkbox tbody tr td.checklist {
+		border:1px solid #000;
+		width: 18px;
+		display:table-cell;
+		font-size: 10px;
+		text-align: center;
+	}
+	

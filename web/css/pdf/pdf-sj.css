@@ -1,0 +1,43 @@
+.m0{
+	margin:0;
+}
+.cust{
+	margin-left:120px;
+	letter-spacing:10px;
+}
+.pdf-container{
+	font-family:sans-serif;
+	width:100%;
+}
+.section{
+	display:inline-block;
+	float:left;
+	width:50%;
+}
+.section-shipper{
+	display:block;
+	height:80px;
+}
+.section .section-head{
+	display:block;
+}
+.section .section-desc{
+	display:block;
+	height:130px;
+	padding-left:15px;
+}
+table{
+	margin-top:20px;
+	width:100%;
+}
+table thead th{
+	border-bottom:1px dashed #000;
+	font-weight:400;
+}
+.remark{
+	float:right;
+	margin-top:30px;
+}
+.size10{
+	font-size:10;
+}

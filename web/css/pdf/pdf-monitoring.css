@@ -1,0 +1,25 @@
+	@page{
+		size:landscape;
+	}
+	table.table-print-footer, .table-print-footer th, .table-print-footer td {
+		font-size:10px;
+	}
+	.table-print th{
+		font-size:9px;
+		padding:2px 3px;
+		border:1px solid #333;
+	}
+	.table-print td{
+		font-size:9px;
+		padding:1px 3px;
+		border:1px solid #333;
+	}
+	.text-center{
+		text-align:center;
+	}
+	.text-right{
+		text-align:right;
+	}
+	.text-left{
+		text-align:left;
+	}

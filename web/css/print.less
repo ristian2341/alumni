@@ -1,0 +1,528 @@
+@font-face {
+  font-family: "Lucida Console";
+  src: url("../font/lucida-console.ttf") format("truetype");
+}
+
+/** page layout */
+html, body {
+	background-color: #f9f9f9;
+	margin-top: 0;
+}
+[data-layout="print_layout"] {
+	margin: 1mm 70mm;
+}
+.page-wrapper {
+	display: inline-block;
+}
+.page-layout {
+	background-color: #fff;
+	box-sizing: border-box;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	height: 5.5in;
+	margin-bottom: 10px;
+	display: inline-block;
+	padding: 20px;
+	padding-right: 30px;
+	position: relative;
+	width: 9.0in;
+	.page-header{
+		border-bottom: unset;
+		display: table-header-group;
+		margin: 0;
+		padding: 0;
+		page-break-inside: avoid;
+		position: relative;
+		width: 100%;
+	}
+	.page-footer{
+		bottom: 0px;
+		box-sizing: border-box;
+		display: table-footer-group;
+		left: 0;
+		page-break-inside: avoid;
+		padding: 0 15px;
+		padding-right: 30px;
+		position: absolute;
+		width: 100%;
+	}
+	&.EPSON_LX_310 {
+		padding-left: 0;
+		padding-right: 80px;
+		.page-footer {
+			padding-left: 0;
+			padding-right: 80px;
+		}
+	}
+	&:not(:nth-last-child(1)){
+		.page-footer {
+			.table-footer {
+				display: none;
+			}
+			&:before {
+				content: 'Lanjut ke halaman Berikutnya ==>>>';
+				font-size: 12px;
+				font-style: italic;
+				float: right;
+				right: 40px;
+				position: relative;
+			}
+		}
+	}
+}
+/** end page layout */
+
+/** table style */
+.table-header {
+	width: 100%;
+	tbody {
+		tr {
+			td {
+				padding-bottom: 0;
+				padding-top: 0;
+				vertical-align: text-bottom;
+				p {
+					margin: 0;
+				}
+				table {
+					width: 100%;
+					tbody {
+						tr {
+							td {
+								&.grid-1 {
+									width: 20%;
+								}
+								&.grid-2 {
+									width: 80%;
+								}
+								&.grid-custom {
+									padding-top: 12px;
+									position: relative;
+									p {
+										&:nth-last-child(1) {
+											position: absolute;
+											right: 45px;
+											top: 12px;
+										}
+										&:nth-last-child(2) {
+											position: absolute;
+											right: 10px;
+											top: 0px;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.table-content {
+	font-family: "Lucida Console";
+	width: 100%;
+	thead {
+		tr {
+			th {
+				border-bottom: 1px dashed #000;
+				font-size: 12px;
+				font-weight: 300;
+				padding-bottom: 5px;
+				text-align: center;
+			}
+		}
+	}
+	tbody {
+		tr {
+			td {
+				font-size: 8pt;
+				padding-bottom: 1px;
+				padding-top: 0;
+			}
+			&:nth-child(1) {
+				td {
+					padding-top: 1px;
+				}
+			}
+		}
+	}
+}
+
+.table-footer{
+	font-family: "Lucida Console";
+	width: 100%;
+	tbody {
+		tr {
+			td {
+				position: relative;
+				&.vtop {
+					vertical-align: top;
+				}
+				p {
+					margin: 0;
+				}
+				&.grid-1 {
+					vertical-align: text-bottom;
+					width: 70%;
+				}
+				&.grid-2 {
+					width: 30%;
+				}
+				&.money {
+					padding-left: 40px;
+				}
+				table {
+					width: 100%;
+				}
+				&.divider {
+					/* display: block; */
+					width: 80px;
+					&.white{
+						visibility: hidden;
+					}
+					&:before {
+						content: ':';
+						font-size: 10px;
+						position: absolute;
+						right: 0;
+					}
+				}
+			}
+			&.vtop {
+				vertical-align: top;
+			}
+		}
+	}
+}
+/** end table style */
+
+/** custom child */
+.white-space {
+	white-space: nowrap;
+}
+.contents {
+	display: contents;
+	vertical-align: middle;
+}
+.block {
+	display: block;
+}
+.inblock {
+	display: inline-block;
+}
+.bold {
+	font-weight: 700;
+}
+.font10 {
+	font-size: 10px;
+}
+.font11 {
+	font-size: 11px;
+}
+.font12 {
+	font-size: 12px;
+}
+.font14 {
+	font-size: 14px;
+}
+.font16 {
+	font-size: 16px;
+}
+.ml3 {
+	margin-left: 3px;
+}
+.ml10 {
+	margin-left: 10px;
+}
+.ml20 {
+	margin-left: 20px;
+}
+.ml50 {
+	margin-left: 50px !important;
+}
+.ml65 {
+	margin-left: 65px !important;
+}
+.ml90 {
+	margin-left: 90px !important;
+}
+.ml115 {
+	margin-left: 115px !important;
+}
+.mt5 {
+	margin-top: 5px;
+}
+.h15 {
+	height: 15px;
+}
+.label60 {
+	width: 60px;
+}
+.label70 {
+	width: 70px;
+}
+.label90 {
+	width: 90px;
+}
+.line-bottom {
+	border-bottom: 1px dashed #000;
+	padding-bottom: 5px;
+	width: 270px
+}
+.text-right {
+	text-align: right;
+}
+.text-justify {
+	text-align: justify;
+}
+.posrelative {
+	position: relative;
+}
+.pages {
+	font-size: 11px;
+	position: absolute;
+	right: 20px;
+	top: 38px;
+	&:nth-last-child(1) {
+		top: 48px;
+	}
+}
+.w60 {
+	width: 60px;
+}
+.w160 {
+	width: 160px !important;
+}
+.w180 {
+	width: 180px;
+}
+.truncate {
+	display: block;
+	overflow: hidden;
+	position: relative;
+	width: 200px;
+	white-space: nowrap;
+	&:before {
+		background-color: #fff;
+		content: '';
+		display: block;
+		height: 10px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 5px;
+	}
+}
+/** end custom child */
+
+
+@media print{
+	@page {
+		size: 9.0in 5.5in
+	}
+	[data-layout="print_layout"] {
+		margin: 0;
+	}
+	.page-wrapper {
+		.page-layout {
+			box-shadow: unset;
+			height: 13.9cm;
+			page-break-after: always;
+			&:nth-last-child(1) {
+				margin-bottom: 0;
+			}
+		}
+	}
+	[data-type="print_invoice_qad"]{
+		.page-layout {
+			height: 13.7cm;
+		}
+	}
+}
+
+
+/** >>>>>>> print proforma invoice <<<<<<< */
+[data-type="print_proforma_invoice"]{
+	.page-wrapper {
+		.page-layout {
+			.page-footer {
+				bottom: 5px;
+				box-sizing: border-box;
+				padding: 0 20px;
+			}
+		}
+		.table-content {
+			margin-top: 10px;
+			thead {
+				tr {
+					th {
+						padding: 0 5px;
+					}
+				}
+			}
+		}
+		.table-footer {
+			tbody {
+				tr {
+					td {
+						&.divider {
+							/* display: inline-block; */
+							&.white {
+								visibility: hidden;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	@media print{
+		.table-content {
+			/* font-family: 'Courier'; */
+			font-family: "Lucida Console";
+		}
+	}
+}
+/** >>>>>>> end print proforma invoice <<<<<<< */
+
+
+/** >>>>>>> print invoice post <<<<<<< */
+[data-type="print_invoice_post"]{
+	.page-wrapper {
+		.page-layout {
+			.page-footer {
+				bottom: 5px;
+				box-sizing: border-box;
+				padding: 0 20px;
+			}
+		}
+		.table-content {
+			margin-top: 10px;
+			thead {
+				tr {
+					th {
+						padding: 0 5px;
+					}
+				}
+			}
+		}
+		.table-footer {
+			tbody {
+				tr {
+					td {
+						&.divider {
+							/* display: inline-block; */
+							&.white {
+								visibility: hidden;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	@media print{
+		.table-content {
+			/* font-family: 'Courier'; */
+			font-family: "Lucida Console";
+		}
+	}
+}
+/** >>>>>>> end print invoice post <<<<<<< */
+
+/** >>>>>>> print invoice QAD <<<<<<< */
+[data-type="print_invoice_qad"]{
+	.page-header {
+		display: inline-block;
+		font-size: 12px;
+		.top {
+			display: inline-block;
+		}
+		.header-title {
+			margin-bottom: 3px;
+			text-align: center;
+		}
+	}
+	.page-content {
+		table {
+			margin-top: 5px;
+			width: 100%;
+			thead {
+				th {
+					border-bottom: 1px dashed #000;
+					font-size: 12px;
+					font-weight: 100;
+					padding-bottom: 5px;
+				}
+			}
+			tbody {
+				tr {
+					line-height: 1;
+				}
+				td {
+					font-size: 12px;
+				}
+			}
+		}
+	}
+	.page-footer {
+		table {
+			width: 100%;
+			tfoot {
+				tr {
+					line-height: 1;
+				}
+				td {
+					font-size: 12px;
+				}
+			}
+		}
+		.section {
+			font-size: 12px;
+		}
+		.list {
+			font-size: 12px;
+		}
+	}
+	.container {
+		display: inline-block;
+		width: 100%;
+	}
+	.section {
+		width: 270px;
+		float: left;
+	}
+	.group {
+		display: inline-block;
+		height: 80px;
+	}
+	.list {
+		display: block;
+		margin: 0;
+	}
+}
+/** >>>>>>> end print invoice QAD <<<<<<< */
+
+.button-layer {
+	border-bottom: 1px dotted #eee;
+	height: 40px;
+	text-align: right;
+	position: fixed;
+	width: 22.5cm;
+	z-index: 1;
+	button {
+		background-color: #72c6d4;
+		border: unset;
+		border-radius: 5px;
+		color: #fff;
+		cursor: pointer;
+		height: 30px;
+		margin-top: 5px;
+		outline: none;
+		width: 80px;
+	}
+	#close {
+		margin-right: 15px;
+	}
+}

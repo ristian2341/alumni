@@ -1,0 +1,63 @@
+.header-address{
+	box-sizing: border-box;
+	display: inline-block;
+	font-size: 12px;
+	width: 100%;
+}
+.header-faktur{
+	font-size:12px;
+	margin-bottom:20px;
+	text-align:center;
+	width:100%;
+}
+.header-section{
+	font-size:12px;
+	height:80px;
+	margin-bottom:20px;
+	width:100%;
+}
+.xcity{
+	font-size:12px;
+}
+.section{
+	float:left;
+	width:32%;
+}
+.section-list{
+	display:block;
+	margin:0;
+}
+.table-list{
+	font-size:12px;
+	top:-20px;
+	position:relative;
+	width:100%;
+}
+.th{
+	border-bottom:.5px dashed #000;
+	font-weight:400;
+}
+.th1{
+	width:20px;
+}
+.jarak{
+	padding: 15px 0;
+}
+.pembatas{
+	border-bottom: .5px dashed #000;
+}
+.padtop{
+	padding-top:15px;
+}
+.w100{
+	width:100px;
+}
+.t20{
+	padding-top: 20px;
+}
+.t201{
+	width:100px;
+}
+.mt20{
+	margin-top:20px;
+}
