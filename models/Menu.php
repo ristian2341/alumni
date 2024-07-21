@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "menu".
@@ -32,15 +34,24 @@ class Menu extends \yii\db\ActiveRecord
         return 'menu';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            BlameableBehavior::className(),
+        ];
+    }
+	
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
+            [['url_menu','nama'],'required'],
             [['id_header', 'level', 'urutan', 'read', 'create', 'update', 'delete', 'created_at', 'updated_at'], 'integer'],
             [['nama'], 'string', 'max' => 150],
-            [['posisi'], 'string', 'max' => 100],
+            [['posisi','url_menu'], 'string', 'max' => 100],
             [['created_by', 'updated_by'], 'string', 'max' => 16],
         ];
     }
@@ -53,10 +64,11 @@ class Menu extends \yii\db\ActiveRecord
         return [
             'id_menu' => 'Id Menu',
             'nama' => 'Nama',
-            'id_header' => 'Id Header',
+            'id_header' => 'Header Menu',
             'level' => 'Level',
+            'url_menu' => 'Url',
             'urutan' => 'Urutan',
-            'posisi' => 'Posisi',
+            // 'posisi' => 'Posisi',
             'read' => 'Read',
             'create' => 'Create',
             'update' => 'Update',
@@ -66,5 +78,10 @@ class Menu extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    public function getHeader()
+    {
+        return $this::find()->where(['id_menu' => $this->id_header])->one();
     }
 }

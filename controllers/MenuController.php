@@ -30,6 +30,7 @@ class MenuController extends Controller
             ]
         );
     }
+    
 
     /**
      * Lists all Menu models.

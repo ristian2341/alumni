@@ -30,7 +30,6 @@ $user = Yii::$app->user;
 // modal setting //
 use app\models\Setting;
 $setting = Setting::find()->where(['id_setting' => 1])->one();
-
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0']);

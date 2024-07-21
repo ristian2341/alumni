@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "menu_user".
@@ -25,13 +27,21 @@ class MenuUser extends \yii\db\ActiveRecord
         return 'menu_user';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            BlameableBehavior::className(),
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id_menu', 'create', 'update', 'read', 'delete'], 'integer'],
+            [['id_menu', 'create', 'update', 'read', 'delete','created_by','updated_by','created_at','updated_at'], 'integer'],
             [['user_id'], 'string', 'max' => 16],
         ];
     }

@@ -13,6 +13,7 @@ use app\models\UploadForm;
 use yii\web\UploadedFile;
 
 use app\models\User;
+use app\models\Menu;
 
 // add modal setting //
 use app\models\Setting;
@@ -72,6 +73,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        /* setting menu user */
+        if(Yii::$app->user->id){
+            if(!Yii::$app->user->identity->developer){
+                $menu = Menu::find()->where(['user_id' => Yii::$app->user->id])->all();
+            }else{
+                $menu = Menu::find()->where(['user_id' => Yii::$app->user->id])->all();
+
+            }
+        }
         return $this->render('index');
     }
 

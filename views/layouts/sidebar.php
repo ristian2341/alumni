@@ -4,9 +4,16 @@
     use yii\bootstrap4\NavBar;
     use yii\bootstrap4\Html;
 
-    $picture = isset(Yii::$app->user->identity->picture) ? Yii::$app->user->identity->picture : ''
+    $picture = isset(Yii::$app->user->identity->picture) ? Yii::$app->user->identity->picture : '';
 
 ?>
+<style>
+    .user{
+        position: absolute;
+        margin-left: -274px;
+        margin-top: -8px;
+    }
+</style>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?= url::To(['/site/index']); ?>" class="brand-link">
@@ -44,11 +51,15 @@
                                 'icon' => 'tachometer-alt',
                                 'badge' => '<span class="right badge badge-info">2</span>',
                                 'items' => [
-                                    ['label' => 'Menu', 'url' => ['menu/index'], 'iconStyle' => 'far'],
+
                                     ['label' => 'Akses User ', 'url' => ['site/about'], 'iconStyle' => 'far'],
                                 ]
                             ],
-                           
+                            [
+                                'label' => 'Menu', 
+                                'url' => ['menu/index'], 
+                                'iconStyle' => 'far'
+                            ]
                         ],
                     ]);
                 }

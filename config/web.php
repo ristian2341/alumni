@@ -74,8 +74,12 @@ $config = [
                     'sourcePath' => 'your-path',
                     'css' => ['css/bootstrap.css', 'path/to/custom.css']
                 ],
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+                ],
             ],
         ],
+        
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

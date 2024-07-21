@@ -418,6 +418,7 @@ input[type="text"].btn-onform ~ .button-action-onform button {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+  border: 1px solid #3a7043;
 }
 .formbox-container input[type="text"] ~ .input-group-addon {
   padding: 3px 12px;
@@ -429,6 +430,7 @@ input[type="text"].btn-onform ~ .button-action-onform button {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+  border: 1px solid #3a7043;
 }
 .formbox-container textarea.form-control {
   padding: 4px 8px;
@@ -436,6 +438,8 @@ input[type="text"].btn-onform ~ .button-action-onform button {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+  border: 1px solid #3a7043;
+
 }
 .formbox-container select.form-control {
   padding: 1px 3px;
@@ -444,6 +448,7 @@ input[type="text"].btn-onform ~ .button-action-onform button {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+  border: 1px solid #3a7043;
 }
 .formbox-container select[readonly] {
   touch-action: none;
@@ -2503,6 +2508,7 @@ input[type="text"] + .hint-text {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+  border: 1px solid #3a7043;
 }
 .popup .popup-form .popup-body input[data-name="number"] {
   padding-right: 20px !important;
@@ -2512,6 +2518,7 @@ input[type="text"] + .hint-text {
   font-size: 13px;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
+  border: 1px solid #3a7043;
   border-radius: 0;
 }
 .popup .popup-form .popup-body select.form-control {
@@ -2519,6 +2526,7 @@ input[type="text"] + .hint-text {
   font-size: 13px;
   height: 27px;
   -webkit-border-radius: 0;
+  border: 1px solid #3a7043;
   -moz-border-radius: 0;
   border-radius: 0;
 }

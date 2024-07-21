@@ -35,7 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id_menu',
             'nama',
-            'id_header',
+            [
+                'attribute' => 'id_header',
+                'label' => 'Header Menu',
+                'value' => function($model){
+                    return !empty($model->getHeader()->nama) ? $model->getHeader()->nama : '';
+                }
+            ],
             'level',
             'urutan',
             //'posisi',
