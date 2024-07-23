@@ -39,11 +39,6 @@ class UserController extends Controller
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
-                    [
-                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user_menu')->delete,
-                        'actions' => ['logout'],
-                        'roles' => ['@'],
-                    ],
                 ],
             ],
             'verbs' => [

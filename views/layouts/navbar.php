@@ -24,12 +24,10 @@
         transform: translate(-50%, -50%);
     }
 
-   
     .navbar-nav > .user-menu > .dropdown-menu > li.user-header {
         height: 170px;
         padding: 10px;
         text-align: center;
-        position: relative;
     }
 
     .pull-right {
@@ -43,7 +41,7 @@
     
 </style>
 <!-- Navbar -->
-<nav class="navbar navbar-dark" style="width: 100%;z-index:9999;">
+<nav class="navbar navbar-dark" style="width: 100%;z-index:9999;top: 0;position: fixed;">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">

@@ -22,9 +22,6 @@ if(empty(Yii::$app->user->identity->full_name)){
     return "index.php?r=site/login";
 }
 
-$user = Yii::$app->user;
-
-
 // $assetDir = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
 
 // modal setting //
@@ -43,7 +40,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <script src="<?= Yii::getAlias('@web/'."js/jquery-3.6.0.min.js"); ?>"></script>
         <?php $this->head() ?>
     </head>
-    <body class="layout-fixed sidebar-collapse">
+    <body class="layout-fixed layout-footer-fixed sidebar-collapse">
     <?php $this->beginBody() ?>
         <div class="wrapper">
             <!-- Navbar -->

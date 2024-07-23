@@ -3,9 +3,41 @@
     use yii\bootstrap4\Nav;
     use yii\bootstrap4\NavBar;
     use yii\bootstrap4\Html;
+    use app\models\MenuUser;
+    use app\models\Menu;
 
     $picture = isset(Yii::$app->user->identity->picture) ? Yii::$app->user->identity->picture : '';
 
+     /* setting menu user */
+     if(Yii::$app->user->id){
+        if(!Yii::$app->user->identity->developer){
+            $menu = MenuUser::find()->where(['user_id' => Yii::$app->user->id,'id_header' => ''])->orWhere("id_header is null")
+                    ->innerJoin('menu','menu_user.id_menu = menu.id_menu')->orderBy('idlevel')->orderBy("urutan")->all();
+        }else{
+            $menu = Menu::find()->where(['id_header' => ''])->orWhere("id_header is null")->orderBy('idlevel')->orderBy("urutan")->all();
+        }
+    }
+    foreach($menu as $key => $val){
+        if(!Yii::$app->user->identity->developer){
+            $menu_detil = MenuUser::find()->where(['user_id' => Yii::$app->user->id,'id_header' => $val->id_menu])->orWhere("id_header is null")
+                    ->innerJoin('menu','menu_user.id_menu = menu.id_menu')->orderBy('idlevel')->orderBy("urutan")->all();
+        }else{
+            $menu_detil = Menu::find()->where(['id_header' => $val->id_menu])->orderBy('idlevel')->orderBy("urutan")->all();
+        }
+        foreach ($menu_detil as $key => $det){
+            $item_detail[''] = ['label' => $det->nama, 'url' => $det->url_menu, 'iconStyle' => 'far'];
+        }
+        $list_header['items']= [
+            'label' => $val->nama,
+            'icon' => 'tachometer-alt',
+            'badge' => '<span class="right badge badge-info">2</span>',
+            'items' => [
+                $item_detail,
+            ]
+        ];
+    }
+
+    // print_r($list_header);die;
 ?>
 <style>
     .user{
@@ -46,20 +78,7 @@
                 if(Yii::$app->user->identity->developer){
                     echo \hail812\adminlte\widgets\Menu::widget([
                         'items' => [
-                            [
-                                'label' => 'Setting',
-                                'icon' => 'tachometer-alt',
-                                'badge' => '<span class="right badge badge-info">2</span>',
-                                'items' => [
-
-                                    ['label' => 'Akses User ', 'url' => ['site/about'], 'iconStyle' => 'far'],
-                                ]
-                            ],
-                            [
-                                'label' => 'Menu', 
-                                'url' => ['menu/index'], 
-                                'iconStyle' => 'far'
-                            ]
+                            $list_header    
                         ],
                     ]);
                 }

@@ -73,15 +73,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        /* setting menu user */
-        if(Yii::$app->user->id){
-            if(!Yii::$app->user->identity->developer){
-                $menu = Menu::find()->where(['user_id' => Yii::$app->user->id])->all();
-            }else{
-                $menu = Menu::find()->where(['user_id' => Yii::$app->user->id])->all();
-
-            }
-        }
         return $this->render('index');
     }
 

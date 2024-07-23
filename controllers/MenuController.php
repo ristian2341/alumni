@@ -7,6 +7,9 @@ use app\models\MenuSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\web\Response;
+
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -18,6 +21,38 @@ class MenuController extends Controller
      */
     public function behaviors()
     {
+            // return [
+            //     'access' => [
+            //         'class' => AccessControl::class,
+            //         'rules' => [
+            //             [
+            //                 'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('menu')->create,
+            //                 'actions' => ['create'],
+            //                 'roles' => ['@'],
+            //             ],
+            //             [
+            //                 'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('menu')->read,
+            //                 'actions' => ['index', 'view'],
+            //                 'roles' => ['@'],
+            //             ],
+            //             [
+            //                 'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('menu')->update,
+            //                 'actions' => ['update'],
+            //                 'roles' => ['@'],
+            //             ],
+            //             [
+            //                 'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('menu')->delete,
+            //                 'roles' => ['@'],
+            //             ],
+            //         ],
+            //     ],
+            //     'verbs' => [
+            //         'class' => VerbFilter::className(),
+            //         'actions' => [
+            //             'delete' => ['POST'],
+            //         ],
+            //     ],
+            // ];
         return array_merge(
             parent::behaviors(),
             [
@@ -41,7 +76,7 @@ class MenuController extends Controller
     {
         $searchModel = new MenuSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+      
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

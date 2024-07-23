@@ -25,9 +25,9 @@ use yii\bootstrap4\Breadcrumbs;
     .container-content {
         padding-left: 20px;
         padding-right: 20px;
-        padding-top : 0px;
+        padding-top : 50px;
         overflow: hidden;
-        margin-top: auto;
+        margin-top: 0px;
     }
 </style>
 <div class="content-wrapper container-content">
