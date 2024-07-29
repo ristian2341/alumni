@@ -25,15 +25,14 @@
             $menu_detil = Menu::find()->where(['id_header' => $val->id_menu])->orderBy('idlevel')->orderBy("urutan")->all();
         }
         foreach ($menu_detil as $key => $det){
-            $item_detail[''] = ['label' => $det->nama, 'url' => $det->url_menu, 'iconStyle' => 'far'];
+            $item_detail[$det->id_header][] = ['label' => $det->nama, 'url' => $det->url_menu, 'iconStyle' => 'far'];
         }
-        $list_header['items']= [
+        $list_header[]= [
+            'id_menu' => $val->id_menu,
             'label' => $val->nama,
             'icon' => 'tachometer-alt',
             'badge' => '<span class="right badge badge-info">2</span>',
-            'items' => [
-                $item_detail,
-            ]
+            'url' => $val->url_menu
         ];
     }
 
@@ -73,18 +72,32 @@
                     </div>
                 </div>
             </div>
-            <?php
-                
-                if(Yii::$app->user->identity->developer){
-                    echo \hail812\adminlte\widgets\Menu::widget([
-                        'items' => [
-                            $list_header    
-                        ],
-                    ]);
-                }
-            ?>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <?php foreach ($list_header as $key => $header){?>
+                <?php if(empty($header['url'])){ ?>
+                    <li class="nav-item has-treeview active menu-close"><a class="nav-link active" href="#"><i class="nav-icon fas fa-dot-circle"></i> <p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
+                        <?php foreach ($item_detail[$header['id_menu']] as $detail){ //print_r($detail);die; ?>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item active"><?= Html::a('<i class="fa fa-dot-circle"></i> '.$detail['label'],[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
+                            </ul>
+                        <?php } ?>
+                    </li>
+                <?php }elseif($header['url'] == "#"){ ?>
+                    <li class="nav-item has-treeview active menu-close"><a class="nav-link active" href="#"><i class="nav-icon fas fa-dot-circle"></i><p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
+                        <?php foreach ($item_detail[$header['id_menu']] as $detail){ ?>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item"><?= Html::a('<i class="fa fa-dot-circle"></i> '.$detail['label'],[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
+                            </ul>
+                        <?php } ?>
+                    </li>
+            <?php    } } ?>
+                <li class="nav-item"><?= Html::a('<i class="fa fa-dot-circle"></i> Menu',['menu/index'], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
         </nav>
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
 </aside>
+
+<script>
+    $(".nav-link").
+</script>
