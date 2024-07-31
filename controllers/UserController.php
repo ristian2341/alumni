@@ -102,10 +102,8 @@ class UserController extends Controller
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'user_id' => $model->user_id]);
             }
-        } else {
-            $model->loadDefaultValues();
-        }
-
+        } 
+        
         return $this->render('create', [
             'model' => $model,
         ]);

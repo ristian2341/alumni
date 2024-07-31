@@ -25,13 +25,14 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
+            // 'allowAutoLogin'=>true,
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
         ],
         'session' => [
             'class' => 'yii\web\Session',
             'cookieParams' => ['httponly' => true, 'lifetime' => 3600*4],
-            'timeout' => 3600*4, //session expire 4 hours
+            'timeout' => 3600*8, //session expire 4 hours
             'useCookies' => true,
         ],
         'errorHandler' => [
