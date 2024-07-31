@@ -6,6 +6,9 @@ use Yii;
 use app\models\MenuUser;
 use yii\web\UploadedFile;
 
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
+
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     // public $id;
@@ -19,22 +22,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public $password_type;
     public $file;
 
-/*     private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ]; */
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            BlameableBehavior::className(),
+        ];
+    }
 
     /// dari table users ///
     /**
@@ -208,5 +203,29 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         }
 
         return $result;
+    }
+
+    public function getUserId()
+    {
+        $sDate = date('Ymd');
+        $count = $this->find()->where(['like','user_id',$sDate])->count();
+        $n = 0;
+        if($count > 0){
+            $model = $this->find()->where(['like','user_id',$sDate])->orderBy(['user_id' => SORT_DESC])->one();
+            $n = (int)substr($model->code, -5);
+        }
+        return (string) $sDate.sprintf('%05s', ($n +1));
+    }
+
+    public function getCreated()
+    {
+        $username = $this::find()->select(['username'])->where(['user_id' => $this->created_by])->column();
+        return $username[0];
+    }
+
+    public function getUpdated()
+    {
+        $username = $this::find()->select(['username'])->where(['user_id' => $this->created_by])->column();
+        return $username[0];
     }
 }

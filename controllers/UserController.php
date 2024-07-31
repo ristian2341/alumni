@@ -97,10 +97,28 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-
+        $message = "";
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'user_id' => $model->user_id]);
+            $conn = Yii::$app->db;
+            $transaction = $conn->beginTransaction();
+            try {
+                if ($model->load($this->request->post())){
+                    $model->user_id = $model->getUserId();
+                    if(!$model->save()){
+                        foreach($model->errors as $error=>$value)
+                        {
+                            $message .= $value[0];
+                        }
+                        Yii::$app->session->setFlash('error',$message); 
+                        $transaction->rollBack();
+                    }else{
+                        $transaction->commit();
+                        return $this->redirect(['view', 'user_id' => $model->user_id]);
+                    }
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error',$e->message()); 
             }
         } 
         

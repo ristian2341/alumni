@@ -12,26 +12,18 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="menu-view">
-
-    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
     <div class="row">
-        <div class="col-sm-6">
-            <p class="text-left">
-                <?= Html::a('Create', ['create'], ['class' => 'btn btn-sm btn-success']) ?>
-            </p>
-        </div>
-        <div class="col-sm-6">
-            <p class="text-right">
-                <?= Html::a('Update', ['update', 'id_menu' => $model->id_menu], ['class' => 'btn btn-sm btn-primary']) ?>
-                <?= Html::a('Delete', ['delete', 'id_menu' => $model->id_menu], [
-                    'class' => 'btn btn-sm btn-danger',
-                    'data' => [
-                        'confirm' => 'Are you sure you want to delete this item?',
-                        'method' => 'post',
-                    ],
-                ]) ?>
-            </p>
-        </div>
+        <p class="text-left">
+            <?= Html::a('Create', ['create'], ['class' => 'btn btn-sm btn-success']) ?>
+            <?= Html::a('Update', ['update', 'id_menu' => $model->id_menu], ['class' => 'btn btn-sm btn-primary']) ?>
+            <?= Html::a('Delete', ['delete', 'id_menu' => $model->id_menu], [
+                'class' => 'btn btn-sm btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </p>
     </div>
 
     <?= DetailView::widget([

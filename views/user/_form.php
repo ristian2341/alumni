@@ -11,12 +11,12 @@ use yii\widgets\ActiveForm;
 <div class="user-form">
     <?php $form = ActiveForm::begin(); ?>
         <div class="row">
-            <div class="col-sm-6">
-                <?= $form->field($model, 'full_name')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'type_akun')->textInput(['maxlength' => true]) ?>
-                <?= $form->field($model, 'approval')->textInput() ?>
-                <?= $form->field($model, 'admin')->textInput() ?>
+            <div class="col-sm-4">
+                <?= $form->field($model, 'full_name')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
+                <?= $form->field($model, 'email')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
+                <?= $form->field($model, 'type_akun')->textInput(['maxlength' => true,'autocomplete' => 'off','readonly' => true, 'value' => 'user']) ?>
+                <?= $form->field($model, 'approval')->checkBox() ?>
+                <?= $form->field($model, 'admin')->checkBox() ?>
             </div>
         </div>
     

@@ -60,7 +60,7 @@ use yii\bootstrap4\Breadcrumbs;
     </section>
     <section class="content">
         <div class="formbox-container">
-
+            <?= Alert::widget() ?>
                 <!-- Main content -->
                 <div class="content">
                     <?= $content ?><!-- /.container-fluid -->
