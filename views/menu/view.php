@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'level',
             'urutan',
-            // 'posisi',
+            'url_menu',
             [
                 'attribute' =>  'read',
                 'value' => function($model){

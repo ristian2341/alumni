@@ -25,19 +25,24 @@ class UserController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user_menu')->create,
+                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->create,
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user_menu')->read,
-                        'actions' => ['index', 'view'],
+                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->read,
+                        'actions' => ['index', 'view','send-register'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user_menu')->update,
+                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->update,
                         'actions' => ['update'],
                         'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['register'],
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -177,5 +182,10 @@ class UserController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    public function actionSendRegister($user_id)
+    {
+        $model = $this->findModel($user_id);
 
+        print_r($model);die;
+    }
 }

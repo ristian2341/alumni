@@ -74,7 +74,7 @@
                 </div>
             </div>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <?php foreach ($list_header as $key => $header){?>
+            <?php foreach ($list_header as $key => $header){ ?>
                 <?php if(empty($header['url'])){ ?>
                     <li class="nav-item has-treeview active menu-close"><a class="nav-link" href="#"><i class="nav-icon fas fa-dot-circle"></i><p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
                         <?php foreach ($item_detail[$header['id_menu']] as $detail){ ?>
@@ -91,8 +91,10 @@
                             </ul>
                         <?php } ?>
                     </li>
+                <?php }elseif(!empty($header['url']) && $header['url'] != "#"){ ?>
+                        <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$header['label'].'</p>',[$header['url']], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
             <?php    
-                    } 
+                    }
                 } ?>
                 <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>Menu</p>',['menu/index'], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
             </ul>

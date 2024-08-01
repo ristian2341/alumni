@@ -2,11 +2,14 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Setting;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 /**
  * SettingController implements the CRUD actions for Setting model.
@@ -38,23 +41,29 @@ class SettingController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Setting::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id_setting' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => Setting::find(),
+        //     /*
+        //     'pagination' => [
+        //         'pageSize' => 50
+        //     ],
+        //     'sort' => [
+        //         'defaultOrder' => [
+        //             'id_setting' => SORT_DESC,
+        //         ]
+        //     ],
+        //     */
+        // ]);
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        // return $this->render('index', [
+        //     'dataProvider' => $dataProvider,
+        // ]);
+
+        return $this->redirect(['setting/update','id_setting' => 1]);
+        // $model = $this->findModel(1);
+        // return $this->render('update', [
+        //     'model' => $model,
+        // ]);
     }
 
     /**
@@ -78,7 +87,6 @@ class SettingController extends Controller
     public function actionCreate()
     {
         $model = new Setting();
-
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id_setting' => $model->id_setting]);
@@ -102,9 +110,22 @@ class SettingController extends Controller
     public function actionUpdate($id_setting)
     {
         $model = $this->findModel($id_setting);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_setting' => $model->id_setting]);
+        
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->file_logo = UploadedFile::getInstance($model, 'file_logo');
+            $model->file_background = UploadedFile::getInstance($model, 'file_background');
+            if(!empty($model->file_logo)){
+                $model->file_logo->saveAs('img/' . $model->file_logo->baseName . '.' . $model->file_logo->extension);
+                $model->logo = 'img/' . $model->file_logo->baseName . '.' . $model->file_logo->extension;
+            }
+            
+            if(!empty($model->file_background)){
+                $model->file_background->saveAs('img/' . $model->file_background->baseName . '.' . $model->file_background->extension);
+                $model->background = 'img/' . $model->file_background->baseName . '.' . $model->file_background->extension;
+            }
+            if($model->save()){
+                Yii::$app->session->setFlash('success','Update Setting Aplikasi Success'); 
+            }
         }
 
         return $this->render('update', [

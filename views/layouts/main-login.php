@@ -40,10 +40,11 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 			border-radius: 0.25rem;
 			transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 		}
+		
 	</style>
 	<body>
 	<?php $this->beginBody(['class' => 'login']) ?>
-	<div class="login-wrapper">
+	<div class="login-wrapper" >
 		<div class="login-container">
 			<div class="col-sm-12" style="text-align: center;">
 				<img src="<?= isset($setting->logo) ? Url::base()."/".$setting->logo : ''?>" class="brand-image img-circle elevation-3" style="width: 150px;height: 150px;border: 1px;" alt="logo">

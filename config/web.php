@@ -15,8 +15,8 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'tR0ahLBQjMqm9fp-iTDlbQevts7AvH9O',
-            'enableCookieValidation' => false,
-            'enableCsrfValidation' => false,
+            'enableCookieValidation' => true,
+            'enableCsrfValidation' => true,
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -31,6 +31,7 @@ $config = [
         ],
         'session' => [
             'class' => 'yii\web\Session',
+            // 'class' => 'yii\web\DbSession', 
             'cookieParams' => ['httponly' => true, 'lifetime' => 3600*4],
             'timeout' => 3600*8, //session expire 4 hours
             'useCookies' => true,
