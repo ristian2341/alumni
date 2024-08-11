@@ -2,6 +2,11 @@
 /* @var $content string */
 use app\widgets\Alert;
 use yii\bootstrap4\Breadcrumbs;
+
+if(empty(Yii::$app->user->identity)){
+    return "index.php?r=site/login";
+}
+
 ?>
 <style>
     .formbox-container {

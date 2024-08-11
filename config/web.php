@@ -28,6 +28,10 @@ $config = [
             // 'allowAutoLogin'=>true,
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => false,
+            'loginUrl' => ['site/login'],
+        ],
+        'setting' => [
+            'class' => 'app\models\Setting',
         ],
         'session' => [
             'class' => 'yii\web\Session',

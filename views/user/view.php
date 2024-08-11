@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'created_at',
-                'value' => !empty($model->updated_at) ? date('d M Y',strtotime($model->updated_at)) : '',
+                'value' => !empty($model->created_at) ? date('d M Y',strtotime($model->created_at)) : '',
             ],
             [
                 'attribute' =>   'created_by',

@@ -61,4 +61,9 @@ class Setting extends \yii\db\ActiveRecord
             'password_email' => 'Password Email',
         ];
     }
+
+    public function getSetting()
+    {
+        return $this::find()->one();
+    }
 }

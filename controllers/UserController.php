@@ -25,17 +25,17 @@ class UserController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->create,
+                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->create)),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->read,
+                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->read)),
                         'actions' => ['index', 'view','send-register'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->update,
+                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->update)),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
@@ -185,7 +185,6 @@ class UserController extends Controller
     public function actionSendRegister($user_id)
     {
         $model = $this->findModel($user_id);
-
         print_r($model);die;
     }
 }

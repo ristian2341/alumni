@@ -17,7 +17,7 @@ AppAsset::register($this);
 \hail812\adminlte3\assets\FontAwesomeAsset::register($this);
 \hail812\adminlte3\assets\AdminLteAsset::register($this);
 
-if(empty(Yii::$app->user->identity->full_name)){
+if(empty(Yii::$app->user->identity)){
     return "index.php?r=site/login";
 }
 

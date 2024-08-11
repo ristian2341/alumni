@@ -79,7 +79,7 @@
                     <li class="nav-item has-treeview active menu-close"><a class="nav-link" href="#"><i class="nav-icon fas fa-dot-circle"></i><p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
                         <?php foreach ($item_detail[$header['id_menu']] as $detail){ ?>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$detail['label']."</p>",[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
+                                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$detail['label']."</p>",[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
                             </ul>
                         <?php } ?>
                     </li>
@@ -87,19 +87,25 @@
                     <li class="nav-item has-treeview active menu-close"><a class="nav-link" href="#"><i class="nav-icon fas fa-dot-circle"></i><p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
                         <?php foreach ($item_detail[$header['id_menu']] as $detail){ ?>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$detail['label'].'</p>',[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
+                                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$detail['label'].'</p>',[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
                             </ul>
                         <?php } ?>
                     </li>
                 <?php }elseif(!empty($header['url']) && $header['url'] != "#"){ ?>
-                        <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$header['label'].'</p>',[$header['url']], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
+                        <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$header['label'].'</p>',[$header['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
             <?php    
                     }
                 } ?>
-                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>Menu</p>',['menu/index'], ['data-method' => 'post', 'class' => 'nav-link']) ?></li>
+                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>Menu</p>',['menu/index'], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
 </aside>
+
+<script>
+    $("body").off("click",".on_click").on("click",".on_click",function(){
+        
+    });
+</script>
