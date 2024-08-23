@@ -1,0 +1,2 @@
+INSERT INTO test_db.perusahaan (id_perusahaan,nama,alamat,kota,propinsi,email,phone,pic1,phone_pic1,email_pic1,pic2,phone_pic2,email_pic2,created_at,created_by,updated_at,updated_by) VALUES
+	 ('2024080600001','KSP Gadel Jaya','Jln. Gadel Jaya No. 32 Tandes ','Surabaya','Jawa Timur','gadel.jaya@gmail.com','031-82930092','Rony','08932831233','rony.gadeljaya@gmail.com','agus','0821233830','agus.gadeljaya@gmail.com',1722931689,'2024061800001',1722932000,'2024061800001');
