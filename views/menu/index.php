@@ -27,6 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager' => [
+            'class' => 'yii\bootstrap4\LinkPager',
+            'firstPageLabel' => 'First',
+            'lastPageLabel'  => 'Last'
+        ],
         'options' => [
             'class' => 'table-responsive',
             'style' => 'font-size: 14px;max-height: 500px;'

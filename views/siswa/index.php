@@ -5,38 +5,56 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\bootstrap4\Modal;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var app\models\SiswaSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Siswas');
+$this->title = Yii::t('app', 'Siswa ');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+    .modal{
+        top: 60px;
+    }
+</style>
 <div class="siswa-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Siswa'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <div class="row">
+        <div class="card-header">
+            <h5>View</h5>
+        </div>
+    </div>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager' => [
+            'class' => 'yii\bootstrap4\LinkPager',
+            'firstPageLabel' => 'First',
+            'lastPageLabel'  => 'Last'
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'code',
-            'nipd',
+            // 'nipd',
             'nisn',
             'nik',
             'nama',
-            //'jen_kelamin',
-            //'tempat_lahir',
-            //'tgl_lahir',
+            [
+                'attribute' => 'jen_kelamin',
+                'filter' => ['L' => 'Laki - Laki','P' => 'Perempuan'],
+                'value' => function($model){
+                    return ($model->jen_kelamin == 'L') ?  'Laki-Laki' : 'Perempuan';
+                }
+            ],
+            // 'tempat_lahir',
+            // 'tgl_lahir',
             //'alamat',
             //'rt',
             //'rw',
@@ -98,13 +116,92 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_at',
             //'updated_by',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Siswa $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'code' => $model->code]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete} ',
+                'buttons' => [
+                    'view' => function($url, $model){
+                        return HTML::a("<span class='fas fa-eye'></span>", Url::toRoute(['view', 'code' => $model->code]),[
+                            'class' => 'btn btn-info btn-xs',
+                        ]);
+                    },
+                    'update' => function($url, $model){
+                        if(Yii::$app->user->identity->developer){
+                            return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'code' => $model->code]), [
+                                'class' => 'btn btn-warning btn-xs',
+                                'title' => 'Update',
+                            ]);
+                        }
+                    },
+                    'delete' => function($url, $model){
+                        if(Yii::$app->user->identity->developer){
+                            return Html::a("<span class='fas fa-trash'></span>", '#', [
+                                'class' => 'btn btn-danger btn-xs',
+                                'onclick' => "
+                                if (confirm('Are you sure ?')) {
+                                    $.ajax('".Url::toRoute(['delete', 'code' => $model->code])."', {
+                                        type: 'POST'
+                                    }).done(function(data) {
+                                        $.pjax.reload({container: '#list_bast_checkin'});
+                                    });
+                                }
+                                return false;
+                                ",
+                            ]);
+                        }
+                    },
+                ],
+                'contentOptions'=> [
+                    'style'=>'width: 150px'
+                ],
             ],
         ],
     ]); ?>
-
-
 </div>
+
+
+<!-- MODAL Detail -->
+<?php Modal::begin([
+        'title' => 'Upload Data Siswa (File Excel)',
+		'options' => [
+			'id' => 'modal_upload',
+			'tabindex' => false
+		],
+	]);
+?>
+    <?php $form = ActiveForm::begin(['id' => 'file-upload-form', 'options' => ['enctype' => 'multipart/form-data']]) ?>
+        <div class="modal-body">
+            <input type="file" id="file_excel" name="file_upload" accept="text/plain, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+        </div>
+        <div class="text-right">
+            <button type="button" class="btn btn-default btn-sm btn-flat" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success btn-sm btn-flat" id="btn-save">Upload</button>
+        </div>
+    <?php ActiveForm::end(); ?>
+<?php  Modal::end(); ?>
+
+<script>
+    $("body").off("click","#btn-upload").on("click","#btn-upload",function(){
+        $("#file_excel").val('');
+        $("#modal_upload").modal("show");
+    }); 
+
+    $("body").off("click","#btn-save").on("click","#btn-save",function(){
+        var formdata = new FormData($("#file-upload-form")[0]);
+        console.log(formdata);
+        $.ajax({
+            url: "<?= Url::to(['import-excel'])?>",
+            dataType: "json",
+            type: "post",
+            data: formdata,
+            contentType: false, // Not to set any content header
+            processData: false, // Not to process data
+            success: function (result) {
+                alert(result.data['message']);
+            },
+            error: function (xhr, status, error) {
+                alert(status);
+            }
+        });
+
+    });
+</script>

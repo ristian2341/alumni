@@ -11,14 +11,29 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Siswas'), 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="siswa-view">
+<style>
+   
+    legend {
+        background-color: gray;
+        color: white;
+        padding: 2px 4px;
+    }
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    input {
+        margin: 5px;
+    }
+
+    th, td {
+        font-size: 14px;
+    }
+</style>
+<div class="siswa-view">
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'code' => $model->code], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Update'), ['update', 'code' => $model->code], ['class' => 'btn btn-sm btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'code' => $model->code], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-sm btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
@@ -26,78 +41,177 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'code',
-            'nipd',
-            'nisn',
-            'nik',
-            'nama',
-            'jen_kelamin',
-            'tempat_lahir',
-            'tgl_lahir',
-            'alamat',
-            'rt',
-            'rw',
-            'dusun',
-            'kelurahan',
-            'kecamatan',
-            'kabupaten',
-            'kode_pos',
-            'jenis_tinggal',
-            'alat_transportasi',
-            'phone',
-            'handphone',
-            'email:email',
-            'skhun',
-            'no_kps',
-            'nama_ayah',
-            'tgl_lahir_ayah',
-            'pendidikan_ayah',
-            'pekerjaan_ayah',
-            'penghasilan_ayah',
-            'nik_ayah',
-            'nama_ibu',
-            'tgl_lahir_ibu',
-            'pendidikan_ibu',
-            'pekerjaan_ibu',
-            'penghasilan_ibu',
-            'nik_ibu',
-            'nama_wali',
-            'tgl_lahir_wali',
-            'pendidikan_wali',
-            'pekerjaan_wali',
-            'penghasilan_wali',
-            'nik_wali',
-            'rombel_now',
-            'no_peserta_ujian',
-            'no_seri_ijazah',
-            'nomor_kip',
-            'nama_di_kip',
-            'nomor_kks',
-            'no_akta_lahir',
-            'bank',
-            'no_rekening_bank',
-            'atas_nama_rekening',
-            'layak_pip',
-            'alasan_layak_pip:ntext',
-            'kebutuhan_khusus',
-            'sekolah_asal',
-            'anak_keberapa',
-            'lintang',
-            'bujur',
-            'no_kk',
-            'berat_badan',
-            'tinggi_badan',
-            'lingkar_kepala',
-            'jml_saudara',
-            'jarak_rumah',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
-        ],
-    ]) ?>
-
+    <fieldset>
+        <legend>Data Siswa</legend>
+        <div class="row">
+            <div class="col-sm-6">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        // 'code',
+                        'nik',
+                        'nama',
+                        [
+                            'attribute' => 'jen_kelamin',
+                            'value' => ($model->jen_kelamin == 'L') ? 'Laki-Laki' : 'Perempuan',
+                        ],
+                        'tempat_lahir',
+                        [
+                            'attribute' => 'tgl_lahir',
+                            'value' => isset($model->tgl_lahir) ? date('d/m/Y',strtotime($model->tgl_lahir)) : "",
+                        ],
+                        'phone',
+                        'handphone',
+                        'email:email',
+                        'no_akta_lahir',
+                    ],
+                ]) ?>
+            </div>
+            <div class="col-sm-6">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'alamat',
+                        [
+                            'label' => 'RT / RW',
+                            'value' => (!empty($model->rt) ? $model->rt : '') ." / ". (!empty($model->rw) ? $model->rw : ''),
+                        ],
+                        'dusun',
+                        'kelurahan',
+                        'kecamatan',
+                        // 'kabupaten',
+                        'kode_pos',
+                        'jenis_tinggal',
+                        'alat_transportasi',
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Data Siswa</legend>
+        <div class="row">
+            <div class="col-sm-6">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'nisn',
+                        'nipd',
+                        'skhun',
+                        'no_kps',
+                        'no_peserta_ujian',
+                        'no_seri_ijazah',
+                    ],
+                ]) ?>
+            </div>
+            <div class="col-sm-6">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'rombel_now',
+                        'nomor_kip',
+                        'nama_di_kip',
+                        'nomor_kks',
+                        'layak_pip',
+                        'alasan_layak_pip:ntext',
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Data Wali</legend>
+        <div class="row">
+            <div class="col-sm-4">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'nik_ayah',
+                        'nama_ayah',
+                        'tgl_lahir_ayah',
+                        'pendidikan_ayah',
+                        'pekerjaan_ayah',
+                        'penghasilan_ayah',
+                    ],
+                ]) ?>
+            </div>
+            <div class="col-sm-4">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'nik_ibu',
+                        'nama_ibu',
+                        'tgl_lahir_ibu',
+                        'pendidikan_ibu',
+                        'pekerjaan_ibu',
+                        'penghasilan_ibu',
+                    ],
+                ]) ?>
+            </div>
+            <div class="col-sm-4">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'nik_wali',
+                        'nama_wali',
+                        'tgl_lahir_wali',
+                        'pendidikan_wali',
+                        'pekerjaan_wali',
+                        'penghasilan_wali',
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Data Bank Siswa</legend>
+        <div class="row">
+            <div class="col-sm-6">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'bank',
+                        'no_rekening_bank',
+                        'atas_nama_rekening',
+                    ],
+                ]) ?>
+            </div>
+            <div class="col-sm-6">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'rombel_now',
+                        'nomor_kip',
+                        'nama_di_kip',
+                        'nomor_kks',
+                        'layak_pip',
+                        'alasan_layak_pip:ntext',
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Data Siswa</legend>
+        <div class="row">
+            <div class="col-sm-6">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                       'kebutuhan_khusus',
+                        'sekolah_asal',
+                        'anak_keberapa',
+                        'lintang',
+                        'bujur',
+                        'no_kk',
+                        'berat_badan',
+                        'tinggi_badan',
+                        'lingkar_kepala',
+                        'jml_saudara',
+                        'jarak_rumah',
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </fieldset>
 </div>

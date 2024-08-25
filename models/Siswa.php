@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
+use app\models\User;
 
 /**
  * This is the model class for table "siswa".
@@ -74,6 +77,8 @@ use Yii;
  */
 class Siswa extends \yii\db\ActiveRecord
 {
+    public $file_upload;
+
     /**
      * {@inheritdoc}
      */
@@ -82,24 +87,33 @@ class Siswa extends \yii\db\ActiveRecord
         return 'siswa';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            BlameableBehavior::className(),
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['tgl_lahir', 'tgl_lahir_ayah', 'tgl_lahir_ibu', 'tgl_lahir_wali'], 'safe'],
-            [['skhun', 'nama_di_kip', 'layak_pip', 'kebutuhan_khusus', 'anak_keberapa', 'lintang', 'bujur', 'berat_badan', 'tinggi_badan', 'lingkar_kepala', 'jml_saudara', 'jarak_rumah','created_at','updated_at'], 'integer'],
+            [['tgl_lahir','lintang','bujur'], 'safe'],
+            [['skhun', 'nama_di_kip', 'anak_keberapa','berat_badan', 'tinggi_badan', 'lingkar_kepala', 'jml_saudara', 'jarak_rumah','created_at','updated_at','tgl_lahir_ayah','tgl_lahir_ibu', 'tgl_lahir_wali'], 'integer'],
             [['alasan_layak_pip'], 'string'],
             [['nipd', 'nisn', 'nik','created_by','updated_by'], 'string', 'max' => 16],
             [['nama', 'alamat', 'sekolah_asal'], 'string', 'max' => 150],
             [['jen_kelamin'], 'string', 'max' => 1],
-            [['tempat_lahir', 'dusun', 'kelurahan', 'kecamatan', 'kabupaten', 'jenis_tinggal', 'alat_transportasi', 'email', 'nama_ayah', 'pendidikan_ayah', 'pekerjaan_ayah', 'penghasilan_ayah', 'nik_ayah', 'nama_ibu', 'pendidikan_ibu', 'pekerjaan_ibu', 'penghasilan_ibu', 'nik_ibu', 'nama_wali', 'pendidikan_wali', 'pekerjaan_wali', 'penghasilan_wali', 'nik_wali', 'rombel_now', 'no_peserta_ujian', 'no_seri_ijazah', 'nomor_kip', 'nomor_kks', 'no_akta_lahir', 'bank', 'no_rekening_bank', 'atas_nama_rekening'], 'string', 'max' => 100],
+            [['tempat_lahir', 'dusun', 'kelurahan', 'kecamatan', 'kabupaten', 'jenis_tinggal', 'alat_transportasi', 'email', 'nama_ayah', 'pendidikan_ayah', 'pekerjaan_ayah', 'penghasilan_ayah', 'nik_ayah', 'nama_ibu', 'pendidikan_ibu', 'pekerjaan_ibu', 'penghasilan_ibu', 'nik_ibu', 'nama_wali', 'pendidikan_wali', 'pekerjaan_wali', 'penghasilan_wali', 'nik_wali', 'rombel_now', 'no_peserta_ujian', 'no_seri_ijazah', 'nomor_kip', 'nomor_kks', 'no_akta_lahir', 'bank', 'no_rekening_bank', 'atas_nama_rekening','kebutuhan_khusus'], 'string', 'max' => 100],
             [['rt', 'rw'], 'string', 'max' => 5],
             [['kode_pos'], 'string', 'max' => 10],
             [['phone', 'handphone'], 'string', 'max' => 15],
             [['no_kps'], 'string', 'max' => 50],
-            [['no_kk'], 'string', 'max' => 20],
+            [['no_kk', 'layak_pip'], 'string', 'max' => 20],
+            [['file_upload'], 'file','maxFiles' => 1],
         ];
     }
 
@@ -123,7 +137,7 @@ class Siswa extends \yii\db\ActiveRecord
             'dusun' => 'Dusun',
             'kelurahan' => 'Kelurahan',
             'kecamatan' => 'Kecamatan',
-            'kabupaten' => 'Kabupaten',
+            'kabupaten' => 'Kabupaten / Kota',
             'kode_pos' => 'Kode Pos',
             'jenis_tinggal' => 'Jenis Tinggal',
             'alat_transportasi' => 'Alat Transportasi',
@@ -133,19 +147,19 @@ class Siswa extends \yii\db\ActiveRecord
             'skhun' => 'Skhun',
             'no_kps' => 'No Kps',
             'nama_ayah' => 'Nama Ayah',
-            'tgl_lahir_ayah' => 'Tgl Lahir Ayah',
+            'tgl_lahir_ayah' => 'Tahun Lahir Ayah',
             'pendidikan_ayah' => 'Pendidikan Ayah',
             'pekerjaan_ayah' => 'Pekerjaan Ayah',
             'penghasilan_ayah' => 'Penghasilan Ayah',
             'nik_ayah' => 'Nik Ayah',
             'nama_ibu' => 'Nama Ibu',
-            'tgl_lahir_ibu' => 'Tgl Lahir Ibu',
+            'tgl_lahir_ibu' => 'Tahun Lahir Ibu',
             'pendidikan_ibu' => 'Pendidikan Ibu',
             'pekerjaan_ibu' => 'Pekerjaan Ibu',
             'penghasilan_ibu' => 'Penghasilan Ibu',
             'nik_ibu' => 'Nik Ibu',
             'nama_wali' => 'Nama Wali',
-            'tgl_lahir_wali' => 'Tgl Lahir Wali',
+            'tgl_lahir_wali' => 'Tahun Lahir Wali',
             'pendidikan_wali' => 'Pendidikan Wali',
             'pekerjaan_wali' => 'Pekerjaan Wali',
             'penghasilan_wali' => 'Penghasilan Wali',
@@ -178,5 +192,29 @@ class Siswa extends \yii\db\ActiveRecord
             'updated_at' => 'Tgl Ubah',
             'updated_by' => 'Diubah Oleh',
         ];
+    }
+
+    public function getCreated()
+    {
+        $username = User::find()->select(['full_name'])->where(['user_id' => $this->created_by])->column();
+        return $username[0];
+    }
+
+    public function getUpdated()
+    {
+        $username = User::find()->select(['full_name'])->where(['user_id' => $this->created_by])->column();
+        return $username[0];
+    }
+
+    public function getCode()
+    {
+        $sDate = date('Ymd');
+        $count = $this->find()->where(['like','code',$sDate])->count();
+        $n = 0;
+        if($count > 0){
+            $model = $this->find()->where(['like','code',$sDate])->orderBy(['code' => SORT_DESC])->one();
+            $n = (int)substr($model->code, -5);
+        }
+        return (string) $sDate.sprintf('%05s', ($n +1));
     }
 }

@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\MenuUser;
 use app\models\MenuUserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * MenuUserController implements the CRUD actions for MenuUser model.
@@ -23,22 +25,22 @@ class MenuUserController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('menu')->create),
+                        'allow' => isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('hak_akses_user')->create),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('menu')->read),
+                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('hak_akses_user')->read),
                         'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('menu')->update),
+                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('hak_akses_user')->update),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('menu')->delete),
+                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('hak_akses_user')->delete),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],
