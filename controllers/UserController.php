@@ -25,18 +25,23 @@ class UserController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->create)),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('user')->create),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->read)),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('user')->read),
                         'actions' => ['index', 'view','send-register'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('user')->update)),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('user')->update),
                         'actions' => ['update'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('user')->delete),
+                        'actions' => ['delete'],
                         'roles' => ['@'],
                     ],
                     [
@@ -89,8 +94,10 @@ class UserController extends Controller
      */
     public function actionView($user_id)
     {
+        $model = $this->findModel($user_id);
+    
         return $this->render('view', [
-            'model' => $this->findModel($user_id),
+            'model' => $model,
         ]);
     }
 
@@ -109,6 +116,7 @@ class UserController extends Controller
             try {
                 if ($model->load($this->request->post())){
                     $model->user_id = $model->getUserId();
+                    $model->password = Yii::$app->getSecurity()->generatePasswordHash($model->password_new);
                     if(!$model->save()){
                         foreach($model->errors as $error=>$value)
                         {
@@ -143,10 +151,34 @@ class UserController extends Controller
     {
         $model = $this->findModel($user_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'user_id' => $model->user_id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $conn = Yii::$app->db;
+            $transaction = $conn->beginTransaction();
+            try {
+                if ($model->load($this->request->post())){
+                    if(!empty($model->password_new)){
+                        $model->password = Yii::$app->getSecurity()->generatePasswordHash($model->password_new);
+                    }
+                
+                    if(!$model->save()){
+                        foreach($model->errors as $error=>$value)
+                        {
+                            $message .= $value[0];
+                        }
+                        Yii::$app->session->setFlash('error',$message); 
+                        $transaction->rollBack();
+                    }else{
+                        $transaction->commit();
+                        return $this->redirect(['view', 'user_id' => $model->user_id]);
+                    }
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error',$e->message()); 
+            }
         }
 
+        $model->password = "";
         return $this->render('update', [
             'model' => $model,
         ]);

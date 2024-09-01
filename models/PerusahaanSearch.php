@@ -18,7 +18,7 @@ class PerusahaanSearch extends Perusahaan
     {
         return [
             [['id_perusahaan', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['nama', 'alamat', 'kota', 'propinsi', 'email', 'phone', 'pic1', 'phone_pic1', 'email_pic1', 'pic2', 'phone_pic2', 'email_pic2'], 'safe'],
+            [['nama', 'alamat', 'kota', 'propinsi', 'email', 'phone', 'pic1', 'phone_pic1', 'email_pic1', 'pic2', 'phone_pic2', 'email_pic2','jabatan'], 'safe'],
         ];
     }
 
@@ -78,8 +78,7 @@ class PerusahaanSearch extends Perusahaan
             ->andFilterWhere(['like', 'phone_pic1', $this->phone_pic1])
             ->andFilterWhere(['like', 'email_pic1', $this->email_pic1])
             ->andFilterWhere(['like', 'pic2', $this->pic2])
-            ->andFilterWhere(['like', 'phone_pic2', $this->phone_pic2])
-            ->andFilterWhere(['like', 'email_pic2', $this->email_pic2]);
+            ->andFilterWhere(['like', 'phone_pic2', $this->phone_pic2]);
 
         return $dataProvider;
     }

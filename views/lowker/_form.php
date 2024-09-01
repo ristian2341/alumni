@@ -95,6 +95,7 @@ $this->registerJs(
                                 'options' => [
                                     'placeholder' => 'Tanggal Post...',
                                     'value' => date('d/m/Y'),
+                                    'autocomplete' => 'off'
                                 ],
                                 'pluginOptions' => [
                                     'autoclose' => true
@@ -107,6 +108,7 @@ $this->registerJs(
                                 'options' => [
                                     'placeholder' => 'Tgl Akhir Lowker...',
                                     'value' => date('d/m/Y',strtotime("+1 month",strtotime(date('Y-m-d')))),
+                                    'autocomplete' => 'off'
                                 ],
                                 'pluginOptions' => [
                                     'autoclose' => true
@@ -116,8 +118,11 @@ $this->registerJs(
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <?= $form->field($model, 'lowongan')->textInput(['maxlength' => true]) ?>
+                    <div class="col-sm-6">
+                        <?= $form->field($model, 'lowongan')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
+                    </div>
+                    <div class="col-sm-6">
+                        <?= $form->field($model, 'jabatan')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
                     </div>
                 </div>
                 <div class="row">
@@ -143,40 +148,40 @@ $this->registerJs(
                                     ],
                                 ]); ?>  
                         <?php else: ?>
-                            <?= $form->field($model, 'id_perusahaan')->textInput(['maxlength' => true,'readOnly' => true]); ?>
+                            <?= $form->field($model, 'id_perusahaan')->textInput(['maxlength' => true,'readOnly' => true,'autocomplete' => 'off']); ?>
                         <?php endif; ?>    
                     </div>
                     <div class="col-sm-8">
-                        <?= $form->field($model, 'nama_perusahaan')->textInput(['maxlength' => true]) ?>
-                    </div>
-                    <div class="col-sm-6">
-                        <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-                    </div>
-                    <div class="col-sm-6">
-                        <?= $form->field($model, 'kontak')->textInput(['maxlength' => true]) ?> 
+                        <?= $form->field($model, 'nama_perusahaan')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-12">
-                        <?= $form->field($model, 'alamat')->textArea(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'alamat')->textArea(['maxlength' => true,'autocomplete' => 'off']) ?>
                     </div>
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'kabupaten')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'kabupaten')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
                     </div>
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'propinsi')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'propinsi')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
+                    </div>
+                    <div class="col-sm-6">
+                        <?= $form->field($model, 'email')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
+                    </div>
+                    <div class="col-sm-6">
+                        <?= $form->field($model, 'kontak')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?> 
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <?= $form->field($model, 'requirement')->textarea(['rows' => 6]) ?>
+                <?= $form->field($model, 'requirement')->textarea(['rows' => 6,'autocomplete' => 'off']) ?>
             </div>
             <div class="col-sm-6">
-                <?= $form->field($model, 'keterangan')->textarea(['rows' => 6]) ?>  
+                <?= $form->field($model, 'keterangan')->textarea(['rows' => 6,'autocomplete' => 'off'   ]) ?>  
             </div>
         </div>
 

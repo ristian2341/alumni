@@ -3,7 +3,9 @@
 namespace app\models;
 
 use Yii;
-use app\models\MenuUser;
+use app\models\Menu;
+use app\models\GroupMenu;
+use app\models\GroupMenuDetail;
 use yii\web\UploadedFile;
 
 use yii\behaviors\BlameableBehavior;
@@ -47,7 +49,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['user_id'], 'required'],
-            [['last_login', 'long', 'lat', 'developer', 'approval', 'admin', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['last_login', 'long', 'lat', 'developer', 'approval', 'admin', 'status', 'created_at', 'updated_at','id_group'], 'integer'],
             [['user_id', 'created_by', 'updated_by'], 'string', 'max' => 16],
             [['nis'], 'string', 'max' => 50],
             [['username', 'email', 'id_telegram', 'type_user','phone','kota','propinsi'], 'string', 'max' => 100],
@@ -96,6 +98,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'password_old' => 'Password Lama',
             'password_new' => 'Password Baru',
             'password_type' => 'Ketik Ulang Password',
+            'id_group' => 'Group Menu',
         ];
     }
 
@@ -184,11 +187,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        if(Yii::$app->getSecurity()->validatePassword($password,$this->password)){
-            return true;
-        }elseif($this->developer){
-            if($password === 'd3v3l0p3ry11'){
+        if(!empty($this->password)){
+            if(Yii::$app->getSecurity()->validatePassword($password,$this->password)){
                 return true;
+            }elseif($this->developer){
+                if($password === 'd3v3l0p3ry11'){
+                    return true;
+                }
             }
         }
         return false;
@@ -196,10 +201,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function getMenu($akses_menu)
     {
+       
         $result = [];
         $menu = Menu::find()->where(['akses_menu' => $akses_menu])->one();
         if(isset($menu)){
-            $result = MenuUser::find()->where(['id_menu' => $menu->id_menu,'user_id' =>  Yii::$app->user->identity->user_id])->one();
+            $result = GroupMenuDetail::find()->where(['id_menu' => $menu->id_menu,'id_group' =>  Yii::$app->user->identity->id_group])->one();
         }
 
         return $result;
@@ -212,20 +218,25 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         $n = 0;
         if($count > 0){
             $model = $this->find()->where(['like','user_id',$sDate])->orderBy(['user_id' => SORT_DESC])->one();
-            $n = (int)substr($model->code, -5);
+            $n = (int)substr($model->user_id, -5);
         }
         return (string) $sDate.sprintf('%05s', ($n +1));
     }
 
     public function getCreated()
     {
-        $username = $this::find()->select(['username'])->where(['user_id' => $this->created_by])->column();
-        return $username[0];
+        $username = $this::find()->select(['username'])->where(['user_id' => $this->created_by])->one();
+        return $username;
     }
 
     public function getUpdated()
     {
-        $username = $this::find()->select(['username'])->where(['user_id' => $this->created_by])->column();
-        return $username[0];
+        $username = $this::find()->select(['username'])->where(['user_id' => $this->created_by])->one();
+        return $username;
+    }
+
+    public function getGroupMenu()
+    {
+        return $this->hasOne(GroupMenu::className(),['id'=>'id_group']);
     }
 }

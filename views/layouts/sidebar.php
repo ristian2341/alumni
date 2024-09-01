@@ -3,27 +3,30 @@
     use yii\bootstrap4\Nav;
     use yii\bootstrap4\NavBar;
     use yii\bootstrap4\Html;
-    use app\models\MenuUser;
     use app\models\Menu;
 
     $picture = isset(Yii::$app->user->identity->picture) ? Yii::$app->user->identity->picture : '';
 
-     /* setting menu user */
-     if(Yii::$app->user->id){
+    /* setting menu user */
+    if(Yii::$app->user->id){
         if(!Yii::$app->user->identity->developer){
-            $menu = MenuUser::find()->where(['user_id' => Yii::$app->user->id,'id_header' => ''])->orWhere("id_header is null")
-                    ->innerJoin('menu','menu_user.id_menu = menu.id_menu')->orderBy('idlevel')->orderBy("urutan")->all();
+            $menu = Menu::find()->innerJoin('group_menu_detail',"menu.id_menu = group_menu_detail.id_menu")
+            ->where(['group_menu_detail.id_group' => Yii::$app->user->identity->id_group])
+            ->andWhere("menu.id_header = '' or menu.id_header is null")->orderBy('idlevel')->orderBy("urutan")->all();
         }else{
             $menu = Menu::find()->where(['id_header' => ''])->orWhere("id_header is null")->orderBy('idlevel')->orderBy("urutan")->all();
         }
     }
+
     foreach($menu as $key => $val){
         if(!Yii::$app->user->identity->developer){
-            $menu_detil = MenuUser::find()->where(['user_id' => Yii::$app->user->id,'id_header' => $val->id_menu])->orWhere("id_header is null")
-                    ->innerJoin('menu','menu_user.id_menu = menu.id_menu')->orderBy('idlevel')->orderBy("urutan")->all();
+            $menu_detil =   Menu::find()->innerJoin('group_menu_detail',"menu.id_menu = group_menu_detail.id_menu")
+            ->where(['group_menu_detail.id_group' => Yii::$app->user->identity->id_group,'id_header' => $val->id_menu])
+            ->orderBy('idlevel')->orderBy("urutan")->all();
         }else{
             $menu_detil = Menu::find()->where(['id_header' => $val->id_menu])->orderBy('idlevel')->orderBy("urutan")->all();
         }
+        
         foreach ($menu_detil as $key => $det){
             $item_detail[$det->id_header][] = ['label' => $det->nama, 'url' => $det->url_menu, 'iconStyle' => 'far'];
         }
@@ -43,6 +46,16 @@
         position: absolute;
         margin-left: -274px;
         margin-top: -8px;
+    }
+
+    .nav-sidebar .nav-treeview {
+        display: none;
+        list-style: none;
+        padding-left: 15px;
+    }
+
+    li .active {
+        padding-left: 0px;
     }
 </style>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -74,29 +87,38 @@
                 </div>
             </div>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <?php foreach ($list_header as $key => $header){ ?>
+            <?php
+                if(isset($list_header)): 
+                foreach ($list_header as $key => $header){ 
+            ?>
                 <?php if(empty($header['url'])){ ?>
-                    <li class="nav-item has-treeview active menu-close"><a class="nav-link" href="#"><i class="nav-icon fas fa-dot-circle"></i><p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
+                    <li class="nav-item active menu-close"><a class="nav-link" href="#"><i class="nav-icon fas fa-dot-circle"></i><p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
                         <?php foreach ($item_detail[$header['id_menu']] as $detail){ ?>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$detail['label']."</p>",[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
+                                <li class="nav-item"><?= Html::a('<i class="fas fa-circle"></i> <p>'.$detail['label']."</p>",[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
                             </ul>
                         <?php } ?>
                     </li>
                 <?php }elseif($header['url'] == "#"){ ?>
-                    <li class="nav-item has-treeview active menu-close"><a class="nav-link" href="#"><i class="nav-icon fas fa-dot-circle"></i><p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
-                        <?php foreach ($item_detail[$header['id_menu']] as $detail){ ?>
+                    <li class="nav-item active menu-close"><a class="nav-link" href="#"><i class="nav-icon fas fa-dot-circle"></i><p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
+                        <?php
+                            if(!empty($item_detail[$header['id_menu']])){ 
+                            foreach ($item_detail[$header['id_menu']] as $detail){ 
+                        ?>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$detail['label'].'</p>',[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
+                                <li class="nav-item"><?= Html::a('<i class="fas fa-circle"></i> <p>'.$detail['label'].'</p>',[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
                             </ul>
-                        <?php } ?>
+                        <?php }} ?>
                     </li>
                 <?php }elseif(!empty($header['url']) && $header['url'] != "#"){ ?>
-                        <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>'.$header['label'].'</p>',[$header['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
+                        <li class="nav-item"><?= Html::a('<i class="fas fa-circle"></i> <p>'.$header['label'].'</p>',[$header['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
             <?php    
                     }
-                } ?>
-                <li class="nav-item"><?= Html::a('<i class="fa fa-circle"></i> <p>Menu</p>',['menu/index'], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
+                }
+            endif; ?>
+                <?php if(Yii::$app->user->identity->developer): ?>
+                    <li class="nav-item"><?= Html::a('<i class="fas fa-circle"></i> <p>Menu</p>',['menu/index'], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
+                <?php endif; ?>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

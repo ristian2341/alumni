@@ -17,7 +17,7 @@ class LowkerSearch extends Lowker
     public function rules()
     {
         return [
-            [['code_lowker', 'tgl_post', 'tgl_last', 'lowongan', 'id_perusahaan', 'nama_perusahaan', 'alamat', 'kabupaten', 'propinsi', 'kontak', 'email', 'requirement', 'keterangan', 'created_by', 'updated_by'], 'safe'],
+            [['code_lowker', 'tgl_post', 'tgl_last', 'lowongan', 'id_perusahaan', 'nama_perusahaan', 'alamat', 'kabupaten', 'propinsi', 'kontak', 'email', 'requirement', 'keterangan', 'created_by', 'updated_by','jabatan'], 'safe'],
             [['created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -76,7 +76,8 @@ class LowkerSearch extends Lowker
             ->andFilterWhere(['like', 'requirement', $this->requirement])
             ->andFilterWhere(['like', 'keterangan', $this->keterangan])
             ->andFilterWhere(['like', 'created_by', $this->created_by])
-            ->andFilterWhere(['like', 'updated_by', $this->updated_by]);
+            ->andFilterWhere(['like', 'updated_by', $this->updated_by])
+            ->andFilterWhere(['like', 'jabatan', $this->updated_by]);
 
         return $dataProvider;
     }

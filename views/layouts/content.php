@@ -34,6 +34,15 @@ if(empty(Yii::$app->user->identity)){
         overflow: hidden;
         margin-top: 0px;
     }
+
+    .table > thead {
+        background-color: #4f5256;
+        border : !important solid #4f5256;
+    }
+
+    .table > thead > th > a {
+        color : #ced3d9;
+    }
 </style>
 <div class="content-wrapper container-content">
     <section class="content-header">

@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
+
 /**
  * This is the model class for table "menu".
  *
@@ -51,7 +52,7 @@ class Menu extends \yii\db\ActiveRecord
             [['url_menu','nama'],'required'],
             [['id_header', 'level', 'urutan', 'read', 'create', 'update', 'delete', 'created_at', 'updated_at'], 'integer'],
             [['nama'], 'string', 'max' => 150],
-            [['posisi','url_menu'], 'string', 'max' => 100],
+            [['posisi','url_menu','akses_menu'], 'string', 'max' => 100],
             [['created_by', 'updated_by'], 'string', 'max' => 16],
         ];
     }
@@ -68,7 +69,7 @@ class Menu extends \yii\db\ActiveRecord
             'level' => 'Level',
             'url_menu' => 'Url',
             'urutan' => 'Urutan',
-            // 'posisi' => 'Posisi',
+            'akses_menu' => 'Akses Menu',
             'read' => 'Read',
             'create' => 'Create',
             'update' => 'Update',
@@ -78,6 +79,18 @@ class Menu extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
         ];
+    }
+
+    public function getCreated()
+    {
+        $username = User::find()->select(['full_name'])->where(['user_id' => $this->created_by])->column();
+        return $username[0];
+    }
+
+    public function getUpdated()
+    {
+        $username = User::find()->select(['full_name'])->where(['user_id' => $this->updated_by])->column();
+        return $username[0];
     }
 
     public function getHeader()

@@ -14,11 +14,8 @@ $this->title = 'Menus';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Menu', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Menu', ['create'], ['class' => 'btn btn-sm btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -50,12 +47,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'level',
             'urutan',
+            'akses_menu',
             //'posisi',
             //'read',
             //'create',
             //'update',
             //'delete',
-            //'akses_menu',
             //'created_at',
             //'created_by',
             //'updated_at',

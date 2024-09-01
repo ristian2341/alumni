@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Siswa;
+use app\models\StatusSiswa;
 use app\models\SiswaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -31,40 +32,41 @@ class SiswaController extends Controller
      */
     public function behaviors()
     {
+        print_r(Yii::$app->user->identity);die;
         return array_merge(
             parent::behaviors(),
             [
                'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
-                    [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('data_siswa')->create)),
-                        'actions' => ['create'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('data_siswa')->read)),
-                        'actions' => ['index', 'view','import-excel'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('data_siswa')->update)),
-                        'actions' => ['update'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' => isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('data_siswa')->delete),
-                        'actions' => ['delete'],
-                        'roles' => ['@'],
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->create))),
+                            'actions' => ['create'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->read))),
+                            'actions' => ['index', 'view','import-excel'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('data_siswa')->update))),
+                            'actions' => ['update'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => (!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->delete)),
+                            'actions' => ['delete'],
+                            'roles' => ['@'],
+                        ],
                     ],
                 ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
             ]
         );
     }
@@ -131,12 +133,32 @@ class SiswaController extends Controller
     {
         $model = $this->findModel($code);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post())) 
+        {
+            if(!$model->save()){
+                foreach($model->errors as $error=>$value)
+                {
+                    $message .= $value[0];
+                }
+                Yii::$app->session->setFlash('error',$message); 
+            }
             return $this->redirect(['view', 'code' => $model->code]);
         }
 
+        $status_siswa = StatusSiswa::find()->select("status")->indexBy("id")->column();
+        $year1 = date('Y') - 10;
+        $year2 = date('Y');
+        $tahun_lulus[""] = "";
+        while ($year1 <= $year2) {
+            $tahun_lulus[$year1] = $year1;
+            $year1++;
+        }
+  
+        $model->tahun_lulus = empty($model->tahun_lulus) ? "" : $model->tahun_lulus;
         return $this->render('update', [
             'model' => $model,
+            'status_siswa' => $status_siswa,
+            'tahun' => $tahun_lulus,
         ]);
     }
 
