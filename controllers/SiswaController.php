@@ -32,43 +32,46 @@ class SiswaController extends Controller
      */
     public function behaviors()
     {
-        print_r(Yii::$app->user->identity);die;
-        return array_merge(
-            parent::behaviors(),
-            [
-               'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                        [
-                            'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->create))),
-                            'actions' => ['create'],
-                            'roles' => ['@'],
-                        ],
-                        [
-                            'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->read))),
-                            'actions' => ['index', 'view','import-excel'],
-                            'roles' => ['@'],
-                        ],
-                        [
-                            'allow' => ((!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('data_siswa')->update))),
-                            'actions' => ['update'],
-                            'roles' => ['@'],
-                        ],
-                        [
-                            'allow' => (!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->delete)),
-                            'actions' => ['delete'],
-                            'roles' => ['@'],
+        if(isset(Yii::$app->user->identity)){
+            return array_merge(
+                parent::behaviors(),
+                [
+                   'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                            [
+                                'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->create))),
+                                'actions' => ['create'],
+                                'roles' => ['@'],
+                            ],
+                            [
+                                'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->read))),
+                                'actions' => ['index', 'view','import-excel'],
+                                'roles' => ['@'],
+                            ],
+                            [
+                                'allow' => ((!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('data_siswa')->update))),
+                                'actions' => ['update'],
+                                'roles' => ['@'],
+                            ],
+                            [
+                                'allow' => (!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->delete)),
+                                'actions' => ['delete'],
+                                'roles' => ['@'],
+                            ],
                         ],
                     ],
-                ],
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+                    'verbs' => [
+                        'class' => VerbFilter::className(),
+                        'actions' => [
+                            'delete' => ['POST'],
+                        ],
                     ],
-                ],
-            ]
-        );
+                ]
+            );
+        }else{
+            return $this->redirect(['site/login']);
+        }
     }
 
     /**
