@@ -15,10 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
     <p>
-        <?= Html::a('Create Menu User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Menu User', ['create'], ['class' => 'btn btn-sm btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -39,8 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_menu',
             'create',
             'update',
-            //'read',
-            //'delete',
+            'read',
+            'delete',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, MenuUser $model, $key, $index, $column) {

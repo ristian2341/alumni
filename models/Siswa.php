@@ -6,6 +6,8 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use app\models\User;
+use app\models\StatusSiswa;
+use app\modules\master\models\Jurusan;
 
 /**
  * This is the model class for table "siswa".
@@ -102,14 +104,14 @@ class Siswa extends \yii\db\ActiveRecord
     {
         return [
             [['tgl_lahir','lintang','bujur'], 'safe'],
-            [['skhun', 'nama_di_kip', 'anak_keberapa','berat_badan', 'tinggi_badan', 'lingkar_kepala', 'jml_saudara', 'jarak_rumah','created_at','updated_at','tgl_lahir_ayah','tgl_lahir_ibu', 'tgl_lahir_wali'], 'integer'],
+            [['skhun', 'nama_di_kip', 'anak_keberapa','berat_badan', 'tinggi_badan', 'lingkar_kepala', 'jml_saudara', 'jarak_rumah','created_at','updated_at','tgl_lahir_ayah','tgl_lahir_ibu', 'tgl_lahir_wali','id_status_siswa'], 'integer'],
             [['alasan_layak_pip'], 'string'],
-            [['nipd', 'nisn', 'nik','created_by','updated_by'], 'string', 'max' => 16],
+            [['nipd', 'nisn', 'nik','created_by','updated_by','code_jurusan'], 'string', 'max' => 16],
             [['nama', 'alamat', 'sekolah_asal'], 'string', 'max' => 150],
             [['jen_kelamin'], 'string', 'max' => 1],
             [['foto'], 'string', 'max' => 255],
             [['tempat_lahir', 'dusun', 'kelurahan', 'kecamatan', 'kabupaten', 'jenis_tinggal', 'alat_transportasi', 'email', 'nama_ayah', 'pendidikan_ayah', 'pekerjaan_ayah', 'penghasilan_ayah', 'nik_ayah', 'nama_ibu', 'pendidikan_ibu', 'pekerjaan_ibu', 'penghasilan_ibu', 'nik_ibu', 'nama_wali', 'pendidikan_wali', 'pekerjaan_wali', 'penghasilan_wali', 'nik_wali', 'rombel_now', 'no_peserta_ujian', 'no_seri_ijazah', 'nomor_kip', 'nomor_kks', 'no_akta_lahir', 'bank', 'no_rekening_bank', 'atas_nama_rekening','kebutuhan_khusus'], 'string', 'max' => 100],
-            [['rt', 'rw'], 'string', 'max' => 5],
+            [['rt', 'rw','tahun_lulus'], 'string', 'max' => 5],
             [['kode_pos'], 'string', 'max' => 10],
             [['phone', 'handphone'], 'string', 'max' => 15],
             [['no_kps'], 'string', 'max' => 50],
@@ -193,6 +195,9 @@ class Siswa extends \yii\db\ActiveRecord
             'created_by' => 'Dibuat Oleh',
             'updated_at' => 'Tgl Ubah',
             'updated_by' => 'Diubah Oleh',
+            'id_status_siswa' => 'Status Siswa',
+            'tahun_lulus' => 'Tahun Lulus',
+            'code_jurusan' => 'Jurusan',
         ];
     }
 
@@ -206,6 +211,17 @@ class Siswa extends \yii\db\ActiveRecord
     {
         $username = User::find()->select(['full_name'])->where(['user_id' => $this->created_by])->column();
         return $username[0];
+    }
+
+    public function getStatusSiswa()
+    {
+        $status = StatusSiswa::find()->select(['status'])->where(['id' => $this->id_status_siswa])->column();
+        return $status[0];
+    }
+
+    public function getJurusan()
+    {
+        return $this->hasOne(Jurusan::className(),['code'=>'code_jurusan']);
     }
 
     public function getCode()

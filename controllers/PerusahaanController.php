@@ -29,22 +29,22 @@ class PerusahaanController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('Perusahaan')->create)),
+                        'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->create),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('Perusahaan')->read)),
+                        'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->read),
                         'actions' => ['index', 'view','send-register'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('Perusahaan')->update)),
+                        'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->update),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('Perusahaan')->delete),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->delete),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],

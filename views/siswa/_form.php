@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var app\models\Siswa $model */
 /** @var yii\widgets\ActiveForm $form */
+
 ?>
 <style>
   nav > .nav.nav-tabs{
@@ -225,6 +226,12 @@ use yii\widgets\ActiveForm;
                             </div>
                             <div class="col-sm-6">
                                 <?= $form->field($model, 'kebutuhan_khusus')->textInput(['autocomplete' => "off"]) ?>
+                            </div>
+                            <div class="col-sm-6">
+                                <?= $form->field($model, 'tahun_lulus')->dropDownList($tahun,['autocomplete' => "off"]) ?>
+                            </div>
+                            <div class="col-sm-6">
+                                <?= $form->field($model, 'id_status_siswa')->dropDownList($status_siswa,['autocomplete' => "off"]) ?>
                             </div>
                         </div>
                     </div>

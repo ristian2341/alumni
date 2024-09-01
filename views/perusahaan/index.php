@@ -42,8 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             'phone',
             'pic1',
-            // 'phone_pic1',
-            // 'email_pic1:email',
+            'email_pic1:email',
             'pic2',
             // 'phone_pic2',
             // 'email_pic2:email',
@@ -61,25 +60,29 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'update' => function($url, $model){
+                        if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('perusahaan')->update)){
                             return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'id_perusahaan' => $model->id_perusahaan]), [
                                 'class' => 'btn btn-warning btn-xs',
                                 'title' => 'Update',
                             ]);
+                        }
                     },
                     'delete' => function($url, $model){
-                        return Html::a("<span class='fas fa-trash'></span>", '#', [
-                            'class' => 'btn btn-danger btn-xs',
-                            'onclick' => "
-                            if (confirm('Are you sure ?')) {
-                                $.ajax('".Url::toRoute(['delete', 'id_perusahaan' => $model->id_perusahaan])."', {
-                                    type: 'POST'
-                                }).done(function(data) {
-                                    $.pjax.reload({container: '#list_bast_checkin'});
-                                });
-                            }
-                            return false;
-                            ",
-                        ]);
+                        if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('perusahaan')->delete)){
+                            return Html::a("<span class='fas fa-trash'></span>", '#', [
+                                'class' => 'btn btn-danger btn-xs',
+                                'onclick' => "
+                                if (confirm('Are you sure ?')) {
+                                    $.ajax('".Url::toRoute(['delete', 'id_perusahaan' => $model->id_perusahaan])."', {
+                                        type: 'POST'
+                                    }).done(function(data) {
+                                        $.pjax.reload({container: '#list_bast_checkin'});
+                                    });
+                                }
+                                return false;
+                                ",
+                            ]);
+                        }
                     },
                 ],
                 'contentOptions'=> [

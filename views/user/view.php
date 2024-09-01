@@ -39,11 +39,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'user_id',
             [
                 'attribute' =>  'nis',
-                'value' => $model->nis,
+                'value' => isset($model->nis),
                 'options' => ['style' => 'display : none;'],
             ],
             'username',
-            'password',
+            // 'password',
             'full_name',
             'type_akun',
             'email:email',
@@ -56,17 +56,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => ($model->admin == 1) ? 'True' : 'False'
             ],
             [
+                'attribute' => 'id_group',
+                'value' => isset($model->groupMenu->nama) ? $model->groupMenu->nama : '',
+            ],
+            [
                 'attribute' => 'status',
                 'value' => ($model->status == 1) ? 'Active' : 'Non Active'
             ],           
-
             [
                 'attribute' => 'created_at',
                 'value' => !empty($model->created_at) ? date('d M Y',strtotime($model->created_at)) : '',
             ],
             [
                 'attribute' =>   'created_by',
-                'value' => !empty($model->getCreated()) ? $model->getCreated(): $model->created_by,
+                'value' => !empty($model->getCreated()) ? $model->getCreated()->full_name: $model->created_by,
             ],
             [
                 'attribute' => 'updated_at',
@@ -74,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'updated_by',
-                'value' => !empty($model->getUpdated()) ? $model->getUpdated(): $model->updated_by,
+                'value' => !empty($model->getUpdated()) ? $model->getUpdated()->full_name: $model->updated_by,
             ],
             
         ],

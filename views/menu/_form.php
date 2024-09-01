@@ -35,10 +35,10 @@ use app\models\Menu;
             <div class="col-sm-8">
                 <div class="row">
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'nama')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
                     </div>
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'url_menu')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'url_menu')->textInput(['maxlength' => true,'autocomplete' => 'off']) ?>
                     </div>        
                     <div class="col-sm-6">
                         <?= 
@@ -52,10 +52,13 @@ use app\models\Menu;
                         ?>
                     </div>
                     <div class="col-sm-3">
-                        <?= $form->field($model, 'level')->textInput() ?>
+                        <?= $form->field($model, 'level')->textInput(['autocomplete' => 'off']) ?>
                     </div>
                     <div class="col-sm-3">
-                        <?= $form->field($model, 'urutan')->textInput() ?>
+                        <?= $form->field($model, 'urutan')->textInput(['autocomplete' => 'off']) ?>
+                    </div>
+                    <div class="col-sm-3">
+                        <?= $form->field($model, 'akses_menu')->textInput(['autocomplete' => 'off']) ?>
                     </div>
                     <div class="col-sm-2">
                         <?= $form->field($model, 'read')->checkBox() ?>

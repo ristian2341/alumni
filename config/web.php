@@ -83,7 +83,7 @@ $config = [
                 ],
             ],
         ],
-        
+       
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -92,6 +92,11 @@ $config = [
             ],
         ],
         */
+    ],
+    'modules' => [
+        'master' => [
+            'class' => 'app\modules\master\Module',
+        ],
     ],
     'params' => $params,
 ];

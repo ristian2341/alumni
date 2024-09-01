@@ -7,6 +7,8 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\bootstrap4\Modal;
 use yii\widgets\ActiveForm;
+use app\modules\master\models\Jurusan;
+
 
 /** @var yii\web\View $this */
 /** @var app\models\SiswaSearch $searchModel */
@@ -21,15 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </style>
 <div class="siswa-index">
-
-    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <div class="row">
-        <div class="card-header">
-            <h5>View</h5>
-        </div>
-    </div>
+    <p>
+        <?php if(Yii::$app->user->identity->admin || Yii::$app->user->identity->developer): ?>
+            <button type="button" id="btn-upload" class="btn btn-success btn-sm btn-flat"><span class='fas fa-upload'></span> Upload File</button>
+        <?php endif; ?>
+    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -42,9 +40,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'code',
+            // 'code',
             // 'nipd',
-            'nisn',
+            [
+                'headerOptions' => ['style' => 'width:200px;'],
+                'attribute'=>'nisn',
+            ],
+            [
+                'headerOptions' => ['style' => 'width:200px;'],
+                'attribute' =>  'code_jurusan',
+                'filter' => Jurusan::find()->where(['status_data' => 1])->select("nama")->indexBy('code')->column(),
+                'value' => function($model){
+                    return !empty($model->jurusan->nama) ? $model->jurusan->nama : '';
+                }
+            ],
+           
             'nik',
             'nama',
             [
@@ -54,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ($model->jen_kelamin == 'L') ?  'Laki-Laki' : 'Perempuan';
                 }
             ],
-            // 'tempat_lahir',
+          
             // 'tgl_lahir',
             //'alamat',
             //'rt',
@@ -126,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'update' => function($url, $model){
-                        if(Yii::$app->user->identity->developer){
+                        if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->update)){
                             return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'code' => $model->code]), [
                                 'class' => 'btn btn-warning btn-xs',
                                 'title' => 'Update',
@@ -134,7 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     },
                     'delete' => function($url, $model){
-                        if(Yii::$app->user->identity->developer){
+                        if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->delete)){
                             return Html::a("<span class='fas fa-trash'></span>", '#', [
                                 'class' => 'btn btn-danger btn-xs',
                                 'onclick' => "

@@ -25,22 +25,22 @@ class MenuUserController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('hak_akses_user')->create),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->create),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('hak_akses_user')->read),
+                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->read),
                         'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('hak_akses_user')->update),
+                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->update),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  isset(Yii::$app->user->identity->developer) && (Yii::$app->user->identity->developer || Yii::$app->user->identity->getMenu('hak_akses_user')->delete),
+                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->delete),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],
