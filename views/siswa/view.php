@@ -107,6 +107,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Setelah Lulus',
                             'value' => isset($model->statusSiswa) ? $model->statusSiswa : '',
                         ],
+                        [
+                            'attribute' => 'code_jurusan',
+                            'label' => 'Jurusan',
+                            'value' => isset($model->jurusan->nama) ? $model->jurusan->nama : '',
+                        ],
                     ],
                 ]) ?>
             </div>

@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\modules\master\models\Jurusan;
+use kartik\select2\Select2;
+
 
 /** @var yii\web\View $this */
 /** @var app\models\Siswa $model */
@@ -232,6 +235,16 @@ use yii\widgets\ActiveForm;
                             </div>
                             <div class="col-sm-6">
                                 <?= $form->field($model, 'id_status_siswa')->dropDownList($status_siswa,['autocomplete' => "off"]) ?>
+                            </div>
+                            <div class="col-sm-6">
+                                
+                                <?=  $form->field($model, 'code_jurusan')->widget(Select2::classname(), [
+                                        'data' => Jurusan::find()->where(['status_data'=>1])->select("nama")->indexBy("code")->column(),
+                                        'options' => ['placeholder' => 'Select Header Menu ...'],
+                                        'pluginOptions' => [
+                                            'allowClear' => true
+                                        ],
+                                    ]); ?>
                             </div>
                         </div>
                     </div>
