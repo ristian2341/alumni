@@ -97,6 +97,9 @@ $config = [
         'master' => [
             'class' => 'app\modules\master\Module',
         ],
+        'magang' => [
+            'class' => 'app\modules\magang\Module',
+        ],
     ],
     'params' => $params,
 ];
