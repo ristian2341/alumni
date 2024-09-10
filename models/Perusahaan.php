@@ -53,7 +53,7 @@ class Perusahaan extends \yii\db\ActiveRecord
     {
         return [
             [['id_perusahaan'], 'required'],
-            [['created_at', 'updated_at'], 'integer'],
+            [['created_at', 'updated_at','status_data'], 'integer'],
             [['nama'], 'string', 'max' => 150],
             [['alamat'], 'string', 'max' => 255],
             [['kota', 'propinsi', 'email', 'pic1', 'email_pic1', 'pic2', 'phone_pic2', 'email_pic2'], 'string', 'max' => 100],
@@ -86,6 +86,7 @@ class Perusahaan extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
+            'status_data' => 'Status',
         ];
     }
 

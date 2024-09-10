@@ -24,39 +24,43 @@ class PerusahaanController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->create),
-                        'actions' => ['create'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->read),
-                        'actions' => ['index', 'view','send-register'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->update),
-                        'actions' => ['update'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->delete),
-                        'actions' => ['delete'],
-                        'roles' => ['@'],
+        if(isset(Yii::$app->user->identity)){
+            return [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->create),
+                            'actions' => ['create'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->read),
+                            'actions' => ['index', 'view','send-register'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' =>!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->update),
+                            'actions' => ['update'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('Perusahaan')->delete),
+                            'actions' => ['delete'],
+                            'roles' => ['@'],
+                        ],
                     ],
                 ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
                 ],
-            ],
-        ];
+            ];
+        }else{
+            return $this->redirect(['site/login']);
+        }
     }
 
     /**

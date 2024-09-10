@@ -144,7 +144,35 @@ class LowkerController extends Controller
     {
         $model = $this->findModel($code_lowker);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost) {
+            $success = true; $message = "";
+            $conn = Yii::$app->db;
+            $trans = $conn->beginTransaction();
+            try {
+                if ($model->load($this->request->post())){
+                    $model->tgl_post = date('Y-m-d',strtotime($model->tgl_post));
+                    $model->tgl_last = date('Y-m-d',strtotime($model->tgl_last));
+                    if(!$model->save()){
+                        $success = false;
+						$message .= (count($model->errors) > 0) ? 'ERROR Create Kasbon: ' : '';
+                        foreach ($model->errors as $key => $val) {
+                            $message .= $value[0].', ';
+                        }
+                    }
+
+                    if($success){
+                        $trans->commit();
+                        Yii::$app->session->setFlash('success',"Input Lowongan Kerja Success"); 
+                        return $this->redirect(['view', 'code_lowker' => $model->code_lowker]);
+                    }else{
+                        $trans->rollBack();
+                        Yii::$app->session->setFlash('error',$message); 
+                    }
+                }
+            } catch (\Exception $e) {
+                $trans->rollBack();
+                Yii::$app->session->setFlash('error',$e->getMessage());
+            }
             return $this->redirect(['view', 'code_lowker' => $model->code_lowker]);
         }
 

@@ -43,21 +43,24 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'code',
             // 'nipd',
             [
-                'headerOptions' => ['style' => 'width:200px;'],
+                'headerOptions' => ['style' => 'width:150px;'],
                 'attribute'=>'nisn',
             ],
             [
-                'headerOptions' => ['style' => 'width:200px;'],
+                'headerOptions' => ['style' => 'width:250px;'],
                 'attribute' =>  'code_jurusan',
                 'filter' => Jurusan::find()->where(['status_data' => 1])->select("nama")->indexBy('code')->column(),
                 'value' => function($model){
                     return !empty($model->jurusan->nama) ? $model->jurusan->nama : '';
                 }
             ],
-           
-            'nik',
+            [
+                'headerOptions' => ['style' => 'width:170px;'],
+                'attribute'=>  'nik',
+            ],
             'nama',
             [
+                'headerOptions' => ['style' => 'width:170px;'],
                 'attribute' => 'jen_kelamin',
                 'filter' => ['L' => 'Laki - Laki','P' => 'Perempuan'],
                 'value' => function($model){

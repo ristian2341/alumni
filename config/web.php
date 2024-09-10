@@ -37,7 +37,7 @@ $config = [
             'class' => 'yii\web\Session',
             // 'class' => 'yii\web\DbSession', 
             'cookieParams' => ['httponly' => true, 'lifetime' => 3600*4],
-            'timeout' => 3600*8, //session expire 4 hours
+            'timeout' => 3600*16, //session expire 4 hours
             'useCookies' => true,
         ],
         'errorHandler' => [
@@ -96,6 +96,9 @@ $config = [
     'modules' => [
         'master' => [
             'class' => 'app\modules\master\Module',
+        ],
+        'magang' => [
+            'class' => 'app\modules\magang\Module',
         ],
     ],
     'params' => $params,

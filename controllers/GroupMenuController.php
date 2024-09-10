@@ -22,6 +22,9 @@ class GroupMenuController extends Controller
      */
     public function behaviors()
     {
+        if(!isset(Yii::$app->user->identity)){
+            return $this->redirect(['site/login']);
+        }
         return array_merge(
             parent::behaviors(),
             [

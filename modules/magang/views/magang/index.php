@@ -1,96 +1,93 @@
 <?php
 
-use app\models\Lowker;
+
+use app\modules\magang\models\Magang;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-/** @var app\models\LowkerSearch $searchModel */
+/** @var app\modules\magang\models\MagangSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Lowkers');
+$this->title = 'Magangs';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="lowker-index">
-
-    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
+<div class="magang-index">
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Lowongan Kerja'), ['create'], ['class' => 'btn btn-sm btn-success']) ?>
+        <?= Html::a('Create Magang', ['create'], ['class' => 'btn btn-sm btn-success']) ?>
     </p>
 
+    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'pager' => [
-            'class' => 'yii\bootstrap4\LinkPager',
-            'firstPageLabel' => 'First',
-            'lastPageLabel'  => 'Last'
-        ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
             [
-                'headerOptions' => ['style' => 'width:150px;'],
-                'attribute' => 'code_lowker',
+                'headerOptions' => ['style' => 'width: 50px;'],
+                'class' => 'yii\grid\SerialColumn'
             ],
             [
-                'headerOptions' => ['style' => 'width:130px;'],
-                'attribute' => 'tgl_post',
+                'headerOptions' => ['style' => 'width: 180px;'],
+                'attribute'=>'code'
+            ],
+            [
+                'attribute'=>'nama_perusahaan',
+            ],
+            [
+                'attribute'=>'pic',
+                'headerOptions' => ['style' => 'width: 350px;'],
+            ],
+            [
+                'attribute'=>'tgl_mulai',
+                'headerOptions' => ['style' => 'width: 150px;'],
                 'value' => function($model){
-                    return isset($model->tgl_post) ? date('d M Y',strtotime($model->tgl_post)) : '';
+                   return isset($model->tgl_mulai) ? date('d M Y',strtotime($model->tgl_mulai)) : '';
                 },
             ],
             [
-                'headerOptions' => ['style' => 'width:130px;'],
-                'attribute' => 'tgl_last',
+                'attribute'=>'tgl_akhir',
+                'headerOptions' => ['style' => 'width: 150px;'],
                 'value' => function($model){
-                    return isset($model->tgl_last) ? date('d M Y',strtotime($model->tgl_last)) : '';
+                   return isset($model->tgl_akhir) ? date('d M Y',strtotime($model->tgl_akhir)) : '';
                 },
-                
             ],
-            'lowongan',
-            'jabatan',
-            // 'id_perusahaan',
-            'nama_perusahaan',
-            //'alamat',
-            //'kabupaten',
-            //'propinsi',
-            'kontak',
-            'email:email',
-            //'requirement:ntext',
-            //'keterangan:ntext',
-            //'created_at',
-            //'created_by',
-            //'updated_at',
-            //'updated_by',
+            [
+                'label'=>'Jumlah Siswa',
+                'headerOptions' => ['style' => 'width: 150px;color:#007bff;'],
+                'value' => function($model){
+                   return isset($model->dataDetail) ? count($model->dataDetail) : 0;
+                },
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view} {update} {delete} ',
                 'buttons' => [
                     'view' => function($url, $model){
-                        return HTML::a("<span class='fas fa-eye'></span>", Url::toRoute(['view', 'code_lowker' => $model->code_lowker]),[
+                        return HTML::a("<span class='fas fa-eye'></span>", Url::toRoute(['view', 'code' => $model->code]),[
                             'class' => 'btn btn-info btn-xs',
                         ]);
                     },
                     'update' => function($url, $model){
-                        if(Yii::$app->user->identity->developer){
-                            return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'code_lowker' => $model->code_lowker]), [
+                        if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('magang')->update)){
+                            return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'code' => $model->code]), [
                                 'class' => 'btn btn-warning btn-xs',
                                 'title' => 'Update',
                             ]);
                         }
                     },
                     'delete' => function($url, $model){
-                        if(Yii::$app->user->identity->developer){
+                        if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('magang')->delete)){
                             return Html::a("<span class='fas fa-trash'></span>", '#', [
                                 'class' => 'btn btn-danger btn-xs',
                                 'onclick' => "
                                 if (confirm('Are you sure ?')) {
-                                    $.ajax('".Url::toRoute(['delete', 'code_lowker' => $model->code_lowker])."', {
+                                    $.ajax('".Url::toRoute(['delete', 'code' => $model->code])."', {
                                         type: 'POST'
                                     }).done(function(data) {
                                         $.pjax.reload({container: '#list_bast_checkin'});
@@ -109,5 +106,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
+    <?php Pjax::end(); ?>
 
 </div>

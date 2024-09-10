@@ -22,6 +22,9 @@ class MenuController extends Controller
      */
     public function behaviors()
     {
+        if(empty(Yii::$app->user->identity)){
+            return $this->redirect(['site/login']);
+        }
         return [
             'access' => [
                 'class' => AccessControl::class,
