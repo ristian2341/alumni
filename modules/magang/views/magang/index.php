@@ -46,10 +46,23 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'tgl_mulai',
                 'headerOptions' => ['style' => 'width: 150px;'],
+                'value' => function($model){
+                   return isset($model->tgl_mulai) ? date('d M Y',strtotime($model->tgl_mulai)) : '';
+                },
             ],
             [
                 'attribute'=>'tgl_akhir',
                 'headerOptions' => ['style' => 'width: 150px;'],
+                'value' => function($model){
+                   return isset($model->tgl_akhir) ? date('d M Y',strtotime($model->tgl_akhir)) : '';
+                },
+            ],
+            [
+                'label'=>'Jumlah Siswa',
+                'headerOptions' => ['style' => 'width: 150px;color:#007bff;'],
+                'value' => function($model){
+                   return isset($model->dataDetail) ? count($model->dataDetail) : 0;
+                },
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

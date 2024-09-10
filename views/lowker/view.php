@@ -32,8 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'code_lowker',
-            'tgl_post',
-            'tgl_last',
+            [
+                'attribute' => 'tgl_post',
+                'value' => isset($model->tgl_post) ? date('d M Y',strtotime($model->tgl_post)) : '',
+            ],
+            [
+                'attribute' => 'tgl_last',
+                'value' => isset($model->tgl_last) ? date('d M Y',strtotime($model->tgl_last)) : '',
+            ],
             'lowongan',
             'id_perusahaan',
             'nama_perusahaan',

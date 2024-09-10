@@ -39,6 +39,11 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                 ],
             ],
             'verbs' => [
@@ -83,7 +88,6 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-		
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -170,10 +174,5 @@ class SiteController extends Controller
         return $this->render('profile', [
             'model' => $model,
         ]);
-    }
-
-    public function actionClickMenu()
-    {
-        
     }
 }

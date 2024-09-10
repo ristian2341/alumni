@@ -33,12 +33,28 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'code_lowker',
-            'tgl_post',
-            'tgl_last',
+            [
+                'headerOptions' => ['style' => 'width:150px;'],
+                'attribute' => 'code_lowker',
+            ],
+            [
+                'headerOptions' => ['style' => 'width:130px;'],
+                'attribute' => 'tgl_post',
+                'value' => function($model){
+                    return isset($model->tgl_post) ? date('d M Y',strtotime($model->tgl_post)) : '';
+                },
+            ],
+            [
+                'headerOptions' => ['style' => 'width:130px;'],
+                'attribute' => 'tgl_last',
+                'value' => function($model){
+                    return isset($model->tgl_last) ? date('d M Y',strtotime($model->tgl_last)) : '';
+                },
+                
+            ],
             'lowongan',
-            'id_perusahaan',
+            'jabatan',
+            // 'id_perusahaan',
             'nama_perusahaan',
             //'alamat',
             //'kabupaten',

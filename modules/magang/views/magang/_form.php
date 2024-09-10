@@ -49,8 +49,14 @@ JS;
 $format1Selection = <<< JS
 	function (item) {
         if(item.id){
-            $("#nama_siswa").val(item.nama);
-            $("#rombel_siswa").val(item.rombel);
+            console.log(item.nama)
+            if(typeof item.nama != 'undefined'){
+                $("#nama_siswa").val(item.nama);
+            }
+
+            if(typeof item.rombel != 'undefined'){
+                $("#rombel_siswa").val(item.rombel);
+            }
             return item.id;
         }
 	}
@@ -131,7 +137,9 @@ JS;
                                 <th style='width: 10%;vertical-align: middle;text-align:center;color : #ced3d9;'></th>
                             </tr>
                         </thead>
-                        <tbody id="tbody"></tbody>
+                        <tbody id="tbody">
+                            <?= isset($tbody) ? $tbody : ''; ?>
+                        </tbody>
                         <tfoot>
                             <tr>
                                 <th>#<input type="hidden" id="number" class="form-control" name="number" readOnly></th>
@@ -199,10 +207,6 @@ JS;
 
 </div>
 <script>
-    $(document).ready(function(){
-        $("#tbody").html(<?= isset($tbody) ? $tbody : '' ?>);
-    });
-
     $("body").off("click","#create").on("click","#create",function(){
         var success = true;
         if($("#text_nisp").val() == ''){
@@ -263,13 +267,19 @@ JS;
 
     $("body").off("click",".btn-edit").on("click",".btn-edit",function(){
         var number = $(this).closest("tr").attr("data-no");
-
         $("#number").val(number);
-        $("#text_nisp").val($("#nisn_"+number).val()).trigger('change');
-        $("#nama_siswa").val($("#nama_"+number).val());
-        $("#rombel_siswa").val($("#rombel_"+number).val());
+        $("#nama_siswa").val($("#MagangDetail-nama_"+number).val());
+        $("#text_nisp").empty();
+        $("#text_nisp").append('<option value="'+$("#MagangDetail-nisn_"+number).val()+'" data-select2-id="121" selected>['+$("#MagangDetail-nisn_"+number).val()+'] '+$("#MagangDetail-nama_"+number).val()+'</option>');
+        $("#rombel_siswa").val($("#MagangDetail-rombel_"+number).val());
         $("#create").css("width","40%");
         $("#cancel").show();
+    });
+
+    $("body").off("click","#text_nisp").on("click","#text_nisp",function(){
+        if($(this).val() == ''){
+            clearForm();
+        }
     });
 
     $("body").off("click","#cancel").on("click","#cancel",function(){

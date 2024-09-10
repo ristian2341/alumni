@@ -34,8 +34,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => isset($model->dataPerusahaan->nama) ? $model->code_perusahaan ." - ". $model->dataPerusahaan->nama : $model->code_perusahaan,
             ],
             'pic',
-            'tgl_mulai',
-            'tgl_akhir',
+            [
+                'attribute' => 'tgl_mulai',
+                'value' => !empty($model->tgl_mulai) ? date('d M Y',strtotime($model->tgl_mulai)) : '',
+            ],
+            [
+                'attribute' => 'tgl_akhir',
+                'value' => !empty($model->tgl_akhir) ? date('d M Y',strtotime($model->tgl_akhir)) : '',
+            ],
             [
                 'attribute' => 'created_at',
                 'value' => !empty($model->created_at) ? date('d M Y',$model->created_at) : '',

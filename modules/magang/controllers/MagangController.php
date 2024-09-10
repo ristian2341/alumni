@@ -191,17 +191,19 @@ class MagangController extends Controller
                 $con = Yii::$app->db ;
                 $transaction = $con->beginTransaction();
                 try {
-                    $model->tgl_mulai = date('Y-m-d',strtotime($model->tgl_mulai));
-                    $model->tgl_akhir = date('Y-m-d',strtotime($model->tgl_akhir));
+                 
+                    $model->tgl_mulai = date('Y-m-d',strtotime(str_replace("/","-",$model->tgl_mulai)));
+                    $model->tgl_akhir = date('Y-m-d',strtotime(str_replace("/","-",$model->tgl_akhir)));
                     $model->nama_perusahaan = isset($model->dataPerusahaan->nama) ? $model->dataPerusahaan->nama : '';
                     $MagangDetail = $this->request->post()['MagangDetail'];
                     if(!empty($MagangDetail)){
+                        MagangDetail::deleteAll(['code_magang' => $model->code]);
                         foreach ($MagangDetail as $key => $value) {
                             $detail = new MagangDetail();
                             $detail->code_magang = $model->code;
                             $detail->nisn = $value['nisn'];
                             $detail->nama = $value['nama'];
-                            $detail->code_jurusan = $value['rombel'];
+                            $detail->rombel = $value['rombel'];
                             if(!$detail->save()){
                                 foreach($detail->errors as $error=>$value)
                                 {
@@ -251,6 +253,8 @@ class MagangController extends Controller
             'model_detail' => $detail,
         ]);
         
+        $model->tgl_mulai = date('d-m-Y',strtotime($model->tgl_mulai));
+        $model->tgl_akhir = date('d-m-Y',strtotime($model->tgl_akhir));
         return $this->render('update', [
             'model' => $model,
             'tbody' => $tbody,
@@ -293,7 +297,7 @@ class MagangController extends Controller
         $result = [];$data=[];$datasiswa = [];
         $q = isset($_POST['q']) ? $_POST['q'] : '';
         if($q != ''){
-            $data = Siswa::find()->where(['id_status_siswa' => 1])->andWhere("(nama like '%".$q."%' and nisn like '%".$q."%')")->limit(50)->all();
+            $data = Siswa::find()->where(['id_status_siswa' => 1])->andWhere("(nama like '%".$q."%' or nisn like '%".$q."%')")->limit(50)->all();
         }else{
             $data = Siswa::find()->where(['id_status_siswa' => 1])->limit(50)->all();
         }
