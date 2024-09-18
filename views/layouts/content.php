@@ -76,8 +76,8 @@ if(empty(Yii::$app->user->identity)){
         <div class="formbox-container">
             <?= Alert::widget() ?>
                 <!-- Main content -->
-                <div class="content">
-                    <?= $content ?><!-- /.container-fluid -->
+            <div class="content">
+                <?= $content ?><!-- /.container-fluid -->
                 <!-- /.content -->
             </div>
         </div>

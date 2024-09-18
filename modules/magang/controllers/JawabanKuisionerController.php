@@ -2,11 +2,19 @@
 
 namespace app\modules\magang\controllers;
 
+use Yii;    
 use app\modules\magang\models\JawabanKuisioner;
+use app\modules\magang\models\JawabanKuisionerDetail;
 use app\modules\magang\models\JawabanKuisionerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+
+use app\models\Siswa;
+use app\modules\magang\models\Magang;
+use app\modules\magang\models\MagangDetail;
+use app\modules\master\models\MasterKuisioner;
 
 /**
  * JawabanKuisionerController implements the CRUD actions for JawabanKuisioner model.
@@ -18,17 +26,43 @@ class JawabanKuisionerController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        if(!isset(Yii::$app->user->identity)){
+            return $this->redirect(['site/login']);
+        }
+
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->create))),
+                        'actions' => ['create','autocomplete-siswa','add-row-siswa'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->read))),
+                        'actions' => ['index', 'view'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => ((!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->update))),
+                        'actions' => ['update','autocomplete-siswa','add-row-siswa'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => (!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->delete)),
+                        'actions' => ['delete'],
+                        'roles' => ['@'],
                     ],
                 ],
-            ]
-        );
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -71,16 +105,77 @@ class JawabanKuisionerController extends Controller
         $model = new JawabanKuisioner();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'code' => $model->code, 'nisn' => $model->nisn]);
+            if ($model->load($this->request->post())){
+                $message = "";$success = true;
+                $con = Yii::$app->db ;
+                $transaction = $con->beginTransaction();
+                try {
+                    $model->code = $model->getCode();
+                    $JawabanKuisionerDetail = $this->request->post()['JawabanKuisionerDetail'];
+                    if(!empty($JawabanKuisionerDetail)){
+                        foreach ($JawabanKuisionerDetail as $key => $value) {
+                           
+                            $detail = new JawabanKuisionerDetail();
+                            $detail->code_jawaban = $model->code;
+                            $detail->code_kuisioner = $value['code'];
+                            $detail->jawaban = $value['pertanyaan'];
+                            if(!$detail->save()){
+                                foreach($detail->errors as $error=>$value)
+                                {
+                                    $message .= $value[0];
+                                }
+                                $success = false;
+                                Yii::$app->session->setFlash('error',$message); 
+                                $transaction->rollBack();
+                            }
+                        }
+                    }else{
+                        $success = false;
+                        $message = "Gagal Input Magang Detail";
+                    }
+
+        
+                    if(!$model->save()){
+                        foreach($model->errors as $error=>$value)
+                        {
+                            $message .= $value[0];
+                        }
+                        $success = false;
+                        Yii::$app->session->setFlash('error',$message); 
+                        $transaction->rollBack();
+                    }
+
+                    if($success){
+                        $transaction->commit();
+                        return $this->redirect(['view', 'code' => $model->code, 'nisn' => $model->nisn]);
+                    }else{
+                        Yii::$app->session->setFlash('error',"Gagal Simpan Data Magang");
+                    }
+                } catch (\Exception $e) {
+                    Yii::$app->session->setFlash('error',$e->getMessage());
+                    $transaction->rollBack();
+                }
+               
             }
         } else {
             $model->loadDefaultValues();
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        $magang = MagangDetail::find()->where(['nisn' => Yii::$app->user->identity->nis])->one();
+        $model->nisn = isset($magang->nisn) ?$magang->nisn : '';
+        $model->nama = isset($magang->nama) ?$magang->nama : '';
+        $model->rombel = isset($magang->rombel) ?$magang->rombel : '';
+        $model->jurusan = isset($magang->siswa->jurusan->nama) ? $magang->siswa->jurusan->nama : '';
+        
+        if(!empty($model->nisn)){
+            $pertanyaan = MasterKuisioner::find()->where(['type' => 'MAGANG'])->andWhere("code_jurusan = '".$magang->siswa->code_jurusan."' or code_jurusan = '' ")->all();
+            return $this->render('create', [
+                'model' => $model,
+                'pertanyaan' => $pertanyaan,
+            ]);
+        }else{
+            Yii::$app->session->setFlash('warning',"Menu ini untuk siswa yang mengambil program magan dan belum mengisi kuisioner");
+            return $this->redirect('site');
+        }
     }
 
     /**

@@ -12,39 +12,47 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
-        <div class="col-sm-4 hide">
-            <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+        <div class="col-sm-4">
+            <?= isset($model->code) ? $form->field($model, 'code')->textInput(['maxlength' => true,'readOnly' => true]) : ''; ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <?= $form->field($model, 'nisn')->textInput(['maxlength' => true,'autocomplete' => 'off','readOnly' => true]) ?>
+        </div>
+        <div class="col-sm-4">
+            <?= $form->field($model, 'nama')->textInput(['maxlength' => true,'autocomplete' => 'off','readOnly' => true]) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <?= $form->field($model, 'rombel')->textInput(['maxlength' => true,'autocomplete' => 'off','readOnly' => true]) ?>
+        </div>
+        <div class="col-sm-3">
+            <?= $form->field($model, 'jurusan')->textInput(['maxlength' => true,'autocomplete' => 'off','readOnly' => true]) ?>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'nisn')->textInput(['maxlength' => true]) ?>
+            <fieldset>
+                <legend>Pertanyaan</legend>
+                <?php if(!empty($pertanyaan)): ?>
+                        <?php foreach ($pertanyaan as $key => $data) { ?>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="hidden" id="JawabanKuisionerDetail-<?= $data['code'] ?>-code" class="form-control" name="JawabanKuisionerDetail[<?= $data['code'] ?>][code][" value='<?= $data['code'] ?>' readOnly>
+                                    <label for="font-12"><?= $data['pertanyaan'] ?></label>
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" name="JawabanKuisionerDetail[<?= $data['code'] ?>][pertanyaan]" id="JawabanKuisionerDetail-<?= $data['code'] ?>-code"></textarea>
+                                </div>
+                            </div>
+                                <br>
+                        <?php } ?>
+                <?php endif; ?>
+            </fieldset>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <?= $form->field($model, 'nama')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
-    <fieldset>
-        <legend>Pertanyaan</legend>
-        <?php if(!empty($model->dataDetail)): ?>
-                <?php foreach ($model->dataDetail as $key => $data) { ?>
-                    <table class="">
-                    <tr data-no='<?= $key ?>'  data-nisn='<?= $data['nisn'] ?>'>
-                        <td><?= $no++; ?><input type="hidden" id="number_<?= $key ?>" class="form-control" name="number[<?= $key ?>]" value='<?= $key ?>' readOnly></td>
-                        <td><?= isset($data['nisn']) ? $data['nisn'] : ''; ?><input type="hidden" id="MagangDetail-nisn_<?= $key ?>" class="form-control" name="MagangDetail[<?= $key ?>][nisn]" value='<?= $data['nisn'] ?>'  readOnly></td>
-                        <td><?= isset($data['nama']) ? $data['nama'] : ''; ?><input type="hidden" id="MagangDetail-nama_<?= $key ?>" class="form-control" name="MagangDetail[<?= $key ?>][nama]" value='<?= $data['nama'] ?>' readOnly></td>
-                        <td><?= isset($data['rombel']) ? $data['rombel'] : ''; ?><input type="hidden" id="MagangDetail-rombel_<?= $key ?>" class="form-control" name="MagangDetail[<?= $key ?>][rombel]"  value='<?= $data['rombel'] ?>' readOnly></td>
-                        <td>
-                            <button class='btn btn-warning btn-flat btn-sm btn-edit' type='button' title='Edit'><i class='fontello icon-pencil'></i></button>
-                            &nbsp;
-                            <button class='btn btn-danger btn-flat btn-sm' id='btn-delete' type='button' title='Delete'><i class='fontello icon-trash'></i></button>
-                        </td>
-                    </table>
-                <?php } ?>
-        <?php endif; ?>
-    </fieldset>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

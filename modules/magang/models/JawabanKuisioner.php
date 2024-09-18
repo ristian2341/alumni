@@ -6,6 +6,8 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
+use app\modules\magang\models\JawabanKuisionerDetail;
+
 /**
  * This is the model class for table "jawaban_kuisioner".
  *
@@ -19,6 +21,9 @@ use yii\behaviors\TimestampBehavior;
  */
 class JawabanKuisioner extends \yii\db\ActiveRecord
 {
+
+    public $rombel,$jurusan;
+
     /**
      * {@inheritdoc}
      */
@@ -44,7 +49,7 @@ class JawabanKuisioner extends \yii\db\ActiveRecord
             [['created_at', 'updated_at','status_data'], 'integer'],
             [['code', 'created_by', 'updated_by'], 'string', 'max' => 15],
             [['nisn'], 'string', 'max' => 100],
-            [['nama'], 'string', 'max' => 150],
+            [['nama','rombel','jurusan'], 'string', 'max' => 150],
         ];
     }
 
@@ -57,6 +62,8 @@ class JawabanKuisioner extends \yii\db\ActiveRecord
             'code' => 'Code',
             'nisn' => 'Nisn',
             'nama' => 'Nama',
+            'rombel' => 'Rombel',
+            'jurusan' => 'Jurusan',
             'status_data' => 'Status Data',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
@@ -65,5 +72,21 @@ class JawabanKuisioner extends \yii\db\ActiveRecord
         ];
     }
 
-    
+    public function getCode()
+    {
+        $sDate = date('Ymd');
+        $count = $this->find()->where(['like','code',$sDate])->count();
+        $n = 0;
+        if($count > 0){
+            $model = $this->find()->where(['like','code',$sDate])->orderBy(['code' => SORT_DESC])->one();
+            $n = (int)substr($model->code, -4);
+        }
+        return (string) $sDate.sprintf('%04s', ($n +1));
+    }
+
+    public function getJawabanDetail()
+    {
+        return $this->hasMany(JawabanKuisionerDetail::className(),['code_jawaban' => 'code']);
+    }
+
 }
