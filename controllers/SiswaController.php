@@ -12,7 +12,6 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
 
-
 //excel
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -32,46 +31,47 @@ class SiswaController extends Controller
      */
     public function behaviors()
     {
-        if(isset(Yii::$app->user->identity)){
-            return array_merge(
-                parent::behaviors(),
-                [
-                   'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                            [
-                                'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->create))),
-                                'actions' => ['create'],
-                                'roles' => ['@'],
-                            ],
-                            [
-                                'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->read))),
-                                'actions' => ['index', 'view','import-excel'],
-                                'roles' => ['@'],
-                            ],
-                            [
-                                'allow' => ((!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('data_siswa')->update))),
-                                'actions' => ['update'],
-                                'roles' => ['@'],
-                            ],
-                            [
-                                'allow' => (!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->delete)),
-                                'actions' => ['delete'],
-                                'roles' => ['@'],
-                            ],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_siswa')->create)))),
+                            'actions' => ['create'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_siswa')->read)))),
+                            'actions' => ['index', 'view','import-excel'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_siswa')->update)))),
+                            'actions' => ['update'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => (!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_siswa')->delete))),
+                            'actions' => ['delete'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['profile-update'],
                         ],
                     ],
-                    'verbs' => [
-                        'class' => VerbFilter::className(),
-                        'actions' => [
-                            'delete' => ['POST'],
-                        ],
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
-                ]
-            );
-        }else{
-            return $this->redirect(['site/login']);
-        }
+                ],
+            ]
+        );
+    
     }
 
     /**
@@ -418,5 +418,34 @@ class SiswaController extends Controller
         }
 
         return ['success' => $success,'message' => $message];
+    }
+
+    public function actionProfileUpdate()
+    {
+       
+        if(!empty(Yii::$app->user->identity->nis)){
+            $model = Siswa::find()->where(['nisn' => Yii::$app->user->identity->nis])->one();
+        }else{
+            $model = new Siswa();
+        }
+       
+        if($this->request->isPost && $model->load($this->request->post())) 
+        {
+            
+            if(!$model->save()){
+                foreach($model->errors as $error=>$value)
+                {
+                    $message .= $value[0];
+                }
+                Yii::$app->session->setFlash('error',$message); 
+            }
+            return $this->redirect(['view', 'code' => $model->code]);
+        }
+
+        $status_siswa = StatusSiswa::find()->select("status")->indexBy("id")->column();
+        return $this->render('profile_siswa', [
+            'model' => $model,
+            'status_siswa' => $status_siswa,
+        ]);
     }
 }

@@ -26,31 +26,27 @@ class JawabanKuisionerController extends Controller
      */
     public function behaviors()
     {
-        if(!isset(Yii::$app->user->identity)){
-            return $this->redirect(['site/login']);
-        }
-
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->create))),
+                        'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->create)))),
                         'actions' => ['create','autocomplete-siswa','add-row-siswa'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->read))),
+                        'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->read)))),
                         'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => ((!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->update))),
+                        'allow' => ((!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->update)))),
                         'actions' => ['update','autocomplete-siswa','add-row-siswa'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->delete)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('isi-kuisioner-magang')->delete))),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],

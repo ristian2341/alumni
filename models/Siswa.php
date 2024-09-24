@@ -103,14 +103,14 @@ class Siswa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tgl_lahir','lintang','bujur'], 'safe'],
+            [['tgl_lahir','lintang','bujur','mulai_bekerja'], 'safe'],
             [['skhun', 'nama_di_kip', 'anak_keberapa','berat_badan', 'tinggi_badan', 'lingkar_kepala', 'jml_saudara', 'jarak_rumah','created_at','updated_at','tgl_lahir_ayah','tgl_lahir_ibu', 'tgl_lahir_wali','id_status_siswa'], 'integer'],
             [['alasan_layak_pip'], 'string'],
             [['nipd', 'nisn', 'nik','created_by','updated_by','code_jurusan'], 'string', 'max' => 16],
-            [['nama', 'alamat', 'sekolah_asal'], 'string', 'max' => 150],
+            [['nama', 'alamat', 'sekolah_asal','alamat_perusahaan','jenis_usaha','lokasi_usaha','nama_universitas','jurusan_kuliah'], 'string', 'max' => 150],
             [['jen_kelamin'], 'string', 'max' => 1],
-            [['foto'], 'string', 'max' => 255],
-            [['tempat_lahir', 'dusun', 'kelurahan', 'kecamatan', 'kabupaten', 'jenis_tinggal', 'alat_transportasi', 'email', 'nama_ayah', 'pendidikan_ayah', 'pekerjaan_ayah', 'penghasilan_ayah', 'nik_ayah', 'nama_ibu', 'pendidikan_ibu', 'pekerjaan_ibu', 'penghasilan_ibu', 'nik_ibu', 'nama_wali', 'pendidikan_wali', 'pekerjaan_wali', 'penghasilan_wali', 'nik_wali', 'rombel_now', 'no_peserta_ujian', 'no_seri_ijazah', 'nomor_kip', 'nomor_kks', 'no_akta_lahir', 'bank', 'no_rekening_bank', 'atas_nama_rekening','kebutuhan_khusus'], 'string', 'max' => 100],
+            [['foto','sosial_media'], 'string', 'max' => 255],
+            [['tempat_lahir', 'dusun', 'kelurahan', 'kecamatan', 'kabupaten', 'jenis_tinggal', 'alat_transportasi', 'email', 'nama_ayah', 'pendidikan_ayah', 'pekerjaan_ayah', 'penghasilan_ayah', 'nik_ayah', 'nama_ibu', 'pendidikan_ibu', 'pekerjaan_ibu', 'penghasilan_ibu', 'nik_ibu', 'nama_wali', 'pendidikan_wali', 'pekerjaan_wali', 'penghasilan_wali', 'nik_wali', 'rombel_now', 'no_peserta_ujian', 'no_seri_ijazah', 'nomor_kip', 'nomor_kks', 'no_akta_lahir', 'bank', 'no_rekening_bank', 'atas_nama_rekening','kebutuhan_khusus','whatsapp','perusahaan','jabatan'], 'string', 'max' => 100],
             [['rt', 'rw','tahun_lulus'], 'string', 'max' => 5],
             [['kode_pos'], 'string', 'max' => 10],
             [['phone', 'handphone'], 'string', 'max' => 15],
@@ -198,6 +198,17 @@ class Siswa extends \yii\db\ActiveRecord
             'id_status_siswa' => 'Status Siswa',
             'tahun_lulus' => 'Tahun Lulus',
             'code_jurusan' => 'Jurusan',
+            'whatsapp' => 'Nomor WA',
+            'perusahaan' => 'Nama Perusahaan',
+            'alamat_perusahaan' => 'Alamat Perusahaan',
+            'jabatan' => 'Jabatan',
+            'jabatan' => 'Jabatan',
+            'mulai_bekerja' => 'Mulai Bekerja',
+            'jenis_usaha' => 'Jenis Usaha',
+            'lokasi_usaha' => 'Lokasi Usaha',
+            'nama_universitas' => 'Nama Universitas',
+            'jurusan_kuliah' => 'Jurusan Kuliah',
+            'sosial_media' => 'Sosial Media (exp : Facebook : test@gmail.com)',
         ];
     }
 
@@ -221,6 +232,8 @@ class Siswa extends \yii\db\ActiveRecord
 
     public function getJurusan()
     {
+        return $this->hasOne(Jurusan::className(),['code'=>'code_jurusan']);
+        return $this->hasOne(Jurusan::className(),['code'=>'code_jurusan']);
         return $this->hasOne(Jurusan::className(),['code'=>'code_jurusan']);
     }
 

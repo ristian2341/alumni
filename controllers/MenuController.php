@@ -22,30 +22,27 @@ class MenuController extends Controller
      */
     public function behaviors()
     {
-        if(empty(Yii::$app->user->identity)){
-            return $this->redirect(['site/login']);
-        }
         return [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' =>  (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('menu')->create)),
+                        'allow' =>  (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('menu')->create))),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('menu')->read)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('menu')->read))),
                         'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('menu')->update)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('menu')->update))),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('menu')->delete)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('menu')->delete))),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],

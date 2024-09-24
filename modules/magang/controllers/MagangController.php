@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 use app\models\Siswa;
 
@@ -25,46 +26,44 @@ class MagangController extends Controller
      */
     public function behaviors()
     {
-        if(isset(Yii::$app->user->identity)){
-            return array_merge(
-                parent::behaviors(),
-                [
-                   'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                            [
-                                'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('magang')->create))),
-                                'actions' => ['create','autocomplete-siswa','add-row-siswa'],
-                                'roles' => ['@'],
-                            ],
-                            [
-                                'allow' => ((!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('magang')->read))),
-                                'actions' => ['index', 'view'],
-                                'roles' => ['@'],
-                            ],
-                            [
-                                'allow' => ((!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('magang')->update))),
-                                'actions' => ['update','autocomplete-siswa','add-row-siswa'],
-                                'roles' => ['@'],
-                            ],
-                            [
-                                'allow' => (!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('magang')->delete)),
-                                'actions' => ['delete'],
-                                'roles' => ['@'],
-                            ],
+        
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('magang')->create)))),
+                            'actions' => ['create','autocomplete-siswa','add-row-siswa'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('magang')->read)))),
+                            'actions' => ['index', 'view'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => ((!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('magang')->update)))),
+                            'actions' => ['update','autocomplete-siswa','add-row-siswa'],
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'allow' => (!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('magang')->delete))),
+                            'actions' => ['delete'],
+                            'roles' => ['@'],
                         ],
                     ],
-                    'verbs' => [
-                        'class' => VerbFilter::className(),
-                        'actions' => [
-                            'delete' => ['POST'],
-                        ],
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
-                ]
-            );
-        }else{
-            return $this->redirect(['site/login']);
-        }
+                ],
+            ]
+        );
+        
     }
 
     /**

@@ -22,30 +22,28 @@ class JurusanController extends Controller
      */
     public function behaviors()
     {
-        if(empty(Yii::$app->user->identity)){
-            return $this->redirect(['site/login']);
-        }
+        
         return [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' =>  (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('jurusan')->create)),
+                        'allow' =>  (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('jurusan')->create))),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('jurusan')->read)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('jurusan')->read))),
                         'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('jurusan')->update)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('jurusan')->update))),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('jurusan')->delete)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('jurusan')->delete))),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],
