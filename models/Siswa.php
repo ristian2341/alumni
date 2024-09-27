@@ -79,7 +79,7 @@ use app\modules\master\models\Jurusan;
  */
 class Siswa extends \yii\db\ActiveRecord
 {
-    public $file_upload;
+    public $file_upload,$file;
 
     /**
      * {@inheritdoc}
@@ -116,7 +116,7 @@ class Siswa extends \yii\db\ActiveRecord
             [['phone', 'handphone'], 'string', 'max' => 15],
             [['no_kps'], 'string', 'max' => 50],
             [['no_kk', 'layak_pip'], 'string', 'max' => 20],
-            [['file_upload'], 'file','maxFiles' => 1],
+            [['file_upload','file'], 'file','maxFiles' => 1],
         ];
     }
 
@@ -202,13 +202,13 @@ class Siswa extends \yii\db\ActiveRecord
             'perusahaan' => 'Nama Perusahaan',
             'alamat_perusahaan' => 'Alamat Perusahaan',
             'jabatan' => 'Jabatan',
-            'jabatan' => 'Jabatan',
             'mulai_bekerja' => 'Mulai Bekerja',
             'jenis_usaha' => 'Jenis Usaha',
             'lokasi_usaha' => 'Lokasi Usaha',
             'nama_universitas' => 'Nama Universitas',
             'jurusan_kuliah' => 'Jurusan Kuliah',
             'sosial_media' => 'Sosial Media (exp : Facebook : test@gmail.com)',
+            'file' => 'File Foto',
         ];
     }
 

@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_by',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete} ',
+                'template' => '{view} {update} {profile-update}',
                 'buttons' => [
                     'view' => function($url, $model){
                         return HTML::a("<span class='fas fa-eye'></span>", Url::toRoute(['view', 'code' => $model->code]),[
@@ -143,6 +143,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'code' => $model->code]), [
                                 'class' => 'btn btn-warning btn-xs',
                                 'title' => 'Update',
+                            ]);
+                        }
+                    },
+                    'profile-update' => function($url, $model){
+                        if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->delete)){
+                            return Html::a("<span class='fas fa-check'></span>", '#', [
+                                'class' => 'btn btn-primary btn-xs',
+                                'onclick' => "
+                                if (confirm('Are you sure ?')) {
+                                    $.ajax('".Url::toRoute(['profile-update', 'nisn' => $model->nisn])."', {
+                                        type: 'POST'
+                                    }).done(function(data) {
+                                        $.pjax.reload({container: '#'});
+                                    });
+                                }
+                                return false;
+                                ",
                             ]);
                         }
                     },

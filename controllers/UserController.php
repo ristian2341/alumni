@@ -217,6 +217,5 @@ class UserController extends Controller
     public function actionSendRegister($user_id)
     {
         $model = $this->findModel($user_id);
-        print_r($model);die;
     }
 }

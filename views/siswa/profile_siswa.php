@@ -2,13 +2,58 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\modules\master\models\Jurusan;
 use kartik\select2\Select2;
+use kartik\date\DatePicker;
+use yii\web\JsExpression;
+use app\models\Perusahaan;
+use yii\helpers\Url;
 
 
 /** @var yii\web\View $this */
-/** @var app\models\Siswa $model */
+/** @var app\modules\magang\models\Magang $model */
 /** @var yii\widgets\ActiveForm $form */
+
+
+$resultsJs = <<< JS
+    function (data, params) {
+       // params.page = params.page || 1;
+
+        return {
+            // Change `data.items` to `data.results`.
+            // `results` is the key that you have been selected on
+            // `actionJsonlist`.
+			
+            results: data.results
+        };
+    }
+JS;
+
+$format1line = <<< JS
+	function (item) {
+		var selectionText = item.text.split(";");
+        string="";
+        if(typeof(selectionText[0]) != "undefined" && selectionText[0] !== null) {
+            string=selectionText[0];
+        }
+        string2="";
+        if(typeof(selectionText[1]) != "undefined" && selectionText[1] !== null) {
+            string2=selectionText[1];
+        }
+        
+		// var returnString = '<span style="font-weight:bold;font-size:11px;">'+selectionText[0]+'</span><span style="font-size:11px;">'+selectionText[1]+'</span>';
+		var returnString = '<span style="font-weight:bold;font-size:11px;">'+string+'</span><span style="font-size:11px;">'+string2+'</span>';
+		return returnString;
+	}
+JS;
+
+$format1Selection = <<< JS
+	function (item) {
+        if(item.id){
+            getDataSiswa(item.id);
+            return item.id;
+        }
+	}
+JS;
 
 ?>
 <style>
@@ -69,11 +114,34 @@ use kartik\select2\Select2;
   }
 </style>        
 <div class="siswa-form">
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'class' => 'validate-form'], 'validateOnSubmit' => true]); ?>
         <div class="row">
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-row-12">
+                        <?php if(empty($model->nisn)):?>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <?= $form->field($model, 'nisn')->widget(Select2::classname(), [
+                                            'options' => ['placeholder' => 'Select Header Menu ...'],
+                                            'pluginOptions' => [
+                                                'allowClear' => true,
+                                                'ajax' => [
+                                                    'url' => Url::to(['autocomplete-siswa']),
+                                                    'dataType' => 'json',
+                                                    'type' => 'post',
+                                                    'data' => new JsExpression('function(params) { return {q:params.term};}'),
+                                                    'processResults' => new JsExpression($resultsJs),
+                                                ],
+                                                'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                                                'templateResult' => new JsExpression($format1line),
+                                                'templateSelection' => new JsExpression($format1Selection),
+                                            ],
+                                        ]);
+                                    ?>
+                                </div>
+                            </div>
+                        <?php endif;?>
                         <div class="row">
                             <div class="col-sm-4">
                                 <?= $form->field($model, 'nik')->textInput(['maxlength' => true,'autocomplete' => "off"]) ?>
@@ -83,14 +151,23 @@ use kartik\select2\Select2;
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <?= $form->field($model, 'jen_kelamin')->dropDownList(['L' => 'Laki-Laki','P' => 'Perempuan'],['maxlength' => true,'autocomplete' => "off"]) ?>
                             </div>
                             <div class="col-sm-6">
                                 <?= $form->field($model, 'tempat_lahir')->textInput(['maxlength' => true,'autocomplete' => "off"]) ?>
                             </div>
-                            <div class="col-sm-3">
-                                <?= $form->field($model, 'tgl_lahir')->textInput(['autocomplete' => "off",'value'=> date('d/m/Y',strtotime($model->tgl_lahir))]) ?>
+                            <div class="col-sm-4">
+                                <?= $form->field($model, 'tgl_lahir')->widget(DatePicker::classname(), [
+                                    'options' => [
+                                        'placeholder' => 'Tgl Lahir...',
+                                        'value' => isset($model->tgl_lahir) ? date('d/m/Y',strtotime($model->tgl_lahir)) : '',
+                                        'autocomplete' => 'off'
+                                    ],
+                                    'pluginOptions' => [
+                                        'autoclose' => true
+                                    ]
+                                ]); ?>
                             </div>
                         </div>
                         <div class="row">
@@ -177,8 +254,20 @@ use kartik\select2\Select2;
                             <div class="col-sm-12">
                                 <?= $form->field($model, 'alamat_perusahaan')->textInput(['autocomplete' => "off"]) ?>
                             </div>
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <?= $form->field($model, 'jabatan')->textInput(['autocomplete' => "off"]) ?>
+                            </div>
+                            <div class="col-sm-6">
+                                <?= $form->field($model, 'mulai_bekerja')->widget(DatePicker::classname(), [
+                                    'options' => [
+                                        'placeholder' => 'Mulai Bekerja...',
+                                        'value' => isset($model->mulai_bekerja) ? date('d-m-Y',strtotime($model->mulai_bekerja)) : '',
+                                        'autocomplete' => 'off'
+                                    ],
+                                    'pluginOptions' => [
+                                        'autoclose' => true
+                                    ]
+                                ]); ?>
                             </div>
                         </div>
                     </div>
@@ -187,30 +276,29 @@ use kartik\select2\Select2;
                     <div class="col-sm-1">
                         &nbsp;
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-10">
                         <div class="row">
-                            <?php if(isset($model->foto)): ?>
-                                <div class="col-sm-7">
-                                    <img src="<?= $model->foto; ?>" class="img-block" alt="User Image">
-                                </div>
-                            <?php endif; ?>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 <div class="row">
                                     <div id="gallery" width="230" height="250" class="canvas">
                                         <canvas id="canv" width="230" height="250"></canvas>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <?= $form->field($model, 'file_upload')->fileInput()->label(false); ?>
+                                    <?= $form->field($model, 'file')->fileInput()->label(false); ?>
                                 </div>
                             </div>
+                            <?php if(isset($model->foto)): ?>
+                                <div class="col-sm-6">
+                                    <img src="<?= $model->foto; ?>" class="img-block" alt="User Image">
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
-         
         </div>
-       
+        <br>    
         <div class="form-group">
             <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
@@ -227,31 +315,33 @@ use kartik\select2\Select2;
         if(elem == 'Kuliah'){
             $("#kuliah").show();
         }
+
         if(elem== 'Wiraswasta'){
             $("#wiraswasta").show();
         }
+
         if(elem == 'Bekerja'){
             $("#bekerja").show();
         }
     });
     
-  document.getElementById('siswa-file_upload').onchange = function(e) {
-    let img = new Image();
-    img.onload = draw;
-    img.onerror = failed;
-    img.src = URL.createObjectURL(this.files[0]);
-  };
+    document.getElementById('siswa-file').onchange = function(e) { 
+        let img = new Image();
+        img.onload = draw;
+        img.onerror = failed;
+        img.src = URL.createObjectURL(this.files[0]);
+    };
 
-  function draw() {
-      let canvas = document.getElementById('canv'),
-      ctx = canvas.getContext('2d');
-      ctx.drawImage(this, 0, 0);
-      document.getElementById('gallery').append(canvas);
-  }
+    function draw() {
+        let canvas = document.getElementById('canv'),
+        ctx = canvas.getContext('2d');
+        ctx.drawImage(this, 0, 0);
+        document.getElementById('gallery').append(canvas);
+    }
 
-  function failed() {
-    console.error("The provided file couldn't be loaded as an Image media");
-  }
+    function failed() {
+        console.error("The provided file couldn't be loaded as an Image media");
+    }
 
     $("body").off("change","#siswa-id_status_siswa").on("change","#siswa-id_status_siswa",function(){
         var elem = $("#siswa-id_status_siswa option:selected").text();
@@ -269,4 +359,26 @@ use kartik\select2\Select2;
             $("#bekerja").show();
         }
     });
+
+    function getDataSiswa(nisn)
+    {
+        $.ajax({
+			type: 'POST',
+			url: "<?= Url::to(['siswa/profile-update'])?>",
+            dataType: 'text',
+			data :
+            {
+                'code' : nisn,
+            },
+            success : function(data)
+            {
+                if(data !== '')
+                {
+                    var res=$.parseJSON(data);
+                    console.log(res);
+                    $('#render_content').html(res);
+                }
+            }
+		});	
+    }
 </script>

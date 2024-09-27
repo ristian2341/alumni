@@ -45,6 +45,10 @@ class LowkerController extends Controller
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['info-lowker'],
+                    ],
                 ],
             ],
             'verbs' => [
@@ -236,6 +240,12 @@ class LowkerController extends Controller
         $result = ['results' => ['id' => '', 'text' => '']];
         $result['results'] = $data_maklon;
         return $result;
+    }
+
+    public function actionInfoLowker()
+    {
+        $model = Lowker::find()->where(['>=','tgl_post',date('Y-m-d')])->andWhere(['<=','tgl_post',date('Y-m-d')])->all();
+        print_r($model);die;
     }
 
 }

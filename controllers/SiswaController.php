@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
+use yii\helpers\Json;
 
 //excel
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -20,6 +21,7 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+
 
 /**
  * SiswaController implements the CRUD actions for Siswa model.
@@ -44,7 +46,7 @@ class SiswaController extends Controller
                         ],
                         [
                             'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_siswa')->read)))),
-                            'actions' => ['index', 'view','import-excel'],
+                            'actions' => ['index', 'view','import-excel','profile-update','autocomplete-siswa','data-siswa'],
                             'roles' => ['@'],
                         ],
                         [
@@ -57,10 +59,10 @@ class SiswaController extends Controller
                             'actions' => ['delete'],
                             'roles' => ['@'],
                         ],
-                        [
-                            'allow' => true,
-                            'actions' => ['profile-update'],
-                        ],
+                        // [
+                        //     'allow' => true,
+                        //     'actions' => ['profile-update','autocomplete-siswa','data-siswa'],
+                        // ],
                     ],
                 ],
                 'verbs' => [
@@ -136,7 +138,7 @@ class SiswaController extends Controller
     {
         $model = $this->findModel($code);
 
-        if ($this->request->isPost && $model->load($this->request->post())) 
+        if($this->request->isPost && $model->load($this->request->post())) 
         {
             if(!$model->save()){
                 foreach($model->errors as $error=>$value)
@@ -422,30 +424,119 @@ class SiswaController extends Controller
 
     public function actionProfileUpdate()
     {
-       
-        if(!empty(Yii::$app->user->identity->nis)){
-            $model = Siswa::find()->where(['nisn' => Yii::$app->user->identity->nis])->one();
-        }else{
-            $model = new Siswa();
-        }
-       
-        if($this->request->isPost && $model->load($this->request->post())) 
-        {
-            
-            if(!$model->save()){
-                foreach($model->errors as $error=>$value)
-                {
-                    $message .= $value[0];
-                }
-                Yii::$app->session->setFlash('error',$message); 
-            }
-            return $this->redirect(['view', 'code' => $model->code]);
-        }
+        $nisn = isset($_GET['nisn']) ? $_GET['nisn'] : Yii::$app->user->identity->nis;
+        $success = true;$message="";
 
-        $status_siswa = StatusSiswa::find()->select("status")->indexBy("id")->column();
-        return $this->render('profile_siswa', [
-            'model' => $model,
-            'status_siswa' => $status_siswa,
-        ]);
+        $model = Siswa::find()->where(['nisn' => $nisn])->one();
+        
+        if(!empty($model)){
+            if($this->request->isPost) 
+            {
+                if($model->load($this->request->post())){
+    
+                    $connection = \Yii::$app->db;
+                    $transaction = $connection->beginTransaction();
+                    try {
+                        $model->file = UploadedFile::getInstance($model, 'file');
+                        if(!empty($model->file)){
+                            $path = 'img/foto_siswa/'.$model->nisn."/";
+                            if(!file_exists ($path))
+                            {
+                                mkdir($path, 0777, true);
+                            }
+                            
+                            $model->file->saveAs($path. $model->nisn . '.' . $model->file->extension);
+                            $model->foto = $path.$model->nisn .'.'. $model->file->extension;
+                        }
+                        
+                        if($model->id_status_siswa == 1 || $model->id_status_siswa == 2){
+                            $model->perusahaan = "";
+                            $model->alamat_perusahaan = "";
+                            $model->jabatan = "";
+                            $model->mulai_bekerja = "";
+                            $model->jenis_usaha = "";
+                            $model->lokasi_usaha = "";
+                            $model->nama_universitas = "";
+                            $model->jurusan_kuliah = "";
+                        }
+                        if($model->id_status_siswa == 3){
+                            $model->perusahaan = "";
+                            $model->alamat_perusahaan = "";
+                            $model->jabatan = "";
+                            $model->mulai_bekerja = "";
+                            $model->jenis_usaha = "";
+                            $model->lokasi_usaha = "";
+                        }
+                        if($model->id_status_siswa == 4){
+                            $model->perusahaan = "";
+                            $model->alamat_perusahaan = "";
+                            $model->jabatan = "";
+                            $model->mulai_bekerja = "";
+                            $model->nama_universitas = "";
+                            $model->jurusan_kuliah = "";
+                        }
+                        if($model->id_status_siswa == 5){
+                            $model->jenis_usaha = "";
+                            $model->lokasi_usaha = "";
+                            $model->nama_universitas = "";
+                            $model->jurusan_kuliah = "";
+                            $model->mulai_bekerja = date('Y-m-d',strtotime($model->mulai_bekerja));
+                        }
+                        
+                        if(!$model->save()){
+                            foreach($model->errors as $error=>$value)
+                            {
+                                $message .= $value[0];
+                            }
+                            Yii::$app->session->setFlash('error',$message); 
+                        }
+        
+                        if($success){
+                            $transaction->commit();
+                        }
+                    } catch (\Exception $e) {
+                        $transaction->rollback();
+                        $message = $e->getMessage();
+                    }
+                }
+            }
+
+            $status_siswa = StatusSiswa::find()->select("status")->indexBy("id")->column();
+            return $this->render('profile_siswa', [
+                'model' => $model,
+                'status_siswa' => $status_siswa
+            ]);
+        }else{
+            Yii::$app->session->setFlash('error',"Anda tidak memiliki akses untuk halaman ini"); 
+            return $this->redirect('site');
+        }
     }
+
+    public function actionAutocompleteSiswa()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $result = [];$data=[];$datasiswa = [];
+        $q = isset($_POST['q']) ? $_POST['q'] : '';
+        if($q != ''){
+            $data = Siswa::find()->Where("(nama like '%".$q."%' or nisn like '%".$q."%')")->limit(50)->all();
+        }else{
+            $data = Siswa::find()->limit(50)->all();
+        }
+        
+        if(!empty($data)){
+            foreach ($data as $key => $val){
+                $datasiswa[$key]=[
+                    'id' => $val['nisn'],
+                    'text' => "[".$val['nisn']."] ".$val['nama'],
+                    'nama' => $val['nama'],
+                    'rombel' => $val['rombel_now'],
+                ];
+            }
+        }
+        
+        $result = ['results' => ['id' => '', 'text' => '']];
+        $result['results'] = $datasiswa;
+        return $result;
+    }
+
 }
