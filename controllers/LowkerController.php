@@ -244,8 +244,11 @@ class LowkerController extends Controller
 
     public function actionInfoLowker()
     {
-        $model = Lowker::find()->where(['>=','tgl_post',date('Y-m-d')])->andWhere(['<=','tgl_post',date('Y-m-d')])->all();
-        print_r($model);die;
+        $model = Lowker::find()->where(['<=','tgl_post',date('Y-m-d')])->andWhere(['>=','tgl_last',date('Y-m-d')])->all();
+        
+        return $this->render("info-lowker",[
+            'model' => $model,
+        ]);
     }
 
 }
