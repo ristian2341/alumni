@@ -32,10 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => ['class' => 'table table-striped table-bordered custom-dataTable dataTable'],
+        'filterSelector' => 'select[name="per-page"]',
         'pager' => [
             'class' => 'yii\bootstrap4\LinkPager',
             'firstPageLabel' => 'First',
-            'lastPageLabel'  => 'Last'
+            'lastPageLabel'  => 'Last',
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],

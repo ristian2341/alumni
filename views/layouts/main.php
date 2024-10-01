@@ -39,7 +39,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         <script src="<?= Yii::getAlias('@web/'."js/jquery-3.6.0.min.js"); ?>"></script>
         <?php $this->head() ?>
     </head>
-    <body class="layout-fixed layout-footer-fixed sidebar-collapse">
+    <body class="control-sidebar-slide-open layout-fixed layout-footer-fixed sidebar-collapse layout-navbar-fixed">
     <?php $this->beginBody() ?>
         <div class="wrapper">
             <!-- Navbar -->
