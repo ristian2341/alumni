@@ -94,7 +94,7 @@ $this->registerJs(
                         <?= $form->field($model, 'tgl_post')->widget(DatePicker::classname(), [
                                 'options' => [
                                     'placeholder' => 'Tanggal Post...',
-                                    'value' => date('d/m/Y'),
+                                    'value' => isset($model->tgl_post) ? date('d-m-Y',strtotime($model->tgl_post)) : date('d-m-Y'),
                                     'autocomplete' => 'off'
                                 ],
                                 'pluginOptions' => [
@@ -107,7 +107,7 @@ $this->registerJs(
                         <?= $form->field($model, 'tgl_last')->widget(DatePicker::classname(), [
                                 'options' => [
                                     'placeholder' => 'Tgl Akhir Lowker...',
-                                    'value' => date('d/m/Y',strtotime("+1 month",strtotime(date('Y-m-d')))),
+                                    'value' => isset($model->tgl_last) ? date('d-m-Y',strtotime($model->tgl_last)) :  date('d-m-Y',strtotime("+1 month",strtotime(date('Y-m-d')))),
                                     'autocomplete' => 'off'
                                 ],
                                 'pluginOptions' => [

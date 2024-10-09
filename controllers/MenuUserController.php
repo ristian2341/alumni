@@ -20,30 +20,27 @@ class MenuUserController extends Controller
      */
     public function behaviors()
     {
-        if(empty(Yii::$app->user->identity)){
-            return $this->redirect(['site/login']);
-        }
         return [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->create),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->create)),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->read),
+                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->read)),
                         'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->update),
+                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->update)),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->delete),
+                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('hak_akses_user')->delete)),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],

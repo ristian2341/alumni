@@ -26,24 +26,28 @@ class LowkerController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('lowongan_kerja')->create),
+                        'allow' =>  !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('lowongan_kerja')->create)),
                         'actions' => ['create','data-perusahaan'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('lowongan_kerja')->read),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('lowongan_kerja')->read)),
                         'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('lowongan_kerja')->update),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('lowongan_kerja')->update)),
                         'actions' => ['update','data-perusahaan'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('lowongan_kerja')->delete),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('lowongan_kerja')->delete)),
                         'actions' => ['delete'],
                         'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['info-lowker'],
                     ],
                 ],
             ],
@@ -236,6 +240,15 @@ class LowkerController extends Controller
         $result = ['results' => ['id' => '', 'text' => '']];
         $result['results'] = $data_maklon;
         return $result;
+    }
+
+    public function actionInfoLowker()
+    {
+        $model = Lowker::find()->where(['<=','tgl_post',date('Y-m-d')])->andWhere(['>=','tgl_last',date('Y-m-d')])->all();
+        
+        return $this->render("info-lowker",[
+            'model' => $model,
+        ]);
     }
 
 }

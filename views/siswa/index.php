@@ -8,6 +8,7 @@ use yii\grid\GridView;
 use yii\bootstrap4\Modal;
 use yii\widgets\ActiveForm;
 use app\modules\master\models\Jurusan;
+use app\models\StatusSiswa;
 
 
 /** @var yii\web\View $this */
@@ -32,10 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => ['class' => 'table table-striped table-bordered custom-dataTable dataTable'],
+        'filterSelector' => 'select[name="per-page"]',
         'pager' => [
             'class' => 'yii\bootstrap4\LinkPager',
             'firstPageLabel' => 'First',
-            'lastPageLabel'  => 'Last'
+            'lastPageLabel'  => 'Last',
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -67,7 +69,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ($model->jen_kelamin == 'L') ?  'Laki-Laki' : 'Perempuan';
                 }
             ],
-          
+            [
+                'headerOptions' => ['style' => 'width:170px;'],
+                'attribute' => 'id_status_siswa',
+                'filter' => StatusSiswa::find()->select('status')->where(['status_data' => 1])->indexBy('id')->column(),
+                'value' => function($model){
+                    return (isset($model->statusSiswa)) ?  $model->statusSiswa : 'Belum Lulus';
+                }
+            ],
+            
             // 'tgl_lahir',
             //'alamat',
             //'rt',
@@ -131,11 +141,12 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_by',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete} ',
+                'template' => '{view} {update} {profile-update}',
                 'buttons' => [
                     'view' => function($url, $model){
                         return HTML::a("<span class='fas fa-eye'></span>", Url::toRoute(['view', 'code' => $model->code]),[
                             'class' => 'btn btn-info btn-xs',
+                            'title' => 'View',
                         ]);
                     },
                     'update' => function($url, $model){
@@ -143,6 +154,20 @@ $this->params['breadcrumbs'][] = $this->title;
                             return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'code' => $model->code]), [
                                 'class' => 'btn btn-warning btn-xs',
                                 'title' => 'Update',
+                            ]);
+                        }
+                    },
+                    'profile-update' => function($url, $model){
+                        if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('data_siswa')->delete)){
+                            return Html::a("<span class='fas fa-check'></span>", '#', [
+                                'class' => 'btn btn-primary btn-xs',
+                                'title' => 'Update Profile',
+                                'onclick' => "
+                                if (confirm('Are you sure update profile ?')) {
+                                    window.open('".Url::toRoute(['profile-update', 'nisn' => $model->nisn])."');
+                                }
+                                return false;
+                                ",
                             ]);
                         }
                     },

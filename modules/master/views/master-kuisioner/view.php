@@ -13,12 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="master-kuisioner-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
     <p>
-        <?= Html::a('Update', ['update', 'code' => $model->code], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Create', ['create'], ['class' => 'btn btn-sm btn-success']) ?>
+        <?= Html::a('Update', ['update', 'code' => $model->code], ['class' => 'btn btn-sm btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'code' => $model->code], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-sm btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',

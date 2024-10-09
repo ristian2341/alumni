@@ -3,6 +3,7 @@
 namespace app\modules\magang\models;
 
 use Yii;
+use app\modules\master\models\MasterKuisioner;
 
 /**
  * This is the model class for table "jawaban_kuisioner_detail".
@@ -13,6 +14,8 @@ use Yii;
  */
 class JawabanKuisionerDetail extends \yii\db\ActiveRecord
 {
+
+    public $pertanyaan;
     /**
      * {@inheritdoc}
      */
@@ -29,7 +32,7 @@ class JawabanKuisionerDetail extends \yii\db\ActiveRecord
         return [
             [['code_kuisioner','jawaban'], 'required'],
             [['code_jawaban', 'code_kuisioner'], 'string', 'max' => 15],
-            [['jawaban'], 'string'],
+            [['jawaban','pertanyaan'], 'string'],
             [['code_jawaban', 'code_kuisioner'], 'unique', 'targetAttribute' => ['code_jawaban', 'code_kuisioner']],
         ];
     }
@@ -42,7 +45,13 @@ class JawabanKuisionerDetail extends \yii\db\ActiveRecord
         return [
             'code_jawaban' => 'Code Jawaban',
             'code_kuisioner' => 'Code Kuisioner',
+            'pertanyaan' => 'Pertanyaan',
             'jawaban' => 'Jawaban',
         ];
+    }
+
+    public function getDataPertanyaan()
+    {
+        return $this->hasOne(MasterKuisioner::className(),['code' => 'code_kuisioner']);
     }
 }

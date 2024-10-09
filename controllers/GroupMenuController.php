@@ -22,33 +22,31 @@ class GroupMenuController extends Controller
      */
     public function behaviors()
     {
-        if(!isset(Yii::$app->user->identity)){
-            return $this->redirect(['site/login']);
-        }
+     
         return array_merge(
             parent::behaviors(),
             [
                'access' => [
-                'class' => AccessControl::class,
+                'class' => AccessControl::className(),
                 'rules' => [
                         [
-                            'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('group_menu')->create),
                             'actions' => ['create'],
+                            'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('group_menu')->create))),
                             'roles' => ['@'],
                         ],
                         [
-                            'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('group_menu')->read),
                             'actions' => ['index', 'view'],
+                            'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('group_menu')->read))),
                             'roles' => ['@'],
                         ],
                         [
-                            'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('group_menu')->update),
                             'actions' => ['update'],
+                            'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('group_menu')->update))),
                             'roles' => ['@'],
                         ],
                         [
-                            'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('group_menu')->delete),
                             'actions' => ['delete'],
+                            'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('group_menu')->delete))),
                             'roles' => ['@'],
                         ],
                     ],

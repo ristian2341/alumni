@@ -3,6 +3,7 @@
 namespace app\modules\magang\models;
 
 use Yii;
+use app\models\Siswa;
 
 /**
  * This is the model class for table "magang_detail".
@@ -46,5 +47,10 @@ class MagangDetail extends \yii\db\ActiveRecord
             'nama' => 'Nama',
             'rombel' => 'Code Jurusan',
         ];
+    }
+
+    public function getSiswa()
+    {
+        return $this->hasOne(Siswa::className(),['nisn'=>'nisn']);
     }
 }

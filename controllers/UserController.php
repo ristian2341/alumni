@@ -25,22 +25,22 @@ class UserController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('user')->create),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('user')->create)),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('user')->read),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('user')->read)),
                         'actions' => ['index', 'view','send-register'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('user')->update),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('user')->update)),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => !empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('user')->delete),
+                        'allow' => !empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('user')->delete)),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],
@@ -217,6 +217,5 @@ class UserController extends Controller
     public function actionSendRegister($user_id)
     {
         $model = $this->findModel($user_id);
-        print_r($model);die;
     }
 }

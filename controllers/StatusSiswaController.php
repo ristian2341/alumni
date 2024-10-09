@@ -21,9 +21,6 @@ class StatusSiswaController extends Controller
      */
     public function behaviors()
     {
-        if(!isset(Yii::$app->user->identity)){
-            return $this->redirect(['site/login']);
-        }
         return array_merge(
             parent::behaviors(),
             [
@@ -31,22 +28,22 @@ class StatusSiswaController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                         [
-                            'allow' => !empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('status_siswa')->create),
+                            'allow' => !empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('status_siswa')->create)),
                             'actions' => ['create'],
                             'roles' => ['@'],
                         ],
                         [
-                            'allow' => !empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('status_siswa')->read),
+                            'allow' => !empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('status_siswa')->read)),
                             'actions' => ['index', 'view'],
                             'roles' => ['@'],
                         ],
                         [
-                            'allow' => !empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('status_siswa')->update),
+                            'allow' => !empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('status_siswa')->update)),
                             'actions' => ['update'],
                             'roles' => ['@'],
                         ],
                         [
-                            'allow' => !empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('status_siswa')->delete),
+                            'allow' => !empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('status_siswa')->delete)),
                             'actions' => ['delete'],
                             'roles' => ['@'],
                         ],
