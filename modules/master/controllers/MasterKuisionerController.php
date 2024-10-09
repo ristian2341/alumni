@@ -21,30 +21,28 @@ class MasterKuisionerController extends Controller
      */
     public function behaviors()
     {
-        if(empty(Yii::$app->user->identity)){
-            return $this->redirect(['site/login']);
-        }
+        
         return [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow' =>  (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('master-kuisioner')->create)),
+                        'allow' =>  (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('master-kuisioner')->create))),
                         'actions' => ['create'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('master-kuisioner')->read)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('master-kuisioner')->read))),
                         'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('master-kuisioner')->update)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('master-kuisioner')->update))),
                         'actions' => ['update'],
                         'roles' => ['@'],
                     ],
                     [
-                        'allow' => (!empty(Yii::$app->user->identity->developer)  || !empty(Yii::$app->user->identity->getMenu('master-kuisioner')->delete)),
+                        'allow' => (!empty(Yii::$app->user->identity->developer)  || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('master-kuisioner')->delete))),
                         'actions' => ['delete'],
                         'roles' => ['@'],
                     ],

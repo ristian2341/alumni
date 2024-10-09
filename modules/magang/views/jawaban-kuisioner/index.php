@@ -53,13 +53,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{view} {update} ',
                 'buttons' => [
                     'view' => function($url, $model){
-                        return HTML::a("<span class='fas fa-eye'></span>", Url::toRoute(['view', 'code' => $model->code]),[
+                        return HTML::a("<span class='fas fa-eye'></span>", Url::toRoute(['view', 'code' => $model->code,'nisn' => $model->nisn]),[
                             'class' => 'btn btn-info btn-xs',
                         ]);
                     },
                     'update' => function($url, $model){
                         if(!empty(Yii::$app->user->identity->developer) || !empty(Yii::$app->user->identity->getMenu('magang')->update)){
-                            return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'code' => $model->code]), [
+                            return HTML::a("<span class='fas fa-pencil-alt'></span>",Url::toRoute(['update', 'code' => $model->code,'nisn' => $model->nisn]), [
                                 'class' => 'btn btn-warning btn-xs',
                                 'title' => 'Update',
                             ]);

@@ -236,8 +236,7 @@ use kartik\select2\Select2;
                             <div class="col-sm-6">
                                 <?= $form->field($model, 'id_status_siswa')->dropDownList($status_siswa,['autocomplete' => "off"]) ?>
                             </div>
-                            <div class="col-sm-6">
-                                
+                            <div class="col-sm-6">               
                                 <?=  $form->field($model, 'code_jurusan')->widget(Select2::classname(), [
                                         'data' => Jurusan::find()->where(['status_data'=>1])->select("nama")->indexBy("code")->column(),
                                         'options' => ['placeholder' => 'Select Header Menu ...'],
@@ -248,7 +247,6 @@ use kartik\select2\Select2;
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-bank" role="tabpanel" aria-labelledby="nav-bank-tab">

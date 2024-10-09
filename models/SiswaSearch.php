@@ -17,7 +17,7 @@ class SiswaSearch extends Siswa
     public function rules()
     {
         return [
-            [['code', 'skhun', 'nama_di_kip', 'layak_pip', 'kebutuhan_khusus', 'anak_keberapa', 'lintang', 'bujur', 'berat_badan', 'tinggi_badan', 'lingkar_kepala', 'jml_saudara', 'jarak_rumah', 'created_at', 'updated_at'], 'integer'],
+            [['code', 'skhun', 'nama_di_kip', 'layak_pip', 'kebutuhan_khusus', 'anak_keberapa', 'lintang', 'bujur', 'berat_badan', 'tinggi_badan', 'lingkar_kepala', 'jml_saudara', 'jarak_rumah', 'created_at', 'updated_at','id_status_siswa'], 'integer'],
             [['nipd', 'nisn', 'nik', 'nama', 'jen_kelamin', 'tempat_lahir', 'tgl_lahir', 'alamat', 'rt', 'rw', 'dusun', 'kelurahan', 'kecamatan', 'kabupaten', 'kode_pos', 'jenis_tinggal', 'alat_transportasi', 'phone', 'handphone', 'email', 'no_kps', 'nama_ayah', 'tgl_lahir_ayah', 'pendidikan_ayah', 'pekerjaan_ayah', 'penghasilan_ayah', 'nik_ayah', 'nama_ibu', 'tgl_lahir_ibu', 'pendidikan_ibu', 'pekerjaan_ibu', 'penghasilan_ibu', 'nik_ibu', 'nama_wali', 'tgl_lahir_wali', 'pendidikan_wali', 'pekerjaan_wali', 'penghasilan_wali', 'nik_wali', 'rombel_now', 'no_peserta_ujian', 'no_seri_ijazah', 'nomor_kip', 'nomor_kks', 'no_akta_lahir', 'bank', 'no_rekening_bank', 'atas_nama_rekening', 'alasan_layak_pip', 'sekolah_asal', 'no_kk', 'created_by', 'updated_by','code_jurusan'], 'safe'],
         ];
     }
@@ -78,6 +78,7 @@ class SiswaSearch extends Siswa
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'code_jurusan' => $this->code_jurusan,
+            'id_status_siswa' => $this->id_status_siswa,
         ]);
 
         $query->andFilterWhere(['like', 'nipd', $this->nipd])

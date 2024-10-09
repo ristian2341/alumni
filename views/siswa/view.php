@@ -26,6 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
     th, td {
         font-size: 14px;
     }
+
+    .canvas {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+  }
+
 </style>
 <div class="siswa-view">
     <!-- <h1><?= Html::encode($this->title) ?></h1> -->
@@ -44,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <fieldset>
         <legend>Data Siswa</legend>
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
@@ -65,9 +72,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         'email:email',
                         'no_akta_lahir',
                     ],
+                    'template' => "<tr><th style='width: 35%;'>{label}</th><td>{value}.</td></tr>"
                 ]) ?>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
@@ -84,14 +92,30 @@ $this->params['breadcrumbs'][] = $this->title;
                         'jenis_tinggal',
                         'alat_transportasi',
                     ],
+                    'template' => "<tr><th style='width: 35%;'>{label}</th><td>{value}.</td></tr>"
                 ]) ?>
+            </div>
+            <div class="col-sm-2">
+                <div class="row">
+                    <div id="gallery" width="230" height="200">
+                        <?php if(!empty($model->foto)) : ?>
+                            <img width="200" height="250" src="<?= $model->foto; ?>" class="img-block" alt="User Image">
+                        <?php else: ?>
+                            <div class="row">
+                                <div id="gallery" width="230" height="250" class="canvas">
+                                    <canvas id="canv" width="230" height="250"></canvas>
+                                </div>
+                            </div>
+                        <?php endif; ?>    
+                    </div>
+                </div>
             </div>
         </div>
     </fieldset>
     <fieldset>
         <legend>Data Siswa</legend>
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
@@ -103,11 +127,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'no_seri_ijazah',
                         'tahun_lulus',
                         [
-                            'attribute' => 'id_status_lulus',
-                            'label' => 'Setelah Lulus',
-                            'value' => isset($model->statusSiswa) ? $model->statusSiswa : '',
-                        ],
-                        [
                             'attribute' => 'code_jurusan',
                             'label' => 'Jurusan',
                             'value' => isset($model->jurusan->nama) ? $model->jurusan->nama : '',
@@ -115,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]) ?>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
@@ -127,6 +146,54 @@ $this->params['breadcrumbs'][] = $this->title;
                         'alasan_layak_pip:ntext',
                     ],
                 ]) ?>
+            </div>
+            <div class="col-sm-4">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        [
+                            'attribute' => 'id_status_lulus',
+                            'label' => 'Setelah Lulus',
+                            'value' => isset($model->statusSiswa) ? $model->statusSiswa : '',
+                        ],
+                    ],
+                    'template' => "<tr><th style='width: 35%;'>{label}</th><td>{value}.</td></tr>"
+                ]) ?>
+                <?php if( isset($model->statusSiswa) && $model->statusSiswa == 'Bekerja'): ?>
+                    <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'perusahaan',
+                        'alamat_perusahaan',
+                        'jabatan',
+                        [
+                            'attribute' => 'mulai_bekerja',
+                            'value' => !empty($model->mulai_bekerja) ? date('d/m/Y',strtotime($model->mulai_bekerja)) : '',
+                        ],
+                    ],
+                    'template' => "<tr><th style='width: 35%;'>{label}</th><td>{value}.</td></tr>"
+                ]) ?>
+                <?php endif; ?>
+                <?php if( isset($model->statusSiswa) && $model->statusSiswa == 'Wiraswasta'): ?>
+                    <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'jenis_usaha',
+                        'lokasi_usaha',
+                    ],
+                    'template' => "<tr><th style='width: 35%;'>{label}</th><td>{value}.</td></tr>"
+                ]) ?>
+                <?php endif; ?>
+                <?php if( isset($model->statusSiswa) && $model->statusSiswa == 'Kuliah'): ?>
+                    <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'nama_universitas',
+                        'jurusan_kuliah',
+                    ],
+                    'template' => "<tr><th style='width: 35%;'>{label}</th><td>{value}.</td></tr>"
+                ]) ?>
+                <?php endif; ?>
             </div>
         </div>
     </fieldset>
