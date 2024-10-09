@@ -57,25 +57,37 @@
     li .active {
         padding-left: 0px;
     }
+
+     .layout-navbar-fixed .wrapper .brand-link {
+        width : 242px;
+        top : 57px;
+    }
+    
+    .layout-fixed .main-sidebar {
+        top : 57px;
+    }
+
+    .layout-navbar-fixed .wrapper .content-wrapper {
+        margin-top: 1px;
+    }
 </style>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?= url::To(['/site/index']); ?>" class="brand-link">
-            <img src="<?= isset($setting->logo) ? Url::base()."/".$setting->logo : ''?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-            <span class="brand-text font-weight-light"><?= isset($setting->nama_aplikasi) ? $setting->nama_aplikasi : 'Yii Basic'?></span>
-        </a>
+        <img src="<?= isset($setting->logo) ? Url::base()."/".$setting->logo : ''?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
+        <span class="brand-text font-weight-light"><?= isset($setting->nama_aplikasi) ? $setting->nama_aplikasi : 'Yii Basic'?></span>
+    </a>
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <!-- Brand Logo -->
-        <a href="<?= url::To(['/site/index']); ?>" class="brand-link">
-            <img src="<?= isset($setting->logo) ? Url::base()."/".$setting->logo : ''?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-            <span class="brand-text font-weight-light"><?= isset($setting->nama_aplikasi) ? $setting->nama_aplikasi : 'Yii Basic'?></span>
-        </a>
-
-        
+    <div class="sidebar">       
         <!-- Sidebar Menu -->
         <nav class="mt-2">
+             <!-- Brand Logo -->
+            <a href="<?= url::To(['/site/index']); ?>" class="brand-link">
+                <img src="<?= isset($setting->logo) ? Url::base()."/".$setting->logo : ''?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
+                <span class="brand-text font-weight-light"><?= isset($setting->nama_aplikasi) ? $setting->nama_aplikasi : 'Yii Basic'?></span>
+            </a>
+
             <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">

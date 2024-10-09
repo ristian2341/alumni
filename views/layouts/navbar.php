@@ -54,7 +54,7 @@
     <ul class="navbar-nav">
         <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="<?= $picture; ?>" class="user-image" alt="User Image">
+                <img src="<?= isset($picture) ? $picture : ''; ?>" class="user-image" alt="User Image">
                 <span class="hidden-xs" id="nama_preload-index-1"><?=Yii::$app->user->identity->full_name?></span>
             </a>
             <ul class="dropdown-menu">

@@ -100,6 +100,9 @@ $config = [
         'magang' => [
             'class' => 'app\modules\magang\Module',
         ],
+        'curiculumvitae' => [
+            'class' => 'app\modules\curiculumvitae\Module',
+        ],
     ],
     'params' => $params,
 ];

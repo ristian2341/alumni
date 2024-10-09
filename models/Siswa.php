@@ -233,8 +233,6 @@ class Siswa extends \yii\db\ActiveRecord
     public function getJurusan()
     {
         return $this->hasOne(Jurusan::className(),['code'=>'code_jurusan']);
-        return $this->hasOne(Jurusan::className(),['code'=>'code_jurusan']);
-        return $this->hasOne(Jurusan::className(),['code'=>'code_jurusan']);
     }
 
     public function getCode()
