@@ -46,7 +46,7 @@ class SiswaController extends Controller
                         ],
                         [
                             'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_siswa')->read)))),
-                            'actions' => ['index', 'view','import-excel','profile-update','autocomplete-siswa','data-siswa','generate-user'],
+                            'actions' => ['index', 'view','import-excel','autocomplete-siswa','data-siswa','generate-user'],
                             'roles' => ['@'],
                         ],
                         [
@@ -59,10 +59,11 @@ class SiswaController extends Controller
                             'actions' => ['delete'],
                             'roles' => ['@'],
                         ],
-                        // [
-                        //     'allow' => true,
-                        //     'actions' => ['profile-update','autocomplete-siswa','data-siswa'],
-                        // ],
+                        [
+                            'allow' => (!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_profile')->update))),
+                            'allow' => true,
+                            'actions' => ['profile-update'],
+                        ],
                     ],
                 ],
                 'verbs' => [

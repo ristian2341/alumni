@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= HTML::a("<span class='fas fa-user'></span> Generate User Siswa",Url::toRoute(['generate-user']), [
                                 'class' => 'btn btn-primary btn-sm btn-flat',
                                 'title' => 'Generate User Siswa',
+                                'id' => 'btn-generate',
                             ]);
              ?>
         <?php endif; ?>
@@ -231,7 +232,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     $("body").off("click","#btn-save").on("click","#btn-save",function(){
         var formdata = new FormData($("#file-upload-form")[0]);
-        console.log(formdata);
         $.ajax({
             url: "<?= Url::to(['import-excel'])?>",
             dataType: "json",
@@ -247,5 +247,9 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         });
 
+    });
+
+    $("body").off("click","#btn-generate").on("click","#btn-generate",function(){
+        loading.open("loading circle");
     });
 </script>

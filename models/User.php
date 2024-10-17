@@ -201,11 +201,16 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function getMenu($akses_menu)
     {
-       
         $result = [];
         $menu = Menu::find()->where(['akses_menu' => $akses_menu])->one();
         if(isset($menu)){
-            $result = GroupMenuDetail::find()->where(['id_menu' => $menu->id_menu,'id_group' =>  Yii::$app->user->identity->id_group])->one();
+            if(!empty(Yii::$app->user->identity->nis)){
+                $group_menu = GroupMenu::find()->where(['nama' => Yii::$app->user->identity->type_user])->one();
+                $idgroup = $group_menu->id;
+            }else{
+                $idgroup = Yii::$app->user->identity->id_group;
+            }
+            $result = GroupMenuDetail::find()->where(['id_menu' => $menu->id_menu,'id_group' =>  $idgroup])->one();
         }
 
         return $result;
