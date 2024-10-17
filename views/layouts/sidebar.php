@@ -17,10 +17,17 @@
             $menu = Menu::find()->where(['id_header' => ''])->orWhere("id_header is null")->orderBy('idlevel')->orderBy("urutan")->all();
         }
     }
+    
+    if(!empty(Yii::$app->user->identity->nis)){
+        $menu = Menu::find()->innerJoin('group_menu_detail',"menu.id_menu = group_menu_detail.id_menu")
+        ->where("group_menu_detail.id_group in (select id from group_menu where nama ='".Yii::$app->user->identity->type_user."')")
+        ->andWhere("menu.id_header = '' or menu.id_header is null")->orderBy('idlevel')->orderBy("urutan")->all();
+    }
 
     foreach($menu as $key => $val){
         if(!Yii::$app->user->identity->developer){
-            $menu_detil =   Menu::find()->innerJoin('group_menu_detail',"menu.id_menu = group_menu_detail.id_menu")
+           
+            $menu_detil = Menu::find()->innerJoin('group_menu_detail',"menu.id_menu = group_menu_detail.id_menu")
             ->where(['group_menu_detail.id_group' => Yii::$app->user->identity->id_group,'id_header' => $val->id_menu])
             ->orderBy('idlevel')->orderBy("urutan")->all();
         }else{

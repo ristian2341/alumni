@@ -47,7 +47,7 @@ class LowkerController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['info-lowker'],
+                        'actions' => ['info-lowker','view-lowker'],
                     ],
                 ],
             ],
@@ -248,6 +248,13 @@ class LowkerController extends Controller
         
         return $this->render("info-lowker",[
             'model' => $model,
+        ]);
+    }
+
+    public function actionViewLowker($code_lowker)
+    {
+        return $this->render('view-lowker', [
+            'model' => $this->findModel($code_lowker),
         ]);
     }
 
