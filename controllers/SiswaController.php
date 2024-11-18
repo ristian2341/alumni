@@ -61,7 +61,7 @@ class SiswaController extends Controller
                         ],
                         [
                             'allow' => (!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_profile')->update))),
-                            'allow' => true,
+                            // 'allow' => true,
                             'actions' => ['profile-update'],
                         ],
                     ],
@@ -425,7 +425,7 @@ class SiswaController extends Controller
 
     public function actionProfileUpdate()
     {
-        $nisn = isset($_GET['nisn']) ? $_GET['nisn'] : Yii::$app->user->identity->nis;
+        $nisn = isset($_GET['nisn']) ? $_GET['nisn'] : (isset(Yii::$app->user->identity->nis) ? Yii::$app->user->identity->nis : '');
         $success = true;$message="";
 
         $model = Siswa::find()->where(['nisn' => $nisn])->one();

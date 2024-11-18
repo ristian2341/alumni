@@ -38,6 +38,11 @@ class CvSiswaController extends Controller
                         'actions' => ['update','autocomplete-siswa','add-row-siswa'],
                         'roles' => ['@'],
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['input-data'],
+                        // 'roles' => ['?'],
+                    ],
                 ],
             ],
             'verbs' => [
@@ -154,10 +159,11 @@ class CvSiswaController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionInpuData()
+    public function actionInputData()
     {
+        
         $model = new CvSiswa();
-
+        
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'code' => $model->code, 'nik' => $model->nik]);
@@ -166,8 +172,8 @@ class CvSiswaController extends Controller
             $model->loadDefaultValues();
         }
 
-        $model->nik = isset($model->dataSiswaNik->nik) ? $model->dataSiswaNik->nik : '';
-        print_r($model);die;
+        $model->nik = Yii::$app->user->identity->nis;
+        
         if(!empty($model->nik)){
             return $this->render('create', [
                 'model' => $model,
