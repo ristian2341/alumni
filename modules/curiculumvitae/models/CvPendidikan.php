@@ -30,8 +30,8 @@ class CvPendidikan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code_cv', 'nik'], 'required'],
-            [['code_cv', 'nik'], 'string', 'max' => 16],
+            [['code_cv', 'nis'], 'required'],
+            [['code_cv', 'nis'], 'string', 'max' => 16],
             [['sekolah', 'jurusan'], 'string', 'max' => 100],
             [['periode'], 'string', 'max' => 20],
         ];

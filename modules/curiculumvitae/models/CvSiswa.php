@@ -18,7 +18,7 @@ use app\models\Siswa;
  */
 class CvSiswa extends \yii\db\ActiveRecord
 {
-    public $nama,$jurusan;
+    public $file_upload,$file;
     /**
      * {@inheritdoc}
      */
@@ -41,10 +41,15 @@ class CvSiswa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'nik'], 'required'],
-            [['pendidikan', 'pengalaman', 'kemampuan'], 'string'],
+            // [['code', 'nik'], 'required'],
+            [['tanggal_lahir'], 'safe'],
+            [['pendidikan', 'pengalaman', 'kemampuan','hobi','alamat_tinggal','path_foto'], 'string'],
+            [['tahun_lulus'], 'string', 'max' => 5],
             [['code', 'nik'], 'string', 'max' => 16],
+            [['nama', 'tempat_lahir'], 'string', 'max' => 150],
+            [['jenis_kelamin', 'kewarganegaraan','status','kontak','email'], 'string', 'max' => 100],
             [['code', 'nik'], 'unique', 'targetAttribute' => ['code', 'nik']],
+            [['file_upload','file'], 'file','maxFiles' => 1],
         ];
     }
 
@@ -56,9 +61,21 @@ class CvSiswa extends \yii\db\ActiveRecord
         return [
             'code' => 'Code',
             'nik' => 'Nik',
+            'nama' => 'Nama Lengkap',
+            'jenis_kelamin' => 'Jenis Kelamin',
+            'tempat_lahir' => 'Tempat Lahir',
+            'tanggal_lahir' => 'Tanggal Lahir',
+            'alamat_tinggal' => 'Alamat Tinggal',
+            'kontak' => 'Kontak / WA',
+            'email' => 'Email',
+            'kewarganegaraan' => 'Kewarganegaraan',
+            'status' => 'Status',
             'pendidikan' => 'Pendidikan',
+            'tahun_lulus' => 'Tahun Lulus',
             'pengalaman' => 'Pengalaman',
             'kemampuan' => 'Kemampuan',
+            'hobi' => 'Hobi',
+            'path_foto' => 'Foto',
         ];
     }
 
