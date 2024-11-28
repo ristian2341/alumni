@@ -42,7 +42,7 @@ class CvSiswaController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['input-data','add-row-pendidikan','load-temp-table'],
+                        'actions' => ['input-data','add-row-pendidikan','load-temp-table','add-row-pengalaman'],
                         // 'roles' => ['?'],
                     ],
                 ],
@@ -105,6 +105,14 @@ class CvSiswaController extends Controller
 
         $session_detail = Yii::$app->session; 
         unset($session_detail['detail_pendidikan']);
+        unset($session_detail['detail_pengalaman']);
+       
+        Yii::$app->session->set('detail_pengalaman',$detail);
+        $data_detail = isset($detail) ? $detail : [];
+        $result = $this->renderPartial('table_pengalaman',[
+            'model_detail' => $data_detail,
+        ]);
+        
 
         return $this->render('create', [
             'model' => $model,
@@ -176,7 +184,22 @@ class CvSiswaController extends Controller
 
             if($this->request->isPost) {
                 if ($model->load($this->request->post())) {
+                    $model->code = $model->getCode();
+                    $session =  Yii::$app->session;
+                    $pendidikan = isset($session['detail_pendidikan']) ? $session['detail_pendidikan'] : [];
                     
+                    $model->pendidikan = json_encode($pendidikan,true);
+                    $pengalaman = isset($session['detail_pengalaman']) ? $session['detail_pengalaman'] : [];
+                    $model->pengalaman = json_encode($pengalaman,true);
+                    if(!$model->save()){
+                        foreach($model->errors as $error=>$value)
+                        {
+                            $message .= $value[0];
+                        }
+                        Yii::$app->session->setFlash('error',$message); 
+                    }else{
+                        Yii::$app->session->setFlash('success',"Update Curriculum Vitae Success"); 
+                    }
                 }
             }
             
@@ -191,22 +214,26 @@ class CvSiswaController extends Controller
 
             $session_detail = Yii::$app->session; 
             unset($session_detail['detail_pendidikan']);
+            unset($session_detail['detail_pengalaman']);   
 
             if(!empty($model->pendidikan)){
-                $pendidikan = json_decode($model->pendidikan);
-                foreach ($pendidikan as $key => $data) {
-                    $periode1 = isset($data['periode1']) ? strtoupper($data['periode1']) : '';
-                    $periode2 = isset($data['periode2']) ? strtoupper($data['periode2']) : '';
-                    $detail[]=[
-                        'number' => isset($detail) ? count($detail) + 1 : 1,
-                        'sekolah' => isset($data['sekolah']) ? strtoupper($data['sekolah']) : '',
-                        'jurusan' => isset($data['jurusan']) ? strtoupper($data['jurusan']) : '',
-                        'periode' => $periode1."-".$periode2,
-                        'periode1' => $periode1,
-                        'periode2' => $periode2,
-                    ];
+                $pendidikan = isset($model->pendidikan) ? json_decode($model->pendidikan) : "";
+                if(isset($pendidikan)){
+                    
+                    foreach ($pendidikan as $key => $data) {
+                        $periode1 = isset($data['periode1']) ? strtoupper($data['periode1']) : '';
+                        $periode2 = isset($data['periode2']) ? strtoupper($data['periode2']) : '';
+                        $detail[]=[
+                            'number' => isset($detail) ? count($detail) + 1 : 1,
+                            'sekolah' => isset($data['sekolah']) ? strtoupper($data['sekolah']) : '',
+                            'jurusan' => isset($data['jurusan']) ? strtoupper($data['jurusan']) : '',
+                            'periode' => $periode1."-".$periode2,
+                            'periode1' => $periode1,
+                            'periode2' => $periode2,
+                        ];
+                    }
+                    Yii::$app->session->set('detail_pendidikan',$detail);
                 }
-                Yii::$app->session->set('detail_pendidikan',$detail);
             }
             
             return $this->render('create', [
@@ -266,6 +293,47 @@ class CvSiswaController extends Controller
         
         $data_detail = Yii::$app->session->get('detail_pendidikan');;
         $result = $this->renderPartial('table_detail',[
+            'model_detail' => $data_detail,
+        ]);
+        
+        return $result;
+    }
+
+    public function actionAddRowPengalaman(){
+        $detail = [];$data_detail=[];
+    
+        $number = isset($_POST['number']) ? $_POST['number'] : '';
+        $perusahaan = isset($_POST['perusahaan']) ? $_POST['perusahaan'] : '';
+        $jabatan = isset($_POST['jabatan']) ? $_POST['jabatan'] : '';
+        $tahun1 = isset($_POST['tahun1']) ? $_POST['tahun1'] : '';
+        $tahun2 = isset($_POST['tahun2']) ? $_POST['tahun2'] : '';
+        $action = isset($_POST['action']) ? $_POST['action'] : '';
+
+        $detail = Yii::$app->session->get('detail_pengalaman');
+        if($action == 'add'){
+            if($number != ''){
+                $detail[$number]=[
+                    'perusahaan' => strtoupper($perusahaan),
+                    'jabatan' => strtoupper($jabatan),
+                    'tahun1' => $tahun1,
+                    'tahun2' => $tahun2,
+                ];
+            }else{
+                $detail[]=[
+                    'number' => isset($detail) ? count($detail) + 1 : 1,
+                    'perusahaan' => strtoupper($perusahaan),
+                    'jabatan' => strtoupper($jabatan),
+                    'tahun1' => $tahun1,
+                    'tahun2' => $tahun2,
+                ];
+            }
+        }elseif($action == 'delete'){
+            unset($detail[$number]);
+        }
+       
+        Yii::$app->session->set('detail_pengalaman',$detail);
+        $data_detail = isset($detail) ? $detail : [];
+        $result = $this->renderPartial('table_pengalaman',[
             'model_detail' => $data_detail,
         ]);
         

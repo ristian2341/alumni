@@ -44,8 +44,9 @@ class CvSiswa extends \yii\db\ActiveRecord
             // [['code', 'nik'], 'required'],
             [['tanggal_lahir'], 'safe'],
             [['pendidikan', 'pengalaman', 'kemampuan','hobi','alamat_tinggal','path_foto'], 'string'],
+            [['created_at', 'updated_at'], 'integer'],
             [['tahun_lulus'], 'string', 'max' => 5],
-            [['code', 'nik'], 'string', 'max' => 16],
+            [['code', 'nik','created_by','updated_by'], 'string', 'max' => 16],
             [['nama', 'tempat_lahir'], 'string', 'max' => 150],
             [['jenis_kelamin', 'kewarganegaraan','status','kontak','email'], 'string', 'max' => 100],
             [['code', 'nik'], 'unique', 'targetAttribute' => ['code', 'nik']],
@@ -72,10 +73,14 @@ class CvSiswa extends \yii\db\ActiveRecord
             'status' => 'Status',
             'pendidikan' => 'Pendidikan',
             'tahun_lulus' => 'Tahun Lulus',
-            'pengalaman' => 'Pengalaman',
+            'pengalaman' => 'Pengalaman Kerja',
             'kemampuan' => 'Kemampuan',
             'hobi' => 'Hobi',
             'path_foto' => 'Foto',
+            'created_at' => 'Created at',
+            'updated_at' => 'Updated at',
+            'created_by' => 'Created By',
+            'updated_by' => 'Updated By',
         ];
     }
 
@@ -87,5 +92,17 @@ class CvSiswa extends \yii\db\ActiveRecord
     public function getDataSiswaNik()
     {
         return $this->hasOne(Siswa::className(),['nisn' => Yii::$app->user->nis,'id_status_siswa' => 1]);
+    }
+
+    public function getCode()
+    {
+        $sDate = date('Ymd');
+        $count = $this->find()->where(['like','code',$sDate])->count();
+        $n = 0;
+        if($count > 0){
+            $model = $this->find()->where(['like','code',$sDate])->orderBy(['code' => SORT_DESC])->one();
+            $n = (int)substr($model->code, -6);
+        }
+        return (string) $sDate.sprintf('%06s', ($n +1));
     }
 }
