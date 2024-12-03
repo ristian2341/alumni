@@ -11,6 +11,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
+
+use kartik\mpdf\Pdf;
+use Mpdf\Mpdf;
 /**
  * CvSiswaController implements the CRUD actions for CvSiswa model.
  */
@@ -42,7 +46,7 @@ class CvSiswaController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['input-data','add-row-pendidikan','load-temp-table','add-row-pengalaman'],
+                        'actions' => ['input-data','add-row-pendidikan','load-temp-table','add-row-pengalaman','load-temp-pengalaman','print-cv'],
                         // 'roles' => ['?'],
                     ],
                 ],
@@ -187,18 +191,31 @@ class CvSiswaController extends Controller
                     $model->code = $model->getCode();
                     $session =  Yii::$app->session;
                     $pendidikan = isset($session['detail_pendidikan']) ? $session['detail_pendidikan'] : [];
-                    
-                    $model->pendidikan = json_encode($pendidikan,true);
+                    $model->pendidikan = !empty($pendidikan) ? json_encode($pendidikan,true) : (isset($model->pendidikan) ? $model->pendidikan : "");
                     $pengalaman = isset($session['detail_pengalaman']) ? $session['detail_pengalaman'] : [];
-                    $model->pengalaman = json_encode($pengalaman,true);
+                    $model->pengalaman = !empty($pengalaman) ? json_encode($pengalaman,true) : (isset($model->pengalaman) ? $model->pengalaman : ""); 
+
+                    // add foto //
+                    $model->file = UploadedFile::getInstance($model, 'file');
+                    if(!empty($model->file)){
+                        $path = 'img/cv/'.$model->nik."/";
+                        if(!file_exists ($path))
+                        {
+                            mkdir($path, 0777, true);
+                        }
+                        if(file_exists($path.$model->nik .'.'. $model->file->extension)){
+                            unlink($path.$model->nik .'.'. $model->file->extension);
+                        }
+                        $model->file->saveAs($path. $model->nik . '.' . $model->file->extension);
+                        $model->path_foto = $path.$model->nik .'.'. $model->file->extension;
+                    }
+
                     if(!$model->save()){
                         foreach($model->errors as $error=>$value)
                         {
                             $message .= $value[0];
                         }
                         Yii::$app->session->setFlash('error',$message); 
-                    }else{
-                        Yii::$app->session->setFlash('success',"Update Curriculum Vitae Success"); 
                     }
                 }
             }
@@ -215,24 +232,44 @@ class CvSiswaController extends Controller
             $session_detail = Yii::$app->session; 
             unset($session_detail['detail_pendidikan']);
             unset($session_detail['detail_pengalaman']);   
-
+           
             if(!empty($model->pendidikan)){
                 $pendidikan = isset($model->pendidikan) ? json_decode($model->pendidikan) : "";
-                if(isset($pendidikan)){
-                    
+              
+                if(!empty($pendidikan)){
                     foreach ($pendidikan as $key => $data) {
-                        $periode1 = isset($data['periode1']) ? strtoupper($data['periode1']) : '';
-                        $periode2 = isset($data['periode2']) ? strtoupper($data['periode2']) : '';
+                        $periode1 = isset($data->periode1) ? strtoupper($data->periode1) : '';
+                        $periode2 = isset($data->periode2) ? strtoupper($data->periode2) : '';
                         $detail[]=[
                             'number' => isset($detail) ? count($detail) + 1 : 1,
-                            'sekolah' => isset($data['sekolah']) ? strtoupper($data['sekolah']) : '',
-                            'jurusan' => isset($data['jurusan']) ? strtoupper($data['jurusan']) : '',
+                            'sekolah' => isset($data->sekolah) ? strtoupper($data->sekolah) : '',
+                            'jurusan' => isset($data->actionAddRowPendidikanjurusan) ? strtoupper($data->jurusan) : '',
                             'periode' => $periode1."-".$periode2,
                             'periode1' => $periode1,
                             'periode2' => $periode2,
                         ];
                     }
                     Yii::$app->session->set('detail_pendidikan',$detail);
+                }
+            }
+
+            if(!empty($model->pengalaman)){
+                $pengalaman = isset($model->pengalaman) ? json_decode($model->pengalaman) : "";
+                if(!empty($pengalaman)){
+                    foreach ($pengalaman as $key => $data) {
+                        if(isset($data->perusahaan)){
+                            $tahun1 = isset($data->tahun1) ? strtoupper($data->tahun1) : '';
+                            $tahun2 = isset($data->tahun2) ? strtoupper($data->tahun2) : '';
+                            $data_pengalaman[]=[
+                                'number' => isset($detail) ? count($detail) + 1 : 1,
+                                'perusahaan' => isset($data->perusahaan) ? strtoupper($data->perusahaan) : '',
+                                'jabatan' =>isset($data->jabatan) ? strtoupper($data->jabatan) : '',
+                                'tahun1' => $tahun1,
+                                'tahun2' => $tahun2,
+                            ];
+                        }
+                    }
+                    Yii::$app->session->set('detail_pengalaman',$data_pengalaman);
                 }
             }
             
@@ -338,5 +375,53 @@ class CvSiswaController extends Controller
         ]);
         
         return $result;
+    }
+
+    public function actionLoadTempPengalaman()
+    {
+        $data_detail = Yii::$app->session->get('detail_pengalaman');
+       
+        $result = $this->renderPartial('table_pengalaman',[
+            'model_detail' => $data_detail,
+        ]);
+        
+        return $result;
+    }
+
+    public function actionPrintCv()
+    {
+        $code  = isset($_GET['code']) ? $_GET['code'] : '';
+        if(!empty($code)){
+            $model = CvSiswa::find()->where(['code' => $code])->one();
+
+            $content = $this->renderPartial('_file_pdf',[
+				'model'=>$model,
+			]);
+
+            $pdf = new Pdf([
+                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
+                'destination' => Pdf::DEST_BROWSER,
+                'format' => Pdf::FORMAT_A4,
+                'orientation' => Pdf::ORIENT_PORTRAIT,
+                'content'=>$content,
+                'filename'=>'CV '.$model->nama,
+                'marginTop' => 10,
+                'marginBottom' => 5,
+                'marginLeft' => 2,
+                'marginRight' => 2,
+                'options' => [
+                    // any mpdf options you wish to set
+                ],
+                'methods' => [
+                    'SetTitle' => $model->code,
+                    'SetSubject' => 'Generating PDF files via yii2-mpdf extension has never been easy',
+                    'SetFooter' => ['CURRICULUM VITAE - SMK PAGRI 4 SBY'],
+                    'SetAuthor' => 'Ristian',
+                    'SetCreator' => 'Ristian',
+                    'SetKeywords' => 'Krajee, Yii2, Export, PDF, MPDF, Output, Privacy, Policy, yii2-mpdf',
+                ]
+            ]);
+            return $pdf->render();
+        }
     }
 }

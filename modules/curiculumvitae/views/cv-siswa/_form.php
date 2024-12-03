@@ -200,19 +200,34 @@ use yii\helpers\Url;
             </div>
         </div>
         <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('<span class="fa icon-floppy"></span> Save', ['class' => 'btn btn-success']) ?>
+            <?= Html::a('<span class="fa icon-print"></span> Print CV', ['print-cv', 'code' => $model->code ], ['class' => 'btn btn-info', 'target'=>'_blank', 'title' => 'Export to PDF']); ?>
         </div>
     <?php ActiveForm::end(); ?>
 </div>
 <script>
     $(document).ready(function(){
         loadTable();
+        loadPengalaman();
     });
 
-    function loadTable(check = false,tujuan = 0)
+    function loadTable()
 	{	
 		$.ajax({
 			url: '<?= Url::to(['load-temp-table'])?>',
+			dataType: "html",
+			async:"false",
+			success: function(data) 
+			{
+                $("#tbody").html(data);
+			},
+		});
+	}
+
+    function loadPengalaman()
+	{	
+		$.ajax({
+			url: '<?= Url::to(['load-temp-pengalaman'])?>',
 			dataType: "html",
 			async:"false",
 			data:{
@@ -223,7 +238,7 @@ use yii\helpers\Url;
             },
 			success: function(data) 
 			{
-                $("#tbody").html(data);
+                $("#tbody_pengalaman").html(data);
 			},
 		});
 	}
@@ -271,6 +286,24 @@ use yii\helpers\Url;
         });
     });
 
+    $("body").off("click","#btn-delete_pengalaman").on("click","#btn-delete_pengalaman",function(){
+        var number = $(this).closest("tr").attr("data-no_pengalaman");
+        $.ajax({
+            url: '<?= Url::to(['add-row-pengalaman'])?>',
+            type:"POST",
+            async:"false",
+            data:{
+                number : number,
+                action : 'delete',
+            },
+            success: function(data) 
+            {
+                $("#tbody_pengalaman").html(data);
+                clearFormPengalaman();
+            },
+        });
+    });
+
     $("body").off("click",".btn-edit").on("click",".btn-edit",function(){
         var number = $(this).closest("tr").attr("data-no");
         var sekolah = $(this).closest("tr").attr("data-sekolah");
@@ -289,6 +322,7 @@ use yii\helpers\Url;
     $("body").off("click","#cancel").on("click","#cancel",function(){
         clearForm();
     });
+
     $("body").off("click","#cancel_pengalaman").on("click","#cancel_pengalaman",function(){
         clearFormPengalaman();
     });
@@ -371,5 +405,27 @@ use yii\helpers\Url;
         $("#cvpengalaman-tahun2").val(tahun2);
         $("#create_pengalaman").css("width","40%");
         $("#cancel_pengalaman").show();
+    });
+
+    $("body").off("click","#btn-print").on("click","#btn-print",function(){
+        $.ajax({
+            url: '<?= Url::to(['add-row-pengalaman'])?>',
+            type:"POST",
+            async:"false",
+            data:{
+                number : $("#number_pengalaman").val(),
+                perusahaan : $("#cvpengalaman-perusahaan").val(),
+                jabatan : $("#cvpengalaman-jabatan").val(),
+                tahun1 : $("#cvpengalaman-tahun1").val(),
+                tahun2 : $("#cvpengalaman-tahun2").val(),
+                action : 'add',
+            },
+            success: function(data) 
+            {
+                $("#tbody_pengalaman").html(data);
+                clearFormPengalaman();
+                $("#cancel").hide();
+            },
+        });
     });
 </script>

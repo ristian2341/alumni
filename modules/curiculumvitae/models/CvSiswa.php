@@ -18,7 +18,7 @@ use app\models\Siswa;
  */
 class CvSiswa extends \yii\db\ActiveRecord
 {
-    public $file_upload,$file;
+    public$file;
     /**
      * {@inheritdoc}
      */
@@ -50,7 +50,7 @@ class CvSiswa extends \yii\db\ActiveRecord
             [['nama', 'tempat_lahir'], 'string', 'max' => 150],
             [['jenis_kelamin', 'kewarganegaraan','status','kontak','email'], 'string', 'max' => 100],
             [['code', 'nik'], 'unique', 'targetAttribute' => ['code', 'nik']],
-            [['file_upload','file'], 'file','maxFiles' => 1],
+            [['file'], 'file','maxFiles' => 1],
         ];
     }
 
