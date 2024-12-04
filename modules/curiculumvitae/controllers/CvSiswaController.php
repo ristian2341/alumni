@@ -15,6 +15,9 @@ use yii\web\UploadedFile;
 
 use kartik\mpdf\Pdf;
 use Mpdf\Mpdf;
+
+use app\models\Setting;
+
 /**
  * CvSiswaController implements the CRUD actions for CvSiswa model.
  */
@@ -391,13 +394,15 @@ class CvSiswaController extends Controller
     public function actionPrintCv()
     {
         $code  = isset($_GET['code']) ? $_GET['code'] : '';
+        $setting = Setting::find()->where(['id_setting' => 1])->one();
+
         if(!empty($code)){
             $model = CvSiswa::find()->where(['code' => $code])->one();
 
             $content = $this->renderPartial('_file_pdf',[
 				'model'=>$model,
 			]);
-
+            
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
                 'destination' => Pdf::DEST_BROWSER,
@@ -407,15 +412,19 @@ class CvSiswaController extends Controller
                 'filename'=>'CV '.$model->nama,
                 'marginTop' => 10,
                 'marginBottom' => 5,
-                'marginLeft' => 2,
-                'marginRight' => 2,
+                'marginLeft' => 10,
+                'marginRight' => 10,
                 'options' => [
                     // any mpdf options you wish to set
                 ],
                 'methods' => [
                     'SetTitle' => $model->code,
                     'SetSubject' => 'Generating PDF files via yii2-mpdf extension has never been easy',
-                    'SetFooter' => ['CURRICULUM VITAE - SMK PAGRI 4 SBY'],
+                    'SetFooter' => ['<table width="100%">
+                                        <tr>
+                                            <td style="width: 100%;text-align: center;font-weight: bold;font-size: 17px;border-bottom: 2px;">CURRICULUM VITAE - '.(isset($setting->instansi) ? strtoupper($setting->instansi) : '').'</td>
+                                        </tr>
+                                    </table>'],
                     'SetAuthor' => 'Ristian',
                     'SetCreator' => 'Ristian',
                     'SetKeywords' => 'Krajee, Yii2, Export, PDF, MPDF, Output, Privacy, Policy, yii2-mpdf',
