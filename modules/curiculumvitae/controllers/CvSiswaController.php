@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
+use yii\helpers\Url;
 
 use kartik\mpdf\Pdf;
 use Mpdf\Mpdf;
@@ -202,7 +203,7 @@ class CvSiswaController extends Controller
                     $model->file = UploadedFile::getInstance($model, 'file');
                     if(!empty($model->file)){
                         $path = 'img/cv/'.$model->nik."/";
-                        if(!file_exists ($path))
+                        if(!file_exists($path))
                         {
                             mkdir($path, 0777, true);
                         }
@@ -398,39 +399,31 @@ class CvSiswaController extends Controller
 
         if(!empty($code)){
             $model = CvSiswa::find()->where(['code' => $code])->one();
-
+            $data_siswa = Siswa::find()->where(['nik' => $model->nik])->one();     
+            
             $content = $this->renderPartial('_file_pdf',[
 				'model'=>$model,
+                'data_siswa' => $data_siswa
 			]);
-            
-            $pdf = new Pdf([
-                'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
-                'destination' => Pdf::DEST_BROWSER,
-                'format' => Pdf::FORMAT_A4,
-                'orientation' => Pdf::ORIENT_PORTRAIT,
-                'content'=>$content,
-                'filename'=>'CV '.$model->nama,
-                'marginTop' => 10,
-                'marginBottom' => 5,
-                'marginLeft' => 10,
-                'marginRight' => 10,
-                'options' => [
-                    // any mpdf options you wish to set
-                ],
-                'methods' => [
-                    'SetTitle' => $model->code,
-                    'SetSubject' => 'Generating PDF files via yii2-mpdf extension has never been easy',
-                    'SetFooter' => ['<table width="100%">
-                                        <tr>
-                                            <td style="width: 100%;text-align: center;font-weight: bold;font-size: 17px;border-bottom: 2px;">CURRICULUM VITAE - '.(isset($setting->instansi) ? strtoupper($setting->instansi) : '').'</td>
-                                        </tr>
-                                    </table>'],
-                    'SetAuthor' => 'Ristian',
-                    'SetCreator' => 'Ristian',
-                    'SetKeywords' => 'Krajee, Yii2, Export, PDF, MPDF, Output, Privacy, Policy, yii2-mpdf',
-                ]
+
+             // set mpdf //
+            $pdf = new Mpdf([
+                'mode' => 'utf-8',
+                'format' => 'A4',
+                'margin_left' => 0,
+                'margin_right' => 0,
+                'margin_top' => 0,
+                'margin_bottom' => 0,
+                'margin_header' => 0,
+                'margin_footer' => 0,
             ]);
-            return $pdf->render();
+            $pdf->SetDisplayMode('fullpage');
+            $pdf->addPage();
+            $pdf->SetDefaultBodyCSS('background-image', url::To("background_cv.png"));
+            $pdf->SetDefaultBodyCSS('background-image-resize', 6);
+            $pdf->WriteHTML($content);
+            $pdf->OutPut();
+            exit;
         }
     }
 }

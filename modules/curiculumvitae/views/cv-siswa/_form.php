@@ -95,7 +95,7 @@ use yii\helpers\Url;
                         </div>
                         <?php if(isset($model->path_foto)): ?>
                             <div class="col-sm-6">
-                                <img src="<?= $model->path_foto; ?>" class="img-block" alt="User Image">
+                                <img src="<?= $model->path_foto; ?>"  width="230" height="250" class="img-block" alt="User Image">
                             </div>
                         <?php endif; ?>
                     </div>
@@ -348,7 +348,7 @@ use yii\helpers\Url;
     function draw() {
         let canvas = document.getElementById('canv'),
         ctx = canvas.getContext('2d');
-        ctx.drawImage(this, 0, 0);
+        ctx.drawImage(this, 0, 0,230,250);
         document.getElementById('gallery').append(canvas);
     }
 
