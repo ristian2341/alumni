@@ -45,6 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             // 'password',
             'full_name',
+            'nip',
+            [
+                'attribute' => 'approval',
+                'value' => ($model->approval == 1) ? 'True' : 'False'
+            ],
             'type_akun',
             'email:email',
             [
