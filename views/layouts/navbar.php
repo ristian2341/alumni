@@ -2,7 +2,7 @@
     use yii\helpers\Html;
     use yii\helpers\Url;
     $picture = isset(Yii::$app->user->identity->picture) ? Yii::$app->user->identity->picture : '';
-   
+ 
 ?>
 <style>
     

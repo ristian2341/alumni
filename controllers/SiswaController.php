@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Siswa;
+use app\models\User;
 use app\models\StatusSiswa;
 use app\models\SiswaSearch;
 use yii\web\Controller;
@@ -21,7 +22,6 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-
 
 /**
  * SiswaController implements the CRUD actions for Siswa model.
@@ -46,7 +46,7 @@ class SiswaController extends Controller
                         ],
                         [
                             'allow' => ((!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_siswa')->read)))),
-                            'actions' => ['index', 'view','import-excel','profile-update','autocomplete-siswa','data-siswa'],
+                            'actions' => ['index', 'view','import-excel','autocomplete-siswa','data-siswa','generate-user'],
                             'roles' => ['@'],
                         ],
                         [
@@ -59,10 +59,11 @@ class SiswaController extends Controller
                             'actions' => ['delete'],
                             'roles' => ['@'],
                         ],
-                        // [
-                        //     'allow' => true,
-                        //     'actions' => ['profile-update','autocomplete-siswa','data-siswa'],
-                        // ],
+                        [
+                            'allow' => (!empty(Yii::$app->user->identity->developer) || (!empty(Yii::$app->user->identity) && !empty(Yii::$app->user->identity->getMenu('data_profile')->update))),
+                            // 'allow' => true,
+                            'actions' => ['profile-update'],
+                        ],
                     ],
                 ],
                 'verbs' => [
@@ -424,7 +425,7 @@ class SiswaController extends Controller
 
     public function actionProfileUpdate()
     {
-        $nisn = isset($_GET['nisn']) ? $_GET['nisn'] : Yii::$app->user->identity->nis;
+        $nisn = isset($_GET['nisn']) ? $_GET['nisn'] : (isset(Yii::$app->user->identity->nis) ? Yii::$app->user->identity->nis : '');
         $success = true;$message="";
 
         $model = Siswa::find()->where(['nisn' => $nisn])->one();
@@ -537,6 +538,44 @@ class SiswaController extends Controller
         $result = ['results' => ['id' => '', 'text' => '']];
         $result['results'] = $datasiswa;
         return $result;
+    }
+
+    public function actionGenerateUser()
+    {
+        ini_set('memory_limit','1024M'); 
+		ini_set('max_execution_time', 1000000);
+		$success = true;
+        $model = Siswa::find()->where("nisn not in(select nis from user)")->all();
+        if(!empty($model)){
+            foreach ($model as $key => $data) {
+                if(!empty($data->nisn)){
+                    $user = new User();
+                    $user->user_id = $user->getUserId();
+                    $user->type_akun = "siswa";
+                    $user->type_user = "siswa";
+                    $user->username = $data->nisn;
+                    $user->password = Yii::$app->getSecurity()->generatePasswordHash($data->nisn);
+                    $user->full_name = $data->nama;
+                    $user->nis = $data->nisn;
+                    $user->email = $data->email;
+                    $user->phone = $data->handphone;
+                    $user->alamat = $data->alamat." rt/rw ".$data->rt."/".$data->rw." ".$data->kelurahan." ".$data->kecamatan;
+                    $user->kota ="";
+                    $user->propinsi = $data->kabupaten;
+                    $user->status = 1;
+                    if(!$user->save()){
+                        Yii::$app->session->setFlash('error', $user->errors);
+                        $success = false;
+                    }
+                }
+            }
+        }
+        if($success){
+            Yii::$app->session->setFlash('success', "Generate User Siswa Berhasil");
+        }else{
+            Yii::$app->session->setFlash('error', "Generate User Siswa ada yang gagal");
+        }
+        return $this->redirect(['siswa/index']);
     }
 
 }

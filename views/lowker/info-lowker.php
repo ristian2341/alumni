@@ -28,13 +28,12 @@ $this->title ="Info Lowongan Kerja";
                 $tglpost = isset($data['tgl_post']) ? date_create($data['tgl_post']) : '';
                 $tglNow = date_create();
                 $hari = isset($data['tgl_post']) ? date_diff($tglpost,$tglNow) : '';
-                echo "<div class='row rg-product-container'>";
-                    echo "<div class='col-sm-12'><h5>Informasi Lowongan</h5></div>";
+                echo "<div class='row rg-product-container click-lowker' role='button' data-id='".$data->code_lowker."' >";
+                    echo "<div class='col-sm-12'><h5>Info Lowongan ".(isset($data['nama_perusahaan']) ? $data['nama_perusahaan'] : '')." </h5></div>";
                     echo "<div class='col-sm-2'>".(isset($data['lowongan']) ? $data['lowongan'] : '')."</div>";
-                    echo "<div class='col-sm-2'>".(isset($data['nama_perusahaan']) ? $data['nama_perusahaan'] : '')."</div>";
+                    // echo "<div class='col-sm-2'>".(isset($data['nama_perusahaan']) ? $data['nama_perusahaan'] : '')."</div>";
                     echo "<div class='col-sm-4'>".(!empty($hari) ? $hari->days." Hari, " : '')." Berakhir Tanggal : ".(isset($data['tgl_post']) ? date('d/m/Y',strtotime($data['tgl_last'])) : '')."</div>";
                     echo "<div class='col-sm-2'>".(isset($data['kabupaten']) ? $data['kabupaten'] : '')." ".(isset($data['propinsi']) ? $data['propinsi'] : '')."</div>";
-                    echo "<div class='col-sm-2'></div>";
                 echo "</div>";
             } 
         else:
@@ -47,5 +46,11 @@ $this->title ="Info Lowongan Kerja";
         ";
         endif;
     ?>
-
 </div>
+
+<script>
+    $('.click-lowker').on('click', function() {
+        var id = $(this).attr("data-id");
+        location.href= '<?= Url::toRoute('view-lowker') ?>&code_lowker='+id;
+    });
+</script>
