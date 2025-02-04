@@ -153,8 +153,13 @@ class SiteController extends Controller
        
         if($model->load(Yii::$app->request->post())) {
           
-            if(!empty($model->password_old) && !empty($model->password_new)){               
-                $model->password = Yii::$app->getSecurity()->generatePasswordHash($model->password_new);
+            if(!empty($model->password_old) && !empty($model->password_new)){         
+                if(Yii::$app->getSecurity()->validatePassword($model->password_old,$model->password)){
+                    $model->password = Yii::$app->getSecurity()->generatePasswordHash($model->password_new);
+                }else{
+                    $success = false;
+                    Yii::$app->session->setFlash('error', "Password lama anda tidak sama, jika lupa password hub operator.");
+                }          
             }  
             $model->file = UploadedFile::getInstance($model, 'file');
             if(!empty($model->file)){
