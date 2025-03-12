@@ -114,7 +114,7 @@
                     <li class="nav-item active menu-close"><a class="nav-link" href="#"><i class="fas fa-arrow-circle-down"></i> <p><?= $header['label'];?><i class="right fas fa-angle-left"></i> <span class="right badge badge-info"></span></p></a>
                         <?php foreach ($item_detail[$header['id_menu']] as $detail){ ?>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item"><?= Html::a('<i class="fas fa-arrow-circle-right"></i> <p>'.$detail['label']."</p>",[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
+                                <li class="nav-item"><?= Html::a('<i class="fas fa-arrow-circle-right"></i> <p>'.$detail['label']."</p>",Url::to(['/'.$detail['url']]), ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
                             </ul>
                         <?php } ?>
                     </li>
@@ -125,12 +125,12 @@
                             foreach ($item_detail[$header['id_menu']] as $detail){ 
                         ?>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item"><?= Html::a('<i class="fas fa-arrow-circle-right"></i> <p>'.$detail['label'].'</p>',[$detail['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
+                                <li class="nav-item"><?= Html::a('<i class="fas fa-arrow-circle-right"></i> <p>'.$detail['label'].'</p>',Url::to(['/'.$detail['url']]), ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
                             </ul>
                         <?php }} ?>
                     </li>
                 <?php }elseif(!empty($header['url']) && $header['url'] != "#"){ ?>
-                        <li class="nav-item"><?= Html::a('<i class="fas fa-arrow-circle-right"></i> <p>'.$header['label'].'</p>',[$header['url']], ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
+                        <li class="nav-item"><?= Html::a('<i class="fas fa-arrow-circle-right"></i> <p>'.$header['label'].'</p>',Url::to(['/'.$header['url']]), ['data-method' => 'post', 'class' => 'nav-link on_click']) ?></li>
             <?php    
                     }
                 }

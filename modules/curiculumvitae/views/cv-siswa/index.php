@@ -29,9 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => 'Nama Siswa',
                     'attribute' => 'nama',
-                    'value' => function($model){
-                        return isset($model->dataSiswa->nama) ? $model->dataSiswa->nama : '';
-                    },
                 ],
                 [
                     'label' => 'Jurusan',
@@ -42,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update} {delete} ',
+                    'template' => '{view} {print}',
                     'buttons' => [
                         'view' => function($url, $model){
                             return HTML::a("<span class='fas fa-eye'></span>", Url::toRoute(['view', 'code' => $model->code]),[

@@ -11,13 +11,14 @@ use app\modules\curiculumvitae\models\CvSiswa;
  */
 class CvSiswaSearch extends CvSiswa
 {
+    public $jurusan;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['code', 'nik', 'pendidikan', 'pengalaman', 'kemampuan'], 'safe'],
+            [['code', 'nik', 'pendidikan', 'pengalaman', 'kemampuan','jurusan','nama'], 'safe'],
         ];
     }
 
@@ -39,10 +40,12 @@ class CvSiswaSearch extends CvSiswa
      */
     public function search($params)
     {
-        $query = CvSiswa::find();
-
+        $query = CvSiswa::find()
+            ->select("`cv_siswa`.*,jurusan.nama jurusan")
+            ->leftJoin('siswa','cv_siswa.nik=siswa.nik')
+            ->leftJoin('jurusan','siswa.code_jurusan = jurusan.code');
+        
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -50,8 +53,6 @@ class CvSiswaSearch extends CvSiswa
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
@@ -60,8 +61,9 @@ class CvSiswaSearch extends CvSiswa
             ->andFilterWhere(['like', 'nik', $this->nik])
             ->andFilterWhere(['like', 'pendidikan', $this->pendidikan])
             ->andFilterWhere(['like', 'pengalaman', $this->pengalaman])
+            ->andFilterWhere(['like', 'siswa.nama', $this->nama])
             ->andFilterWhere(['like', 'kemampuan', $this->kemampuan]);
-
+        
         return $dataProvider;
     }
 }
