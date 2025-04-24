@@ -51,8 +51,8 @@
 <style>
     .user{
         position: absolute;
-        margin-left: -274px;
-        margin-top: -8px;
+        margin-left: -181px;
+        margin-top: -10px;
     }
 
     .nav-sidebar .nav-treeview {
