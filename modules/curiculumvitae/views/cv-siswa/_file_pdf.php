@@ -4,7 +4,7 @@ use yii\helpers\Url;
 
 if(!empty($model->path_foto) and file_exists($model->path_foto))
 {
-    $picture_cv = $model->path_foto;
+    $picture_cv = url::To($model->path_foto);
 }else{
     $picture_cv = "";
 }
@@ -15,16 +15,16 @@ $background = file_exists(url::To("background_cv.png")) ? url::To("background_cv
 <style>
     .profile_img {
         position: absolute;
-        width: 120px;
-        height: 120px;
-        border-radius: 120px;
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
         border-style: solid;
         border-color: white;
         border-width: medium;
 
         overflow: hidden;
 
-        background-size: 150px 150px;
+        background-size: 190px 190px;
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-position: center; 
@@ -40,9 +40,10 @@ $background = file_exists(url::To("background_cv.png")) ? url::To("background_cv
                         <td>
                             <?php 
                                 if(!empty($picture_cv)){
-                                    echo "<img src=".$picture_cv." style='width: 200px;border-radius: 50%;'>";
+                                    echo "<img src=".$picture_cv." class='profile_img'>";
+                                    // echo "<div class='profile_img' style='background-image: ".$picture_cv.";'></div>";
                                 }
-                            ?> 
+                            ?>
                         </td>
                     </tr>
                 </table>                

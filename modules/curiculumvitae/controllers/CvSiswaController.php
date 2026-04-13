@@ -400,15 +400,23 @@ class CvSiswaController extends Controller
         if(!empty($code)){
             $model = CvSiswa::find()->where(['code' => $code])->one();
             $data_siswa = Siswa::find()->where(['nik' => $model->nik])->one();     
+
+            if(!empty($model->path_foto) and file_exists($model->path_foto))
+            {
+                $picture_cv = url::To($model->path_foto);
+            }else{
+                $picture_cv = "";
+            }
             
             $content = $this->renderPartial('_file_pdf',[
 				'model'=>$model,
                 'data_siswa' => $data_siswa
 			]);
-
+            
              // set mpdf //
             $pdf = new Mpdf([
-                'mode' => 'utf-8',
+                'mode' => Pdf::MODE_CORE,
+                'destination' => Pdf::DEST_BROWSER,
                 'format' => 'A4',
                 'margin_left' => 0,
                 'margin_right' => 0,
@@ -420,7 +428,8 @@ class CvSiswaController extends Controller
             $pdf->SetDisplayMode('fullpage');
             $pdf->addPage();
             $pdf->SetDefaultBodyCSS('background-image', url::To("background_cv.png"));
-            $pdf->SetDefaultBodyCSS('background-image-resize', 6);
+            $pdf->SetDefaultBodyCSS('background-image-resize', 6);  
+            
             $pdf->WriteHTML($content);
             $pdf->OutPut();
             exit;

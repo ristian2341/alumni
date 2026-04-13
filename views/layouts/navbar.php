@@ -25,8 +25,8 @@
     }
 
     .navbar-nav > .user-menu > .dropdown-menu > li.user-header {
-        height: 170px;
-        padding: 10px;
+        height: 181px;
+        padding: -10px;
         text-align: center;
     }
 
@@ -57,7 +57,7 @@
                 <img src="<?= isset($picture) ? $picture : ''; ?>" class="user-image" alt="User Image">
                 <span class="hidden-xs" id="nama_preload-index-1"><?=Yii::$app->user->identity->full_name?></span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" style="left: inherit;margin-left: -100px;margin-top: 10px;">
                 <li class="user-header" style="background-color: #4c4444;">
                     <img src="<?= $picture; ?>" class="img-circle" alt="User Image">
                     <p id="nama_preload-index-2" style="margin-bottom:0px;color: white;"><?=Yii::$app->user->identity->full_name?></p>
